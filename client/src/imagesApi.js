@@ -1,0 +1,52 @@
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
+import app, {storage} from "./firebase";
+
+export const uploadImage = (fileName, setPercent, setImagesNames) => {
+  if (!fileName) {
+    alert("Please upload an image first!");
+  }
+
+  const imgName = new Date().getTime() + fileName.name;
+  const storage = getStorage(app);
+  const storageRef = ref(storage, imgName);
+  const uploadTask = uploadBytesResumable(storageRef, fileName);
+
+  uploadTask.on(
+    "state_changed",
+    (snapshot) => {
+      const percent = Math.round(
+        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+      );
+      setPercent(percent);
+    },
+    (err) => console.log(err),
+    () => {
+      getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+        setImagesNames((pre) => [...pre, url]);
+      });
+    }
+  );
+};
+
+export const deletImage = (imgName, setImagesNames) => {
+    let imgRef = ref(storage, imgName);
+    console.log('1')
+    deleteObject(imgRef)
+    .then(() => {
+        setImagesNames((pre) => {
+            console.log('eeeeee',pre)
+            return pre.filter((img) => {
+                return img !== imgName;
+            });
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
