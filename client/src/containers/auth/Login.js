@@ -23,13 +23,18 @@ const Login = () => {
 
   const onChangeHandler = (e) => {
     setLoginValues({ ...loginValues, [e.target.name]: e.target.value });
-     if(loginValues.email === '' && loginValues.password === '') {
-      setDisabledBtn(true)
-    } else setDisabledBtn(false)
+    if(loginValues.email !== '' && loginValues.password !== '') {
+      setDisabledBtn(false)
+    } 
+    if(loginValues.email === '' || loginValues.password === '') {
+         setDisabledBtn(true)
+    }
+    //  if(loginValues.email === '' && loginValues.password === '') {
+    //   setDisabledBtn(true)
+    // } else setDisabledBtn(false)
   };
 
   const handleGoogleChecked = () => {
-    console.log('wwww')
     googleSignin(dispatch);
     // navigate('http://localhost:3001/auth/google')
   };
@@ -41,7 +46,6 @@ const Login = () => {
        return navigate('/') 
       }
     };
-  console.log('err', error)
   return (
     <Fragment>
     {loading && <LoadingSpinner/>}

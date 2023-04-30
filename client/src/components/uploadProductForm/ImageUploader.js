@@ -79,8 +79,7 @@ const ImageUploader = (props) => {
 
   const handleDelete = (imgName) => {
     if (imagesNames.length > 0) {
-      let imgRef = ref(storage, imgName);
-      deletImage(imgRef, imgName, setImagesNames);
+      deletImage(imgName, setImagesNames);
     }
   };
 
@@ -134,7 +133,12 @@ const ImageUploader = (props) => {
           })}
       </ImagesList>
       <Btn>
-        <Button type='button' theme="uploadForm" text="המשך" onClick={continued} />
+        <Button
+          type="button"
+          theme="uploadForm"
+          text="המשך"
+          onClick={continued}
+        />
       </Btn>
     </Fragment>
   );

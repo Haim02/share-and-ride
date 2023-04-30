@@ -26,7 +26,7 @@ const Btn = styled.div`
 `;
 const Small = styled.small`
   color: red;
-  margin-right: 10px; ;
+  margin-right: 10px;
 `;
 
 const Price = (props) => {
@@ -36,7 +36,7 @@ const Price = (props) => {
 
   const onChangeHandler = (e) => {
     setPrice({ ...price, [e.target.name]: e.target.value });
-    if (price) {
+    if (!price) {
       setError(false);
     }
   };
@@ -48,9 +48,7 @@ const Price = (props) => {
       if (price) {
         setError(false);
       }
-    } else if (isChecked === false) {
-      setPrice();
-    }
+    } 
   };
 
   const handleClick = () => {

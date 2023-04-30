@@ -22,10 +22,11 @@
     "@types/react-responsive": "^8.0.5",
     "axios": "^1.2.4",
     "date-fns": "^2.29.3",
+    "dotenv": "^16.0.3",
+    "env-cmd": "^10.1.0",
     "firebase": "^9.17.2",
     "formik": "^2.2.9",
     "javascript-time-ago": "^2.5.9",
-    "jwt-decode": "^3.1.2",
     "react": "^18.2.0",
     "react-alice-carousel": "^2.7.0",
     "react-burger-menu": "^3.0.9",
@@ -49,12 +50,11 @@
     "redux-persist": "^6.0.0",
     "redux-persist-cookie-storage": "^1.0.0",
     "styled-components": "^5.3.6",
-    "timeago.js": "^4.0.2",
     "web-vitals": "^2.1.4",
     "yup": "^1.0.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "env-cmd -f .env.dev react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

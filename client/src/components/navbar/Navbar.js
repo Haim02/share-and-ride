@@ -12,7 +12,7 @@ import menuStyle from "../menuStyle";
 import { mobile } from "../../responsive";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import Button from './../button/Button';
+import Button from "./../button/Button";
 
 const NavbarContainer = styled.div`
   display: flex;
@@ -111,27 +111,23 @@ const NavItem = styled.li`
   }
 `;
 
-const Items = styled.div`
-        display: flex;
-        align-items: center;
-`;
 const Item = styled.div`
- display: flex;
-          align-items: center;
-          margin-right: 20px;
-          position: relative;
-  `;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  position: relative;
+`;
 
 const Navbar = () => {
   const ismobile = useMediaQuery({ maxWidth: "540px" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { currentUser, messages } = useSelector((state) => state.auth);
-  const unRedingMessages = messages.filter(mgs => mgs.isCalled === true)
+  const unRedingMessages = messages.filter((mgs) => mgs.isCalled === true);
 
   const onLogoutHandle = () => {
     userLogout(dispatch);
-      return navigate("/");
+    return navigate("/");
   };
 
   if (ismobile) {
@@ -139,25 +135,40 @@ const Navbar = () => {
       <MenuContainer right styles={menuStyle}>
         <ListContainer>
           <NavItem menu>
-            <Link to="/" style={{textDecoration: 'none'}}>בית</Link>
+            <Link to="/" style={{ textDecoration: "none" }}>
+              בית
+            </Link>
           </NavItem>
           <NavItem>
-            <Link to="/products" style={{textDecoration: 'none'}}>לעמוד ההשכרות</Link>
+            <Link to="/products" style={{ textDecoration: "none" }}>
+              לעמוד ההשכרות
+            </Link>
           </NavItem>
           <NavItem>
-            <Link to="/uploadProduct" style={{textDecoration: 'none'}}>פרסם מוצר</Link>
+            <Link to="/uploadProduct" style={{ textDecoration: "none" }}>
+              פרסם מוצר
+            </Link>
           </NavItem>
           <NavItem menu>
-            <Link to="/contact" style={{textDecoration: 'none'}}>צור קשר</Link>
+            <Link to="/contact" style={{ textDecoration: "none" }}>
+              צור קשר
+            </Link>
           </NavItem>
           {!currentUser && (
             <NavItem menu>
-              <Link to="/login" style={{textDecoration: 'none'}}>התחבר</Link>
+              <Link to="/login" style={{ textDecoration: "none" }}>
+                התחבר
+              </Link>
             </NavItem>
           )}
           {currentUser && (
             <NavItem menu>
-              <Link to={`/profile/${currentUser._id}`} style={{textDecoration: 'none'}}>חשבון</Link>
+              <Link
+                to={`/profile/${currentUser._id}`}
+                style={{ textDecoration: "none" }}
+              >
+                חשבון
+              </Link>
             </NavItem>
           )}
           {currentUser && (
@@ -165,7 +176,11 @@ const Navbar = () => {
               <button type="button" onClick={onLogoutHandle}>
                 התנתק
               </button>
-              <Link to="/" style={{textDecoration: 'none'}} onClick={onLogoutHandle}>
+              <Link
+                to="/"
+                style={{ textDecoration: "none" }}
+                onClick={onLogoutHandle}
+              >
                 התנתק
               </Link>
             </NavItem>
@@ -179,64 +194,105 @@ const Navbar = () => {
     <Fragment>
       <NavbarContainer>
         <LogoContainer>
-          <Link to='/'>
-          <Image>
-            <img src={LogoImg} alt="logo" />
-          </Image>
+          <Link to="/">
+            <Image>
+              <img src={LogoImg} alt="logo" />
+            </Image>
           </Link>
         </LogoContainer>
 
         <ListContainer>
           <NavItem>
-            <Link to="/" style={{textDecoration: 'none', color: '#000000', fontSize: '15px'}}>בית</Link>
+            <Link
+              to="/"
+              style={{
+                textDecoration: "none",
+                color: "#000000",
+                fontSize: "15px",
+              }}
+            >
+              בית
+            </Link>
           </NavItem>
           <NavItem>
-            <Link to="/products" style={{textDecoration: 'none', color: '#000000', fontSize: '15px'}}>לעמוד ההשכרות</Link>
+            <Link
+              to="/products"
+              style={{
+                textDecoration: "none",
+                color: "#000000",
+                fontSize: "15px",
+              }}
+            >
+              לעמוד ההשכרות
+            </Link>
           </NavItem>
           <NavItem>
-              <Link to='/uploadProduct'> 
-           <Button
-             theme='navUploadProduct'
-             text='פרסם מוצר'
-           />
-           </Link>
+            <Link to="/uploadProduct">
+              <Button theme="navUploadProduct" text="פרסם מוצר" />
+            </Link>
           </NavItem>
           {!currentUser && (
             <NavItem>
-              <Link to="/login" style={{textDecoration: 'none', color: '#000000', fontSize: '15px'}}>התחבר</Link>
+              <Link
+                to="/login"
+                style={{
+                  textDecoration: "none",
+                  color: "#000000",
+                  fontSize: "15px",
+                }}
+              >
+                התחבר
+              </Link>
             </NavItem>
           )}
           {currentUser && (
             <NavItem>
-              <Link to={`/profile/${currentUser._id}`} style={{textDecoration: 'none'}}>
-                <FontAwesomeIcon icon={faUser} style={{color: 'black'}}/>
-                <small style={{color: '#000000', fontSize: '13px'}}>{currentUser.name}</small>
+              <Link
+                to={`/profile/${currentUser._id}`}
+                style={{ textDecoration: "none" }}
+              >
+                <FontAwesomeIcon icon={faUser} style={{ color: "black" }} />
+                <small style={{ color: "#000000", fontSize: "13px" }}>
+                  {currentUser.name}
+                </small>
               </Link>
             </NavItem>
           )}
           {currentUser && (
             <>
-            <NavItem>
-            <Link to={`/profile/${currentUser._id}`} style={{textDecoration: 'none'}}>
-              <Item className="item">
-            <NotificationsNoneOutlinedIcon style={{fontSize: '20px'}} />
-            {unRedingMessages.length > 0 && <Counter className="counter">1</Counter>}
-          </Item>
-          </Link>
-            </NavItem>
-            <NavItem>
-            <Link to={`/profile/${currentUser._id}`} style={{textDecoration: 'none'}}>
-          <Item className="item">
-            <ChatBubbleOutlineOutlinedIcon className="icon" />
-            {unRedingMessages.length > 0 && <Counter className="counter">1</Counter>}
-          </Item>
-          </Link>
-          </NavItem>
-          </>
+              <NavItem>
+                <Link
+                  to={`/profile/${currentUser._id}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Item className="item">
+                    <NotificationsNoneOutlinedIcon
+                      style={{ fontSize: "20px" }}
+                    />
+                    {unRedingMessages.length > 0 && (
+                      <Counter className="counter">1</Counter>
+                    )}
+                  </Item>
+                </Link>
+              </NavItem>
+              <NavItem>
+                <Link
+                  to={`/profile/${currentUser._id}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Item className="item">
+                    <ChatBubbleOutlineOutlinedIcon className="icon" />
+                    {unRedingMessages.length > 0 && (
+                      <Counter className="counter">1</Counter>
+                    )}
+                  </Item>
+                </Link>
+              </NavItem>
+            </>
           )}
           {currentUser && (
             <NavItem>
-              <Button theme='logout' text='התנתק' onClick={onLogoutHandle}/>
+              <Button theme="logout" text="התנתק" onClick={onLogoutHandle} />
             </NavItem>
           )}
         </ListContainer>

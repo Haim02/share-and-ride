@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
 import RidingToll from "../components/productCart/ProductCart";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -58,6 +59,7 @@ const Pagination = styled.section`
 
 const ProductsPage = () => {
   const limit = 5;
+  const location = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
   const [filtering, setFiltering] = useState({});
   const [sorting, setSorting] = useState();
@@ -69,8 +71,8 @@ const ProductsPage = () => {
   }, [dispatch, currentPage, filtering, sorting]);
 
   const getFilter = (filters) => {
-    console.log(filters)
     setFiltering(filters);
+   
   };
 
   const getSort = (sort) => {

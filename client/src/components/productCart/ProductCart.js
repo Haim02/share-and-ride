@@ -1,11 +1,10 @@
 import React from "react";
-import { faImage, faLocation, faLocationPin } from "@fortawesome/free-solid-svg-icons";
+import { faImage, faLocationPin } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import Button from "../button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
-import { format } from "timeago.js";
-import ReactTimeAgo from 'react-time-ago'
+import ReactTimeAgo from "react-time-ago";
 
 const RidingTollContainer = styled.div`
   width: 16.5em;
@@ -56,7 +55,6 @@ const PricesContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  /* margin-bottom: 40px; */
 `;
 
 const SmallText = styled.p`
@@ -105,12 +103,11 @@ const RentButton = styled(Button)`
 
 const Location = styled.div`
   margin-bottom: 20px;
-
 `;
 
 const City = styled.span`
-   font-size: 15px;
-   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 15px;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 `;
 
 const ProductCart = (
@@ -136,16 +133,15 @@ const ProductCart = (
           ₪{props.product.price.hourPrice}
           <SmallText> - שעה</SmallText>
         </MonthlyPrice>
-        <DateUpdate><ReactTimeAgo date={props.product.createdAt} locale="he"/></DateUpdate>
+        <DateUpdate>
+          <ReactTimeAgo date={props.product.createdAt} locale="he" />
+        </DateUpdate>
       </PricesContainer>
       <Location>
-      <City>{props.product.location.city}</City>
-      <FontAwesomeIcon icon={faLocationPin} />
+        <City>{props.product.location.city}</City>
+        <FontAwesomeIcon icon={faLocationPin} />
       </Location>
-      <Link
-        to={`/product/${props.product._id}`}
-        style={{ minWidth: "100%" }}
-      >
+      <Link to={`/product/${props.product._id}`} style={{ minWidth: "100%" }}>
         <Button theme="productCart" text="פרטים נוספים" />
         <RentButton text="ראה עוד" />
       </Link>

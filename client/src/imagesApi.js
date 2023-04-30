@@ -5,7 +5,7 @@ import {
   getDownloadURL,
   deleteObject,
 } from "firebase/storage";
-import app, {storage} from "./firebase";
+import app, { storage } from "./firebase";
 
 export const uploadImage = (fileName, setPercent, setImagesNames) => {
   if (!fileName) {
@@ -35,18 +35,16 @@ export const uploadImage = (fileName, setPercent, setImagesNames) => {
 };
 
 export const deletImage = (imgName, setImagesNames) => {
-    let imgRef = ref(storage, imgName);
-    console.log('1')
-    deleteObject(imgRef)
+  let imgRef = ref(storage, imgName);
+  deleteObject(imgRef)
     .then(() => {
-        setImagesNames((pre) => {
-            console.log('eeeeee',pre)
-            return pre.filter((img) => {
-                return img !== imgName;
-            });
+      setImagesNames((pre) => {
+        return pre.filter((img) => {
+          return img !== imgName;
         });
+      });
     })
     .catch((err) => {
-      console.log(err);
+      alert(err);
     });
 };

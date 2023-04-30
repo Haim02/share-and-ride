@@ -163,7 +163,7 @@ const Product = () => {
   
   const address = 
     `${product?.location.city} ${product?.location.street} ${product?.location.houseNumber}`.toString();
-  Geocode.setApiKey("AIzaSyCbRXSwi6gFi8XBa45QkTTc4CeKna0XluY");
+  Geocode.setApiKey(process.env.REACT_APP_PUBLIC_GOOGLE_MAPS_API_KEY);
   Geocode.setLanguage("iw");
 
   Geocode.fromAddress(address).then(

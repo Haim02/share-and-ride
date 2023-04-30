@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom"; 
 import styled from "styled-components";
 import axios from 'axios';
 import Button from "../button/Button";
@@ -50,6 +51,8 @@ const ItemTitle = styled.label`
 const Option = styled.option``;
 
 const Filtering = (props) => {
+  const location = useLocation();
+  console.log(location.search)
   const [filterCity, setFilterCity] = useState(null);
   const [filterType, setFilterType] = useState(null);
   const [cities, setCities] = useState([]);
@@ -90,7 +93,7 @@ const Filtering = (props) => {
   };
 
   const handleCategort = (e) => {
-    if (e.target.value === "null") {
+     if (e.target.value === "null") {
       setFilterType(null);
     } else {
       setFilterType(e.target.value);
@@ -98,7 +101,13 @@ const Filtering = (props) => {
   };
 
   const handleCity = (e) => {
-    setFilterCity(e.target.value)
+    console.log('e.target.value', e.target.defaultChecked)
+    // setFilterCity(e.target.value)
+    if (e.target.value === "null") {
+      setFilterCity(null);
+    } else {
+      setFilterCity(e.target.value);
+    }
   };
 
   return (
@@ -110,7 +119,7 @@ const Filtering = (props) => {
             {/* <Select name="date" defaultValue={null} onChange={handleCity}> */}
               <Input list="cities-data" name="city-choice" onChange={handleCity}/>
        <Datalist id="cities-data">
-       <Option value="הכל"/>
+       <Option defaultChecked={'null'} value={'null'} >הכל</Option>
          {cities.map((city, key) => {
         return  <Option key={key} value={city[city_name_key]} />
       })}
@@ -120,7 +129,7 @@ const Filtering = (props) => {
           <Row>
             <ItemTitle>קטגוריה</ItemTitle>
             <Select name="type" defaultValue={null} onChange={handleCategort}>
-              <Option defaultChecked value="null">הכל</Option>
+              <Option defaultChecked={'null'} value={'null'}>הכל</Option>
               <Option value="bicycle">אופניים</Option>
               <Option value="scooter">קורקינט</Option>
             </Select>

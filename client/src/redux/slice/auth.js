@@ -8,7 +8,6 @@ import {
   updateUserProduct,
   deleteUserProducts,
 } from "../apiCalls/auth";
-import jwtDecode from "jwt-decode";
 
 const initialState = {
   loading: false,

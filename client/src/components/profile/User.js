@@ -8,7 +8,6 @@ import {
 } from "@mui/icons-material";
 import profilePicture from "../../assets/images/blank-profile-picture.webp";
 import LoadingSpinner from "./../LoadingSpinner";
-import { format } from "timeago.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useSelector, useDispatch } from "react-redux";

@@ -51,7 +51,7 @@ const H2 = styled.h2`
   margin: 0 6px 0;
   font-size: 22px;
   color: #4a4a4a;
-`;
+`; 
 
 const P = styled.p`
   font-weight: lighter;
@@ -61,21 +61,15 @@ const P = styled.p`
 const categories = [
   {
     id: 1,
-    title: " אופניים חשמלים",
+    title: "אופניים",
     imageUrl: bikeElectric,
-    route: "/products?type=bicycle&electric=true",
+    route: "/products",
   },
   {
     id: 2,
-    title: "אופניים",
-    imageUrl: bikeRgular,
-    route: "/products?type=bicycle",
-  },
-  {
-    id: 3,
     title: "קורקינט",
     imageUrl: scooter,
-    route: "/products?type=scooter",
+    route: "/products",
   },
 ];
 
@@ -83,7 +77,7 @@ const CategoryPreview = () => {
   return (
     <Container className="directory-container">
       {categories.map((category) => (
-        <Link to={category.route} key={category.id}>
+        <Link to={category.route} key={category.id} style={{textDecoration: 'none', color: 'black'}}>
           <CategoryItem
             background={`${category.imageUrl}`}
             key={category.id}
