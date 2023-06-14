@@ -127,7 +127,7 @@ const ProductsPage = () => {
             <FontAwesomeIcon icon={faChevronLeft} />
           </button>
           {currentPage}
-          <button onClick={nextPage}>
+          <button onClick={nextPage} disabled={products}>
             <FontAwesomeIcon icon={faChevronRight} />
           </button>
         </Pagination>

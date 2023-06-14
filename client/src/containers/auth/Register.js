@@ -83,6 +83,10 @@ export const Links = styled.div`
   height: 50px;
   margin-left: 10px;
   margin-top: 10px;
+  @media only screen and (max-width: 360px) {
+    flex-direction: row;
+    height: 30%;
+  }
 `;
 
 export const Small = styled.small`
@@ -181,12 +185,12 @@ const Register = () => {
       {isLoading && <LoadingSpinner />}
       <Wrapper>
         <Title>צור חשבון</Title>
-        <GoogleSign>
+        {/* <GoogleSign>
           <Link to="http://localhost:3001/api/auth/google/callback">
             <GoogleButton text="הירשם עם גוגל" onClick={handleGoogleChecked} />
           </Link>
         </GoogleSign>
-        <Title>או</Title>
+        <Title>או</Title> */}
         <Form onSubmit={formik.handleSubmit}>
           <FormInputs
             value={formik.values.name}

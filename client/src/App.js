@@ -16,12 +16,12 @@ import ResetPasswordPage from "./containers/auth/ResetPasswordPage";
 import MyRequests from "./components/profile/request/MyRequests";
 import MessagesList from "./components/profile/messages/MessagesList";
 import UpdatePassword from "./components/profile/request/UpdatePassword";
+import PageNotFound from "./pages/PageNotFound";
 import TimeAgo from "javascript-time-ago";
 import he from "javascript-time-ago/locale/he.json";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import PageNotFound from "./pages/PageNotFound";
-TimeAgo.addDefaultLocale(he);
+TimeAgo.addLocale(he);
 
 function App() {
   const { currentUser } = useSelector((state) => state.auth);
@@ -32,20 +32,6 @@ function App() {
       <ToastContainer />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/uploadProduct" element={<UploadProductPage />} />
-        {currentUser && (
-          <Route path="/profile/:id">
-            <Route index element={<ProfilePage />} />
-            <Route path="userProduct" element={<UserProduct />} />
-            <Route path="userPassword" element={<UpdatePassword />} />
-            <Route path="myRequests" element={<MyRequests />} />
-            <Route path="messages" element={<MessagesList />} />
-          </Route>
-        )}
-        <Route
-          path="/login"
-          element={currentUser ? <Navigate replace to="/" /> : <Login />}
-        />
         <Route
           path="/login"
           element={currentUser ? <Navigate replace to="/" /> : <Login />}
@@ -66,6 +52,16 @@ function App() {
             currentUser ? <Navigate replace to="/" /> : <ResetPasswordPage />
           }
         />
+        <Route path="/uploadProduct" element={<UploadProductPage />} />
+        {currentUser && (
+          <Route path="/profile/:id">
+            <Route index element={<ProfilePage />} />
+            <Route path="userProduct" element={<UserProduct />} />
+            <Route path="userPassword" element={<UpdatePassword />} />
+            <Route path="myRequests" element={<MyRequests />} />
+            <Route path="messages" element={<MessagesList />} />
+          </Route>
+        )}
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/product/:id" element={<Product />} />
         <Route path="*" element={<PageNotFound />} />

@@ -4,9 +4,10 @@ import FormInputs from "../../components/formInput/FormInput";
 import { useForgotPasswordMutation } from "../../redux/apiCalls/auth";
 import Button from "./../../components/button/Button";
 import { toast } from "react-toastify";
+import LoadingSpinner from './../../components/LoadingSpinner';
 
 const ForgotPasswordPage = () => {
-  const [forgotPassword] = useForgotPasswordMutation();
+  const [forgotPassword, {isLoading}] = useForgotPasswordMutation();
   const [email, setEmail] = useState("");
 
   const onChangeHandler = (e) => {
@@ -15,11 +16,11 @@ const ForgotPasswordPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-   
     try {
-      await forgotPassword(email);
+      await forgotPassword({email: email}).unwrap();
       toast.success("נשלח קישור לאיפוס הסיסמה לכתובת מייל שהוזנה");
     } catch (error) {
+      console.log(error)
       toast.error("אימיל לא תקין");
     }
   };
@@ -27,6 +28,7 @@ const ForgotPasswordPage = () => {
   return (
     <Fragment>
       <Container>
+        {isLoading && <LoadingSpinner/>}
         <Wrapper>
           <Title>אפס סיסמה</Title>
           <Form onSubmit={handleSubmit}>

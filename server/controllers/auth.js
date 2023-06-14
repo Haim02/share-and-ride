@@ -214,10 +214,10 @@ exports.logout = async (req, res, next) => {
 exports.forgotPassword = async (req, res, next) => {
   let user;
   try {
-    user = await User.findOne({ email: req.body.email });
-
-    if (!user) {
-      return new Error("There is no user with this email address.", 404);
+      user = await User.findOne({ email: req.body.email });
+      
+      if (!user) {
+          return new Error("There is no user with this email address.", 404);
     }
 
     if (user.googleId) {

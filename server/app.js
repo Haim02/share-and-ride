@@ -58,21 +58,21 @@ if (process.env.NODE_ENV === "development") {
 
 app.set("trust proxy", 1);
 
-app.use(cookieSession({
-    name: 'session',
-    secret: process.env.COOKIE_KEY,
-    keys: [process.env.COOKIE_KEY],
-    maxAge: 4 * 60 * 60 * 1000,
-    saveUninitialized: false,
-    unset: 'destroy',
-    cookie: {
-        maxAge: 4 * 60 * 60 * 1000,
-        secure: true,
-        httpOnly: true,
-    }
-}))
+// app.use(cookieSession({
+//     name: 'session',
+//     secret: process.env.COOKIE_KEY,
+//     keys: [process.env.COOKIE_KEY],
+//     maxAge: 4 * 60 * 60 * 1000,
+//     saveUninitialized: false,
+//     unset: 'destroy',
+//     cookie: {
+//         maxAge: 4 * 60 * 60 * 1000,
+//         secure: true,
+//         httpOnly: true,
+//     }
+// }))
 
-initialPassport(passport, authController.login, (id) => User.findById(id));
+// initialPassport(passport, authController.login, (id) => User.findById(id));
 
 
 async function cre(){

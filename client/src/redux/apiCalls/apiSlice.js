@@ -4,7 +4,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:3001/api",
   credentials: "include",
 });
-
+console.log('mnmnm')
 
 export const apiSlice = createApi({
   baseQuery,

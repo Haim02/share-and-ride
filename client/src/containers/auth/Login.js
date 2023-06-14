@@ -75,7 +75,7 @@ const Login = () => {
       {isLoading && <LoadingSpinner />}
       <Container>
         <Wrapper>
-          <GoogleSign>
+          {/* <GoogleSign>
             <Link
               to="http://localhost:3001/api/auth/google/google/callback"
               onClick={handleGoogleChecked}
@@ -83,7 +83,7 @@ const Login = () => {
               <GoogleButton text="התחבר עם גוגל" />
             </Link>
           </GoogleSign>
-          <Title>או</Title>
+          <Title>או</Title> */}
           <Form onSubmit={handleSubmit}>
             <FormInputs
               label="אמייל"
@@ -126,7 +126,6 @@ const Login = () => {
             <Link to="http://localhost:3002" style={{ color: "blue" }}>
               לחץ כאן
             </Link>
-            {/* <Link to="/Register" style={{color: 'blue'}}>כניסה למנהלים</Link> */}
           </Links>
         </Wrapper>
       </Container>
