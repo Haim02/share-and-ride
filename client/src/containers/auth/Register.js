@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser, googleSignin } from "../../redux/apiCalls/auth";
+import {
+  useRegisterMutation,
+  useGoogleSigninMutation,
+} from "../../redux/apiCalls/auth";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import FormInputs from "./../../components/formInput/FormInput";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { toast } from "react-toastify";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import GoogleButton from "./../../components/UI/GoogleButton";
 import backGroundImage from "./../../assets/images/backGroundImage.png";
 import Button from "./../../components/button/Button";
+import "react-toastify/dist/ReactToastify.css";
+import { authAction } from "../../redux/slice/auth";
 
 export const Container = styled.div`
   padding: 20px 10px;
@@ -27,6 +33,7 @@ export const Container = styled.div`
 export const Wrapper = styled.div`
   width: 50%;
   padding: 20px;
+  margin: 40px 0;
   background-color: rgba(255, 255, 255, 0.846);
   justify-content: center;
   align-items: center;
@@ -92,17 +99,21 @@ const validationSchema = yup.object({
   email: yup
     .string()
     .email("כתובת אימיל לא תקינה")
+    .trim()
     .required("נדרשם למלא אימיל"),
   phone: yup
-    .number()
+    .string()
+    .trim()
     .min(10, "מספר פלאפון לא תקין")
     .max(10, "מספר פלאפון לא תקין"),
   password: yup
     .string()
+    .trim()
     .min(8, "הסיסמה צריכה להכיל לפחות 8 תווים")
     .required("נדרש למלא סיסמה"),
   passwordConfirm: yup
     .string()
+    .trim()
     .required("נדרש למלא סיסמה")
     .oneOf([yup.ref("password")], "סיסמאות לא תואמות"),
 });
@@ -110,7 +121,8 @@ const validationSchema = yup.object({
 const Register = () => {
   const [isCheckbox, setIsCheckbox] = useState(false);
   const [isCheckboxBlur, setIsCheckboxBlur] = useState(false);
-  const { loading, error, currentUser } = useSelector((state) => state.auth);
+  const [googleSignin, { isError }] = useGoogleSigninMutation();
+  const [register, { isLoading }] = useRegisterMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -122,22 +134,30 @@ const Register = () => {
     setIsCheckboxBlur(true);
   };
 
-  const handleGoogleChecked = () => {
-    console.log('wwww')
-    googleSignin(dispatch);
-    // navigate('http://localhost:3001/auth/google')
+  const handleGoogleChecked = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await googleSignin().unwrap();
+      dispatch(authAction.loginSuccess(res.user));
+    } catch (error) {
+      toast.error(error.data.message);
+    }
+    if (!isError) {
+      return navigate("/");
+    }
   };
 
-  const onSubmit = (values) => {
+  const onSubmit = async (values) => {
     if (!isCheckbox) {
       setIsCheckboxBlur(true);
       return;
     }
-
-    registerUser(dispatch, values);
-
-    if (!error && currentUser) {
-      return navigate("/");
+    try {
+      const res = await register(values).unwrap();
+      dispatch(authAction.registerSuccess({ ...res }));
+      navigate("/");
+    } catch (error) {
+      toast.error(error.data.message);
     }
   };
 
@@ -145,7 +165,7 @@ const Register = () => {
     initialValues: {
       name: "",
       email: "",
-      phone: undefined,
+      phone: "",
       password: "",
       passwordConfirm: "",
     },
@@ -158,11 +178,11 @@ const Register = () => {
 
   return (
     <Container>
-      {loading && <LoadingSpinner />}
+      {isLoading && <LoadingSpinner />}
       <Wrapper>
         <Title>צור חשבון</Title>
         <GoogleSign>
-          <Link to="http://localhost:3001/auth/google">
+          <Link to="http://localhost:3001/api/auth/google/callback">
             <GoogleButton text="הירשם עם גוגל" onClick={handleGoogleChecked} />
           </Link>
         </GoogleSign>
@@ -191,9 +211,9 @@ const Register = () => {
           <FormInputs
             value={formik.values.phone}
             label="מספר פאלפון"
-            type="number"
+            type="text"
             placeholder="הכנס מספר פאלפון"
-            name="phoneNumber"
+            name="phone"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             small={formik.touched.phone && errors.phone ? errors.phone : null}

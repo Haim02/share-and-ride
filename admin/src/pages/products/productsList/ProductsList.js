@@ -9,7 +9,6 @@ import "./productsList.scss";
 const ProductsList = () => {
   const dispatch = useDispatch();
   const { products, isFetching } = useSelector((state) => state.product);
-
   useEffect(() => {
     getProducts(dispatch);
   }, [dispatch]);

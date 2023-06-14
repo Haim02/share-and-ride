@@ -6,40 +6,41 @@ const messageSchema = mongoose.Schema(
       type: String,
     },
     start: {
-        type: String
+      type: String,
     },
     end: {
-        type: String
+      type: String,
     },
     notice: {
-        type: String
+      type: String,
     },
     fromUser: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      require: true
+      require: true,
     },
     toUser: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      require: true
+      require: true,
     },
     productId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
-      require: true
+      require: true,
     },
     isCalled: {
-        type: Boolean,
-        default: false,
-        enum: [true, false]
+      type: Boolean,
+      default: false,
+      enum: [true, false],
     },
     status: {
-        type: String,
-        require: true,
-        enum: ['approve', 'reject', 'pending'],
-        default: "pending",
-  }},
+      type: String,
+      require: true,
+      enum: ["approve", "reject", "pending"],
+      default: "pending",
+    },
+  },
   { timestamps: true }
 );
 

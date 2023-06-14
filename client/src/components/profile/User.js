@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   CalendarToday,
-  LocationSearching,
   MailOutline,
   PermIdentity,
   PhoneAndroid,
@@ -10,12 +9,13 @@ import profilePicture from "../../assets/images/blank-profile-picture.webp";
 import LoadingSpinner from "./../LoadingSpinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { useUpdateUserMutation } from "../../redux/apiCalls/auth";
+import { authAction } from "../../redux/slice/auth";
 import { useSelector, useDispatch } from "react-redux";
-import { updateUser } from "../../redux/apiCalls/auth";
 import styled from "styled-components";
 import Button from "../button/Button";
-import ReactTimeAgo from 'react-time-ago'
-
+import ReactTimeAgo from "react-time-ago";
+import { toast } from "react-toastify";
 
 const Container = styled.div`
   flex: 4;
@@ -140,8 +140,9 @@ const UserUpdateInput = styled.input`
 const UserUpdateLeft = styled.div``;
 
 const User = () => {
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
   const dispatch = useDispatch();
-  const { currentUser, loading } = useSelector((state) => state.auth);
+  const { currentUser } = useSelector((state) => state.auth);
   const [updateUserFilds, setUpdateUserFilds] = useState({});
 
   const handleChange = (e) => {
@@ -151,14 +152,24 @@ const User = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    updateUser(dispatch, currentUser._id, updateUserFilds);
+    const body = {
+      id: currentUser._id,
+      data: updateUserFilds,
+    };
+    try {
+      const res = await updateUser(body).unwrap();
+      dispatch(authAction.updateUserSucess(res.user));
+      toast.success("המשתמש עודכן בהצלחה");
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
     <Container>
-      {loading && <LoadingSpinner />}
+      {isLoading && <LoadingSpinner />}
       <UserContainer>
         <UserShow>
           <UserShowTop>
@@ -176,7 +187,10 @@ const User = () => {
             <UserShowInfo>
               <CalendarToday className="userShowIcon" />
               <UserShowInfoTitle>
-              <ReactTimeAgo date={currentUser.createdAt} locale="he"/>
+                <ReactTimeAgo
+                  date={new Date(currentUser.createdAt)}
+                  locale="he"
+                />
               </UserShowInfoTitle>
             </UserShowInfo>
             <UserShowTitle>פרטי יצירת קשר</UserShowTitle>
@@ -193,10 +207,6 @@ const User = () => {
             <UserShowInfo>
               <MailOutline className="userShowIcon" />
               <UserShowInfoTitle>{currentUser.email}</UserShowInfoTitle>
-            </UserShowInfo>
-            <UserShowInfo>
-              <LocationSearching className="userShowIcon" />
-              <UserShowInfoTitle>{currentUser.address}</UserShowInfoTitle>
             </UserShowInfo>
           </UserShowBottom>
         </UserShow>

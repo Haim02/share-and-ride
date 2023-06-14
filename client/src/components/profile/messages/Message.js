@@ -8,12 +8,11 @@ import {
   faClockFour,
   faNoteSticky,
 } from "@fortawesome/free-solid-svg-icons";
+import { useUpdateMessageMutation } from "../../../redux/apiCalls/messages";
+import { messagesAction } from "../../../redux/slice/messages";
 import Button from "../../button/Button";
-import { updateMessage } from "../../../redux/apiCalls/messages";
 import { useDispatch } from "react-redux";
-import { format } from "date-fns";
-import ReactTimeAgo from 'react-time-ago'
-
+import ReactTimeAgo from "react-time-ago";
 
 const Container = styled.div`
   box-shadow: 0 0 5px rgba(225, 225, 225, 0.5);
@@ -45,10 +44,21 @@ const Header = styled.div`
   color: #fff;
   background: #5393dc;
 `;
-const Title = styled.h1`
+const Title = styled.h2`
   font-weight: 20px;
   text-align: right;
   margin-left: 5px;
+`;
+
+const ImgContainer = styled.div`
+  background-color: black;
+  width: 100%;
+  height: 200px;
+`;
+
+const ProductImg = styled.img`
+  width: 100%;
+  height: 100%;
 `;
 
 const Detailes = styled.div`
@@ -56,7 +66,7 @@ const Detailes = styled.div`
   flex-direction: column;
   height: 160px;
   background-color: lightgrey;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
   transition: all 0.3s ease;
   justify-content: center;
   align-items: center;
@@ -111,10 +121,11 @@ const ButtonsContainer = styled.div`
 `;
 
 const Message = ({ message }, props) => {
+  const [updateMessage] = useUpdateMessageMutation();
   const dispatch = useDispatch();
   const [isStartCalendarOpen, setIsStartCalendarOpen] = useState(false);
-  const isPending = message.status !== "pending";
-console.log(message)
+  const isPending = message.status === "pending";
+
   const theme = {
     main:
       message.status === "approve"
@@ -135,57 +146,118 @@ console.log(message)
     setIsStartCalendarOpen(!isStartCalendarOpen);
   };
 
-   const handleApproveClick = () => {
-    updateMessage(dispatch, message._id, { status: "approve" });
+  const handleApproveClick = async (e) => {
+    e.preventDefault();
+    const sentData = {
+      id: message._id,
+      updateStatus: {
+        status: "approve",
+      },
+    };
+    try {
+      const res = await updateMessage(sentData).unwrap();
+      dispatch(
+        messagesAction.updateMessagesSuccess({
+          id: message._id,
+          message: res.message,
+        })
+      );
+    } catch (error) {
+    }
   };
 
-  const handleRejectClick = () => {
-    updateMessage(dispatch, message._id, { status: "reject" });
+  const handleRejectClick = async (e) => {
+    e.preventDefault();
+    const sentData = {
+      id: message._id,
+      updateStatus: {
+        status: "reject",
+      },
+    };
+    try {
+      const res = await updateMessage(sentData).unwrap();
+      console.log(res);
+      dispatch(
+        messagesAction.updateMessagesSuccess({
+          id: message._id,
+          message: res.message,
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <ThemeProvider theme={theme}>
       <Container>
-        <Header>
-          <Title>בקשת השכרה</Title>
-          <Span> סטטוס : {getStatus}</Span>
-          <ReactTimeAgo date={message.createdAt} locale="he"/>
-          {/* <Span> {format(message.createdAt)}</Span> */}
-          <SmallIcon onClick={toggleStartCalendarOpen}>
-            <FontAwesomeIcon
-              icon={isStartCalendarOpen ? faCaretUp : faCaretDown}
-            />
-          </SmallIcon>
-        </Header>
-        <Body active={!isStartCalendarOpen}>
-          <Detailes>
-            <SpanItem>
-              <Span>
-                {" "}
-                :בתאריך <FontAwesomeIcon icon={faCalendarDays} />
-              </Span>
-              <Span> {message.date} </Span>
-            </SpanItem>
-            <SpanItem>
-              <Span>
-                {" "}
-                :בין השעות <FontAwesomeIcon icon={faClockFour} />
-              </Span>
-              <Span>{message.start} -- {message.end}</Span>
-            </SpanItem>
-            <SpanItem>
-              <Span>
-                {" "}
-                :הערות <FontAwesomeIcon icon={faNoteSticky} />
-              </Span>
-              <Span>{message.notice}</Span>
-            </SpanItem>
-          </Detailes>
-          <ButtonsContainer>
-            <Button theme="updateMsg" text="אשר" onClick={handleApproveClick} />
-            <Button theme="updateMsg" text="דחה" onClick={handleRejectClick} />
-          </ButtonsContainer>
-        </Body>
+        <form>
+          <Header>
+            <Title>בקשת השכרה</Title>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                textAlign: "right",
+              }}
+            >
+              <Span> סטטוס : {getStatus}</Span>
+              <h6> {message.fromUser.name} : שולח</h6>
+            </div>
+            <ReactTimeAgo date={new Date(message.createdAt)} locale="he" />
+            <SmallIcon onClick={toggleStartCalendarOpen}>
+              <FontAwesomeIcon
+                icon={isStartCalendarOpen ? faCaretUp : faCaretDown}
+              />
+            </SmallIcon>
+          </Header>
+          <Body active={!isStartCalendarOpen}>
+            <ImgContainer>
+              <ProductImg src={message?.productId?.images[0]} />
+            </ImgContainer>
+            <Detailes>
+              <SpanItem>
+                <Span>
+                  {" "}
+                  :בתאריך <FontAwesomeIcon icon={faCalendarDays} />
+                </Span>
+                <Span> {message.date} </Span>
+              </SpanItem>
+              <SpanItem>
+                <Span>
+                  {" "}
+                  :בין השעות <FontAwesomeIcon icon={faClockFour} />
+                </Span>
+                <Span>
+                  {message.start} -- {message.end}
+                </Span>
+              </SpanItem>
+              <SpanItem>
+                <Span>
+                  {" "}
+                  :הערות <FontAwesomeIcon icon={faNoteSticky} />
+                </Span>
+                <Span>{message.notice}</Span>
+              </SpanItem>
+            </Detailes>
+            {isPending && (
+              <ButtonsContainer>
+                <Button
+                  theme="updateMsg"
+                  text="אשר"
+                  type="submit"
+                  onClick={handleApproveClick}
+                />
+                <Button
+                  theme="updateMsg"
+                  text="דחה"
+                  type="submit"
+                  onClick={handleRejectClick}
+                />
+              </ButtonsContainer>
+            )}
+          </Body>
+        </form>
       </Container>
     </ThemeProvider>
   );

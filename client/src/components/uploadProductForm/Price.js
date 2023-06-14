@@ -45,10 +45,7 @@ const Price = (props) => {
     setIsChecked(e.target.checked);
     if (isChecked === true) {
       setPrice({ hourPrice: 0, dailyPrice: 0 });
-      if (price) {
-        setError(false);
-      }
-    } 
+    }
   };
 
   const handleClick = () => {

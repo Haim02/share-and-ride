@@ -28,7 +28,9 @@ const authSlice = createSlice({
     logoutSuccess(state) {
       state.loading = false;
       state.currentUser = null;
-      state.success = true; // Logout successful
+      localStorage.removeItem('persist:root')
+      localStorage.clear()
+      state.success = true; 
     },
     logoutFailure(state, action) {
       state.loading = false;

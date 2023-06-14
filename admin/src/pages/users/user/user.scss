@@ -60,6 +60,7 @@
   
                 .itemValue {
                   font-weight: 300;
+                  margin-right: 5px;
                 }
               }
             }
@@ -128,21 +129,8 @@
     
     .userUpdateRight{
         display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-    
-    .userUpdateUpload{
-        display: flex;
-        align-items: center;
-    }
-    
-    .userUpdateImg{
-        width: 100px;
-        height: 100px;
-        border-radius: 10px;
-        object-fit: cover;
-        margin-right: 20px;
+        flex-direction: column-reverse;
+        width: 35%;
     }
     
     .userUpdateIcon{

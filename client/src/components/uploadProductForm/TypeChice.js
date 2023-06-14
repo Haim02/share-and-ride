@@ -77,22 +77,12 @@ const TypeChice = (props) => {
     <Container>
       <ImagesContainer onClick={handleType}>
         <Li name="scooter" value="sss">
-          <ImgContainer
-            active={isScooterIsClick}
-            name="ssss"
-            value="sss"
-            onClick={toggleScooterClick}
-          >
+          <ImgContainer active={isScooterIsClick} onClick={toggleScooterClick}>
             <img src={aboutScooter} alt="scooter" name="scooter" />
           </ImgContainer>
         </Li>
         <Li value="bicycle">
-          <ImgContainer
-            active={isBikeIsClick}
-            name="ssss"
-            value="sss"
-            onClick={toggleBikeClick}
-          >
+          <ImgContainer active={isBikeIsClick} onClick={toggleBikeClick}>
             <img src={bikeElectric} alt="bicycle" name="bicycle" />
           </ImgContainer>
         </Li>

@@ -5,11 +5,13 @@ import Button from "../button/Button";
 import DatePicker, { registerLocale } from "react-datepicker";
 import TimeRange from "react-time-range";
 import { useDispatch, useSelector } from "react-redux";
-import { createMessage } from "../../redux/apiCalls/messages";
+import { useCreateMessageMutation } from "../../redux/apiCalls/messages";
+import { messagesAction } from "../../redux/slice/messages";
 import "react-datepicker/dist/react-datepicker.css";
 import { he } from "date-fns/locale";
 import { useLocation } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner";
+import { toast } from "react-toastify";
 registerLocale("he", he);
 
 const InputContainer = styled.div`
@@ -47,6 +49,7 @@ const StyledLabel = styled.label`
 const Time = styled.div``;
 
 const RentFrom = (props) => {
+  const [createMessage, { isLoading }] = useCreateMessageMutation();
   const location = useLocation();
   const productId = location.pathname.split("/")[2];
   const [startDate, setStartDate] = useState(new Date());
@@ -54,14 +57,13 @@ const RentFrom = (props) => {
   const [endTime, setEndTime] = useState(new Date());
   const [notice, setNotice] = useState("");
   const dispatch = useDispatch();
-  const { isFetching } = useSelector((state) => state.message);
-
+  const { product } = useSelector((state) => state.auth);
   const returnFunction = (e) => {
     setStartTime(new Date(e?.startTime));
     setEndTime(new Date(e?.endTime));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let date = `${startDate.getDate()}/${
       startDate.getMonth() + 1
@@ -77,8 +79,19 @@ const RentFrom = (props) => {
       toUser: props.toUser,
       productId,
     };
-    createMessage(dispatch, message);
-    if (!isFetching) {
+
+    if (product) {
+      if (productId === product._id) {
+        return toast.error("לא ניתן לשלוח הודעות למוצר ששייך למשתמש רשום");
+      }
+    }
+
+    try {
+      const res = await createMessage(message).unwrap();
+      dispatch(messagesAction.createMessagesSuccess(res.message));
+      toast.success("הודעה נשלחה בהצלחה");
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -123,7 +136,7 @@ const RentFrom = (props) => {
             style={{ width: "50%", height: "65px" }}
           ></textarea>
         </InputContainer>
-        {isFetching && <LoadingSpinner />}
+        {isLoading && <LoadingSpinner />}
         <Button
           theme="uploadForm"
           type="submit"

@@ -1,27 +1,26 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 const authController = require("../controllers/auth");
 const productController = require("../controllers/product");
 const userProfileController = require("../controllers/userProfile");
 
 router.use(authController.protect);
 
-// router.use(productController.setProductUserId);
+router
+  .route("/user/:id")
+  .get(userProfileController.getMe, userProfileController.getUser)
 
-router.route("/user/:id")
-   .get(userProfileController.getMe, userProfileController.getUser)
+  .patch(userProfileController.updateUserProfile);
 
-   .patch(userProfileController.updateUserProfile)
+router.patch("/updatePassword/:id", authController.updatePassword);
 
-router.patch('/updatePassword/:id', authController.updatePassword)
-   
-router.route("/userProduct/:id") 
-     .get(userProfileController.getProduct)
+router
+  .route("/userProduct/:id")
+  .get(userProfileController.getProduct)
 
-     .patch(userProfileController.updateProduct)
+  .patch(userProfileController.updateProduct)
 
-     .delete(userProfileController.deletProduct)
+  .delete(userProfileController.deletProduct);
 
-
-module.exports = router;   
+module.exports = router;

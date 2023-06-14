@@ -5,15 +5,20 @@ import styled from "styled-components";
 import FormInputs from "../formInput/FormInput";
 import Local from "../uploadProductForm/CitiesAndStreets";
 import SideNavProfile from "./SideNavProfile";
+import { useUpdateUserProductMutation } from "../../redux/apiCalls/auth";
+import { useDeleteUserProductMutation } from "../../redux/apiCalls/auth";
+import { useGetUsertProductMutation } from "../../redux/apiCalls/auth";
 import { ref } from "firebase/storage";
 import { uploadImage, deletImage } from "../../imagesApi";
 import { storage } from "../../firebase";
-import { updateUserProduct, getUsertProduct, deleteUserProducts } from "../../redux/apiCalls/auth";
 import Button from "../button/Button";
 import { MdCloudUpload } from "react-icons/md";
 import LoadingSpinner from "../LoadingSpinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { authAction } from "../../redux/slice/auth";
+import uuid from "react-uuid";
+import { toast } from "react-toastify";
 
 export const Container = styled.div`
   display: flex;
@@ -231,7 +236,10 @@ export const SubmitButton = styled.button`
 
 const UserProduct = () => {
   const dispatch = useDispatch();
-  const { product, loading } = useSelector((state) => state.auth);
+  const [updateUserProduct] = useUpdateUserProductMutation();
+  const [deleteUserProduct] = useDeleteUserProductMutation();
+  const [getUsertProduct, { isLoading }] = useGetUsertProductMutation();
+  const { product, currentUser } = useSelector((state) => state.auth);
   const [percent, setPercent] = useState(0);
   const inputRef = useRef();
   const [fileName, setFileName] = useState(null);
@@ -240,6 +248,18 @@ const UserProduct = () => {
   const [location, setLocation] = useState(product?.location);
   const [price, setPrice] = useState(product?.price);
 
+  useEffect(() => {
+    const getProduct = async () => {
+      try {
+        const res = await getUsertProduct(currentUser._id).unwrap();
+        dispatch(authAction.getUsertProductSeccess(res.product[0]));
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
+    getProduct();
+  }, [getUsertProduct, currentUser._id]);
+
   const handleSetDetails = (values) => {
     const { name, value } = values.target;
     setDetails((pre) => {
@@ -247,14 +267,42 @@ const UserProduct = () => {
     });
   };
 
-  const handleSubmitDetails = (e) => {
+  const handleSubmitDetails = async (e) => {
     e.preventDefault();
-    updateUserProduct(dispatch, product._id, details);
+
+    const body = {
+      id: product._id,
+      data: {
+        details: details,
+      },
+    };
+
+    try {
+      const res = await updateUserProduct(body);
+      dispatch(authAction.updateUserProductSuccess(res.data.product));
+      toast.success("המוצר התעדכן בהצלחה");
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
-  const handleSubmitPrice = (e) => {
+  const handleSubmitPrice = async (e) => {
     e.preventDefault();
-    updateUserProduct(dispatch, product._id, price);
+
+    const body = {
+      id: product._id,
+      data: {
+        price: price,
+      },
+    };
+
+    try {
+      const res = await updateUserProduct(body);
+      dispatch(authAction.updateUserProductSuccess(res.data.product));
+      toast.success("המוצר התעדכן בהצלחה");
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   const onChangeHandler = (e) => {
@@ -265,225 +313,315 @@ const UserProduct = () => {
     setLocation(values);
   };
 
-  const handleSubmitLocation = (e) => {
+  const handleSubmitLocation = async (e) => {
     e.preventDefault();
-    updateUserProduct(dispatch, product._id, location);
+
+    const body = {
+      id: product._id,
+      data: {
+        location: location,
+      },
+    };
+
+    try {
+      const res = await updateUserProduct(body);
+      dispatch(authAction.updateUserProductSuccess(res.data.product));
+      toast.success("המוצר התעדכן בהצלחה");
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
-  useEffect(() => {
-    getUsertProduct(dispatch);
-  }, [dispatch, product]);
-
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (imagesNames.length === 3) {
-      alert("ניתן לעלות עד 3 תמונות");
+      toast.error("ניתן לעלות עד 3 תמונות");
       setFileName(null);
       return;
     }
 
     uploadImage(fileName, setPercent, setImagesNames);
     const images = imagesNames;
-    console.log("images", images);
-    console.log("imagesNames", imagesNames);
-    updateUserProduct(dispatch, product._id, images);
+
+    const body = {
+      id: product._id,
+      data: {
+        images: images,
+      },
+    };
+
+    try {
+      const res = await updateUserProduct(body);
+      dispatch(authAction.updateUserProductSuccess(res.data.product));
+      toast.success("המוצר התעדכן בהצלחה");
+    } catch (error) {
+      toast.error(error.message);
+    }
     setFileName(null);
   };
 
-  const handleSubmitImg = (e) => {
+  const handleSubmitImg = async (e) => {
     e.preventDefault();
-    updateUserProduct(dispatch, product._id, imagesNames);
-  };
 
-  const handledeleteUserProducts = () => {
-    deleteUserProducts(dispatch, product._id);
-  };
+    const body = {
+      id: product._id,
+      data: {
+        images: imagesNames,
+      },
+    };
 
-  const handleDelete = (imgName) => {
-    if (imagesNames.length > 0) {
-      let imgRef = ref(storage, imgName);
-      deletImage(imgRef, imgName, setImagesNames);
-      console.log("setImagesNames 2", imagesNames);
-      const images = [imagesNames];
-      updateUserProduct(dispatch, product._id, images);
+    try {
+      const res = await updateUserProduct(body);
+      dispatch(authAction.updateUserProductSuccess(res.data.product));
+      toast.success("המוצר התעדכן בהצלחה");
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 
-  return (
-    <Container>
-      {loading && <LoadingSpinner />}
-      <SideBar>
-        <SideNavProfile />
-      </SideBar>
-      <Content>
-        {product === null ? (
-          <NoProduct>
-            <NoProductTitle>עדיין לא העלת/ה מוצר</NoProductTitle>
-            <Link
-              to="/uploadProduct"
-              style={{
-                textDecoration: "none",
-                width: "60%",
-                marginLeft: "60px",
-              }}
-            >
-              <Button theme="auth" text="העלה מוצר" />
-            </Link>
-          </NoProduct>
-        ) : (
-          <Wraper>
-            <ProductBottom>
-              {product.images.map((img) => {
-                return (
-                  <FormContainer onSubmit={handleSubmitImg}>
-                    <ProductForm>
-                      <ProductUploadImgContainer>
-                        <ProductUploadImg src={img} alt="" />
-                        <ProductUploadImgButton>
-                          <FontAwesomeIcon
-                            icon={faTrashCan}
-                            style={{ cursor: "pointer" }}
-                            onClick={() => handleDelete(img)}
-                          />
-                          <Button
-                            theme="UpdateImg"
-                            type="submit"
-                            text="מחק"
-                            onClick={() => handleDelete(img)}
-                          />
-                        </ProductUploadImgButton>
-                      </ProductUploadImgContainer>
-                    </ProductForm>
-                  </FormContainer>
-                );
-              })}
-              {fileName && <UploadBtn onClick={handleUpload}>העלה</UploadBtn>}
-              <ImagesContainer
-                type="button"
-                onClick={() => inputRef.current.click()}
+  const handledeleteUserProducts = async () => {
+    try {
+      await deleteUserProduct(product._id).unwrap();
+      dispatch(authAction.deleteUserProductsSuccess());
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const handleDelete = async (imgName) => {
+    if (imagesNames.length > 0) {
+      let imgRef = ref(storage, imgName);
+      deletImage(imgRef, imgName, setImagesNames);
+      const images = [imagesNames];
+
+      const body = {
+        id: product._id,
+        data: images,
+      };
+
+      try {
+        const res = await updateUserProduct(body);
+        dispatch(authAction.updateUserProductSuccess(res.data.product));
+        toast.success("המוצר התעדכן בהצלחה");
+      } catch (error) {
+        toast.error(error.message);
+      }
+    }
+  };
+
+  if (!product) {
+    return (
+      <Container>
+        <SideBar>
+          <SideNavProfile />
+        </SideBar>
+        <NoProduct>
+          <NoProductTitle>עדיין לא העלת/ה מוצר</NoProductTitle>
+          <Link
+            to="/uploadProduct"
+            style={{
+              textDecoration: "none",
+              width: "60%",
+              marginLeft: "60px",
+            }}
+          >
+            <Button theme="auth" text="העלה מוצר" />
+          </Link>
+        </NoProduct>
+      </Container>
+    );
+  }
+
+  if (product) {
+    return (
+      <Container>
+        {isLoading && <LoadingSpinner />}
+        <SideBar>
+          <SideNavProfile />
+        </SideBar>
+        <Content>
+          {product === null ? (
+            <NoProduct>
+              <NoProductTitle>עדיין לא העלת/ה מוצר</NoProductTitle>
+              <Link
+                to="/uploadProduct"
+                style={{
+                  textDecoration: "none",
+                  width: "60%",
+                  marginLeft: "60px",
+                }}
               >
-                <input
-                  type="file"
-                  ref={inputRef}
-                  onChange={(e) => setFileName(e.currentTarget.files[0])}
-                  hidden
-                />
-                <MdCloudUpload color="#147cf" size={60} />
-              </ImagesContainer>
-            </ProductBottom>
+                <Button theme="auth" text="העלה מוצר" />
+              </Link>
+            </NoProduct>
+          ) : (
+            <Wraper>
+              {isLoading ? (
+                <LoadingSpinner />
+              ) : (
+                <>
+                  <ProductBottom>
+                    {product.images.map((img) => {
+                      return (
+                        <FormContainer onSubmit={handleSubmitImg} key={uuid()}>
+                          <ProductForm>
+                            <ProductUploadImgContainer>
+                              <ProductUploadImg src={img} alt="" />
+                              <ProductUploadImgButton>
+                                <FontAwesomeIcon
+                                  icon={faTrashCan}
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => handleDelete(img)}
+                                />
+                                <Button
+                                  theme="UpdateImg"
+                                  type="submit"
+                                  text="מחק"
+                                  onClick={() => handleDelete(img)}
+                                />
+                              </ProductUploadImgButton>
+                            </ProductUploadImgContainer>
+                          </ProductForm>
+                        </FormContainer>
+                      );
+                    })}
+                    {fileName && (
+                      <UploadBtn onClick={handleUpload}>העלה</UploadBtn>
+                    )}
+                    <ImagesContainer
+                      type="button"
+                      onClick={() => inputRef.current.click()}
+                    >
+                      <input
+                        type="file"
+                        ref={inputRef}
+                        onChange={(e) => setFileName(e.currentTarget.files[0])}
+                        hidden
+                      />
+                      <MdCloudUpload color="#147cf" size={60} />
+                    </ImagesContainer>
+                  </ProductBottom>
 
-            <FormContainer
-              name="submit"
-              value="dd"
-              onSubmit={handleSubmitDetails}
-            >
-              <Form>
-                <Section>
-                  <DetailsContainer>
-                    <InputsGroup>
-                      <FormInputs
-                        value={product.details.title}
-                        label="כותרת"
-                        type="text"
-                        placeholder={product.details.title}
-                        name="title"
-                        onChange={handleSetDetails}
-                      />
-                      <FormInputs
-                        value={product.details.model}
-                        label="יצרן"
-                        type="text"
-                        placeholder={product.details.model}
-                        name="model"
-                        onChange={handleSetDetails}
-                      />
-                      <FormInputs
-                        value={product.details.speed}
-                        label="מהירות"
-                        type="number"
-                        placeholder={product.details.speed}
-                        name="speed"
-                        onChange={handleSetDetails}
-                      />
-                      <FormInputs
-                        value={product.details.battery}
-                        label="סוללה"
-                        type="number"
-                        placeholder={product.details.battery}
-                        name="battery"
-                        onChange={handleSetDetails}
-                      />
-                      <OptionGroup>
-                        <Select
-                          name="helmet"
-                          defaultValue={product.details.helmet}
-                          onChange={handleSetDetails}
-                        >
-                          <Option value={false}>אין</Option>
-                          <Option value={true}>יש</Option>
-                        </Select>
-                        <h5>:קסדה</h5>
-                        <Select
-                          name="electric"
-                          defaultValue={product.details.electric}
-                          onChange={handleSetDetails}
-                        >
-                          <Option value={false}>לא</Option>
-                          <Option value={true}>כן</Option>
-                        </Select>
-                        <h5>:חשמלי</h5>
-                      </OptionGroup>
-                      <Description
-                        rows="5"
-                        cols="30"
-                        name="description"
-                        onChange={handleSetDetails}
-                        placeholder="תיאור של המוצר..."
-                      ></Description>
-                    </InputsGroup>
-                  </DetailsContainer>
-                  <SubmitButton type="submit">עדכן</SubmitButton>
-                </Section>
-              </Form>
-            </FormContainer>
-            <FormContainer name="submit" onSubmit={handleSubmitPrice}>
-              <Form>
-                <Section>
-                  <InputsGroup>
-                    <FormInputs
-                      label="מחיר לשעה"
-                      type="number"
-                      placeholder={`${product.price.hourPrice} ₪`}
-                      name="hourPrice"
-                      onChange={onChangeHandler}
-                    />
-                    <FormInputs
-                      label="מחיר ליום"
-                      type="number"
-                      placeholder={`${product.price.dailyPrice} ₪`}
-                      name="dailyPrice"
-                      onChange={onChangeHandler}
-                    />
-                  </InputsGroup>
-                  <SubmitButton type="submit">עדכן</SubmitButton>
-                </Section>
-              </Form>
-            </FormContainer>
+                  <FormContainer
+                    name="submit"
+                    value="dd"
+                    onSubmit={handleSubmitDetails}
+                  >
+                    <Form>
+                      <Section>
+                        <DetailsContainer>
+                          <InputsGroup>
+                            <FormInputs
+                              // value={product.details.title}
+                              label="כותרת"
+                              type="text"
+                              placeholder={product.details.title}
+                              name="title"
+                              onChange={handleSetDetails}
+                            />
+                            <FormInputs
+                              // value={product.details.model}
+                              label="יצרן"
+                              type="text"
+                              placeholder={product.details.model}
+                              name="model"
+                              onChange={handleSetDetails}
+                            />
+                            <FormInputs
+                              // value={product.details.speed}
+                              label="מהירות"
+                              type="number"
+                              placeholder={product.details.speed}
+                              name="speed"
+                              onChange={handleSetDetails}
+                            />
+                            <FormInputs
+                              // value={product.details.battery}
+                              label="סוללה"
+                              type="number"
+                              placeholder={product.details.battery}
+                              name="battery"
+                              onChange={handleSetDetails}
+                            />
+                            <OptionGroup>
+                              <Select
+                                name="helmet"
+                                defaultValue={product.details.helmet}
+                                onChange={handleSetDetails}
+                              >
+                                <Option value={false}>אין</Option>
+                                <Option value={true}>יש</Option>
+                              </Select>
+                              <h5>:קסדה</h5>
+                              <Select
+                                name="electric"
+                                defaultValue={product.details.electric}
+                                onChange={handleSetDetails}
+                              >
+                                <Option value={false}>לא</Option>
+                                <Option value={true}>כן</Option>
+                              </Select>
+                              <h5>:חשמלי</h5>
+                            </OptionGroup>
+                            <Description
+                              rows="5"
+                              cols="30"
+                              name="description"
+                              onChange={handleSetDetails}
+                              placeholder="תיאור של המוצר..."
+                            ></Description>
+                          </InputsGroup>
+                        </DetailsContainer>
+                        <SubmitButton type="submit">עדכן</SubmitButton>
+                      </Section>
+                    </Form>
+                  </FormContainer>
+                  <FormContainer name="submit" onSubmit={handleSubmitPrice}>
+                    <Form>
+                      <Section>
+                        <InputsGroup>
+                          <FormInputs
+                            label="מחיר לשעה"
+                            type="number"
+                            placeholder={`${product.price.hourPrice} ₪`}
+                            name="hourPrice"
+                            onChange={onChangeHandler}
+                          />
+                          <FormInputs
+                            label="מחיר ליום"
+                            type="number"
+                            placeholder={`${product.price.dailyPrice} ₪`}
+                            name="dailyPrice"
+                            onChange={onChangeHandler}
+                          />
+                        </InputsGroup>
+                        <SubmitButton type="submit">עדכן</SubmitButton>
+                      </Section>
+                    </Form>
+                  </FormContainer>
 
-            <FormContainer onSubmit={handleSubmitLocation}>
-              <Section>
-                <CountContainer>
-                  <Count>עדכן מיקום</Count>
-                </CountContainer>
-                <Local pasValue={handleSetLocation} />
-                <SubmitButton type="submit">עדכן</SubmitButton>
-              </Section>
-            </FormContainer>
-            <Button theme='deleteProduct' text='מחק מוצר' type='button' onClick={handledeleteUserProducts}/>
-          </Wraper>
-        )}
-      </Content>
-    </Container>
-  );
+                  <FormContainer onSubmit={handleSubmitLocation}>
+                    <Section>
+                      <CountContainer>
+                        <Count>עדכן מיקום</Count>
+                      </CountContainer>
+                      <Local pasValue={handleSetLocation} />
+                      <SubmitButton type="submit">עדכן</SubmitButton>
+                    </Section>
+                  </FormContainer>
+                  <Button
+                    theme="deleteProduct"
+                    text="מחק מוצר"
+                    type="button"
+                    onClick={handledeleteUserProducts}
+                  />
+                </>
+              )}
+            </Wraper>
+          )}
+        </Content>
+      </Container>
+    );
+  }
 };
 
 export default UserProduct;

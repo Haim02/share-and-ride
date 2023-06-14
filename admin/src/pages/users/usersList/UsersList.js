@@ -12,6 +12,7 @@ const UsersList = () => {
 
   useEffect(() => {
     getUsers(dispatch);
+    console.log('12', users)
   }, [dispatch]);
 
   return (

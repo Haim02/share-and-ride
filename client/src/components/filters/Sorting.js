@@ -39,7 +39,7 @@ const Label = styled.label`
   margin-left: 5px;
 `;
 
-const OptionsBtn = styled.button`
+const OptionsBtn = styled.div`
   padding-left: 26px;
   min-width: 190px;
   text-align: right;
@@ -103,8 +103,8 @@ const Sorting = (props) => {
   const handleSortBy = (e) => {
     const sort = e.target.value;
     setSortBy(sort);
-    setIsDisplayStateOpen(false)
-    props.getSort(sortBy);
+    setIsDisplayStateOpen(false);
+    props.getSort(sort);
   };
 
   let sortByValue =
@@ -132,17 +132,6 @@ const Sorting = (props) => {
         </Label>
         {isDisplayStateOpen && (
           <DropBox onChange={handleSortBy}>
-            <Line>
-              <RadioLabelChecked>
-                <RadioInput
-                  name="filter-list"
-                  type="radio"
-                  defaultChecked
-                  value="createdAt"
-                />
-                <SortOption>לפי תאריך</SortOption>
-              </RadioLabelChecked>
-            </Line>
             <Line>
               <RadioLabelChecked>
                 <RadioInput

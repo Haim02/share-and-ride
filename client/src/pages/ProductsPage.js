@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams, useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
 import RidingToll from "../components/productCart/ProductCart";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,6 +12,7 @@ import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import uuid from "react-uuid";
 
 const Container = styled.div`
   display: flex;
@@ -58,26 +59,28 @@ const Pagination = styled.section`
 `;
 
 const ProductsPage = () => {
-  const limit = 5;
-  const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const limit = 8;
   const [currentPage, setCurrentPage] = useState(1);
   const [filtering, setFiltering] = useState({});
   const [sorting, setSorting] = useState();
   const dispatch = useDispatch();
   const { products, loading } = useSelector((state) => state.product);
 
+  const type = searchParams.get("type");
+
   useEffect(() => {
+    if (type) {
+      filtering.type = type;
+      navigate("/products");
+    }
+
     getAllProducts(dispatch, currentPage, limit, filtering, sorting);
-  }, [dispatch, currentPage, filtering, sorting]);
+  }, [dispatch, currentPage, filtering, sorting, setFiltering, setSorting]);
 
   const getFilter = (filters) => {
     setFiltering(filters);
-   
-  };
-
-  const getSort = (sort) => {
-    console.log(sort)
-    setSorting(sort);
   };
 
   const nextPage = () => {
@@ -91,6 +94,11 @@ const ProductsPage = () => {
     setCurrentPage((pre) => pre - 1);
   };
 
+  const reset = () => {
+    setFiltering({});
+    setSorting();
+  };
+
   return (
     <Fragment>
       {loading && <LoadingSpinner />}
@@ -99,15 +107,21 @@ const ProductsPage = () => {
           <Filtering getFilter={getFilter} />
         </FilterContainer>
         <SortContainer>
-          <Sorting getSort={getSort} />
+          <Sorting getSort={(sort) => setSorting(sort)} />
+          <div>
+            <button onClick={reset}>אפס מסננים</button>
+          </div>
         </SortContainer>
-        <ProductsContainer>
-          {loading && <LoadingSpinner />}
-          {products.length === 0 && <h1>אין תוצאות</h1>}
-          {products.map((product) => {
-            return <RidingToll key={product._id} product={product} />;
-          })}
-        </ProductsContainer>
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          <ProductsContainer>
+            {products.length === 0 && <h1>אין תוצאות</h1>}
+            {products.map((product) => {
+              return <RidingToll key={uuid()} product={product} />;
+            })}
+          </ProductsContainer>
+        )}
         <Pagination>
           <button onClick={prePage} disabled={currentPage === 1}>
             <FontAwesomeIcon icon={faChevronLeft} />

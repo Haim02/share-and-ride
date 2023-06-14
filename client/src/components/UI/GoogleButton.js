@@ -48,11 +48,11 @@ const BtnText = styled.button`
 
 const GoogleButton = (props) => {
   return (
-      <GoogleBtn class="google-btn">
-  <GoogleIconWrapper class="google-icon-wrapper">
-    <GoogleIcon class="google-icon" src={googleLogo}/>
+      <GoogleBtn className="google-btn">
+  <GoogleIconWrapper className="google-icon-wrapper">
+    <GoogleIcon className="google-icon" src={googleLogo}/>
   </GoogleIconWrapper>
-  <BtnText class="btn-text"><b>{props.text}</b></BtnText>
+  <BtnText className="btn-text"><b>{props.text}</b></BtnText>
 </GoogleBtn>
   )
 }

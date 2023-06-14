@@ -4,23 +4,21 @@ const productSchema = mongoose.Schema(
   {
     type: {
       type: String,
-        enum: ["bicycle", "scooter"],
-        message: "type is either: bicycle or scooter",
+      enum: ["bicycle", "scooter"],
+      message: "type is either: bicycle or scooter",
     },
     details: {
       title: {
         type: String,
         trim: true,
-        // maxLength: [30, 'A title must have less or equal then 30 characters'],
         required: [true, "title is required"],
       },
       description: {
         type: String,
         trim: true,
-        // maxLength: [30, 'A description must have less or equal then 30 characters'],
       },
       model: {
-        type: String
+        type: String,
       },
       helmet: {
         type: Boolean,
@@ -30,9 +28,9 @@ const productSchema = mongoose.Schema(
       },
       electric: {
         type: Boolean,
-            enum: [true, false],
-          message: "helmet is either: true or false",
-          default: "false",
+        enum: [true, false],
+        message: "helmet is either: true or false",
+        default: "false",
       },
       speed: {
         type: Number,
@@ -71,11 +69,5 @@ const productSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
-
-// DOCUMENT MIDDLEWARE: runs before .save() and create()
-// productSchema.pre('save', function(next) {
-//     this.slug = slugify(this.name, { lower: true})
-//     next();
-// });
 
 module.exports = mongoose.model("Product", productSchema);

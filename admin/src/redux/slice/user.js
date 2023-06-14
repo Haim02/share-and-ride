@@ -92,7 +92,7 @@ const userSlice = createSlice({
     deleteUserSuccess(state, action) {
       state.isFetching = false;
       state.users.splice(
-        state.users.findIndex((user) => user._id === action.payload._id)
+        state.users.findIndex((user) => user._id === action.payload)
       );
     },
     deleteUserFailure(state) {

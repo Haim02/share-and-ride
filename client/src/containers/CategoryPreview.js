@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import bikeElectric from "../assets/images/bikeElectric.jpg";
-import bikeRgular from "../assets/images/bikeRgular.jpg";
 import scooter from "../assets/images/scooter.webp";
 import { Link } from "react-router-dom";
+import uuid from 'react-uuid';
 
 const Container = styled.div`
   display: flex;
@@ -63,13 +63,13 @@ const categories = [
     id: 1,
     title: "אופניים",
     imageUrl: bikeElectric,
-    route: "/products",
+    route: "/products?type=bike",
   },
   {
     id: 2,
     title: "קורקינט",
     imageUrl: scooter,
-    route: "/products",
+    route: "/products?type=scooter",
   },
 ];
 
@@ -77,10 +77,9 @@ const CategoryPreview = () => {
   return (
     <Container className="directory-container">
       {categories.map((category) => (
-        <Link to={category.route} key={category.id} style={{textDecoration: 'none', color: 'black'}}>
+        <Link to={category.route} key={uuid()} style={{textDecoration: 'none', color: 'black'}}>
           <CategoryItem
             background={`${category.imageUrl}`}
-            key={category.id}
             category={category}
           >
             <Img src={category.imageUrl} />

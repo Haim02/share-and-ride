@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import Message from "./Message";
-import { getUserMessages } from "../../../redux/apiCalls/messages";
+import { messagesAction } from "../../../redux/slice/messages";
+import { useGetUserMessagesMutation } from "../../../redux/apiCalls/messages";
 import SideNavProfile from "../SideNavProfile";
 import { Container, SideBar, Content } from "../../../pages/ProfilePage";
 import { useSelector, useDispatch } from "react-redux";
 import LoadingSpinner from "./../../LoadingSpinner";
+import uuid from "react-uuid";
 
 const Wrapper = styled.div`
   display: flex;
@@ -25,16 +27,25 @@ const Title = styled.div`
 `;
 
 const MessagesList = () => {
+  const [getUserMessages, { isLoading }] = useGetUserMessagesMutation();
   const dispatch = useDispatch();
-  const { messages, loading } = useSelector((state) => state.message);
+  const { messages } = useSelector((state) => state.message);
 
   useEffect(() => {
-    getUserMessages(dispatch);
-  }, [dispatch]);
+    const getMessages = async () => {
+      try {
+        const res = await getUserMessages().unwrap();
+        dispatch(messagesAction.getMessagesSuccess(res.message));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getMessages();
+  }, [dispatch, getUserMessages]);
 
   return (
     <Container>
-      {loading && <LoadingSpinner />}
+      {isLoading && <LoadingSpinner />}
       <SideBar>
         <SideNavProfile />
       </SideBar>
@@ -44,8 +55,8 @@ const MessagesList = () => {
           {messages.length === 0 || null ? (
             <h1>אין הודעות</h1>
           ) : (
-            messages.map((message, id) => {
-              return <Message message={message} key={id} />;
+            messages.map((message) => {
+              return <Message message={message} key={uuid()} />;
             })
           )}
         </Wrapper>

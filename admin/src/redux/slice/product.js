@@ -49,7 +49,7 @@ const productSlice = createSlice({
     deleteProductSuccess(state, action) {
       state.isFetching = false;
       state.products.splice(
-        state.products.findIndex((item) => item._id === action.payload._id)
+        state.products.findIndex((item) => item._id === action.payload)
       );
     },
     deleteProductFailure(state) {

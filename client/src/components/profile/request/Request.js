@@ -9,11 +9,7 @@ import {
   faClockFour,
   faNoteSticky,
 } from "@fortawesome/free-solid-svg-icons";
-import Button from "../../button/Button";
-import { updateMessage } from "../../../redux/apiCalls/messages";
-import { format } from "date-fns";
-import ReactTimeAgo from 'react-time-ago'
-
+import ReactTimeAgo from "react-time-ago";
 
 const Container = styled.div`
   box-shadow: 0 0 5px rgba(225, 225, 225, 0.5);
@@ -31,7 +27,7 @@ const Header = styled.div`
   flex-direction: row-reverse;
   justify-content: center;
   justify-content: space-between;
-  width: 500px;
+  width: 100%;
   background: #fff;
   padding: 20px;
   color: #2e3038;
@@ -43,10 +39,21 @@ const Header = styled.div`
   color: #fff;
   background: #5393dc;
 `;
-const Title = styled.h1`
+const Title = styled.h2`
   font-weight: 20px;
   text-align: right;
-  margin-left: 5px;
+  margin-left: 20px;
+`;
+
+const ImgContainer = styled.div`
+  background-color: black;
+  width: 100%;
+  height: 200px;
+`;
+
+const ProductImg = styled.img`
+  width: 100%;
+  height: 100%;
 `;
 
 const Detailes = styled.div`
@@ -54,7 +61,6 @@ const Detailes = styled.div`
   flex-direction: column;
   height: 160px;
   background-color: lightgrey;
-  margin-bottom: 20px;
   transition: all 0.3s ease;
   justify-content: center;
   align-items: center;
@@ -82,7 +88,9 @@ const SmallIcon = styled.span`
   }
 `;
 
-const Span = styled.span``;
+const Span = styled.span`
+  margin-left: 15px;
+`;
 
 const SpanItem = styled.div`
   display: flex;
@@ -125,10 +133,6 @@ const Request = ({ request }) => {
 
   const toggleStartCalendarOpen = () => {
     setIsStartCalendarOpen(!isStartCalendarOpen);
-
-    if(request.isCalled !== false){
-      updateMessage(dispatch, request._id, { isCalled: true });
-    }
   };
 
   return (
@@ -136,8 +140,8 @@ const Request = ({ request }) => {
       <Container>
         <Header>
           <Title>בקשת השכרה</Title>
-          <Span> סטטוס : {getStatus}</Span>
-          <ReactTimeAgo date={request.createdAt} locale="he"/>
+          <Span> סטטוס: {getStatus}</Span>
+          <ReactTimeAgo date={new Date(request.createdAt)} locale="he" />
           <SmallIcon onClick={toggleStartCalendarOpen}>
             <FontAwesomeIcon
               icon={isStartCalendarOpen ? faCaretUp : faCaretDown}
@@ -145,6 +149,9 @@ const Request = ({ request }) => {
           </SmallIcon>
         </Header>
         <Body active={!isStartCalendarOpen}>
+          <ImgContainer>
+            <ProductImg src={request?.productId?.images[0]} />
+          </ImgContainer>
           <Detailes>
             <SpanItem>
               <Span>

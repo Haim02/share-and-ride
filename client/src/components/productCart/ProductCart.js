@@ -134,7 +134,7 @@ const ProductCart = (
           <SmallText> - שעה</SmallText>
         </MonthlyPrice>
         <DateUpdate>
-          <ReactTimeAgo date={props.product.createdAt} locale="he" />
+          <ReactTimeAgo date={new Date(props.product.createdAt)} locale="he" />
         </DateUpdate>
       </PricesContainer>
       <Location>

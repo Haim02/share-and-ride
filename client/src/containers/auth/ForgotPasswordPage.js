@@ -1,22 +1,27 @@
 import React, { useState, Fragment } from "react";
-import { forgotPassword } from "../../redux/apiCalls/auth";
 import { Container, Wrapper, Title, Form } from "./Register";
 import FormInputs from "../../components/formInput/FormInput";
+import { useForgotPasswordMutation } from "../../redux/apiCalls/auth";
 import Button from "./../../components/button/Button";
+import { toast } from "react-toastify";
 
 const ForgotPasswordPage = () => {
+  const [forgotPassword] = useForgotPasswordMutation();
   const [email, setEmail] = useState("");
 
   const onChangeHandler = (e) => {
     setEmail(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const sentEmail = {
-      email: email,
-    };
-    forgotPassword(sentEmail);
+   
+    try {
+      await forgotPassword(email);
+      toast.success("נשלח קישור לאיפוס הסיסמה לכתובת מייל שהוזנה");
+    } catch (error) {
+      toast.error("אימיל לא תקין");
+    }
   };
 
   return (

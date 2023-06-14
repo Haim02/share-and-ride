@@ -1,13 +1,16 @@
 import React, { useState, Fragment } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Container, Wrapper, Title, Form } from "./Register";
-import { resetPassword } from "../../redux/apiCalls/auth";
+import { useForgotPasswordMutation } from "../../redux/apiCalls/auth";
+import { authAction } from "../../redux/slice/auth";
 import FormInputs from "../../components/formInput/FormInput";
 import LoadingSpinner from "./../../components/LoadingSpinner";
 import Button from "./../../components/button/Button";
+import { toast } from "react-toastify";
 
 const ResetPasswordPage = () => {
+  const [resetPassword, { isLoading, isError }] = useForgotPasswordMutation();
   const [disabledBtn, setDisabledBtn] = useState(true);
   const [newPassword, setNewPassword] = useState({
     password: "",
@@ -18,7 +21,6 @@ const ResetPasswordPage = () => {
   token = token[token - 1];
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error, success } = useSelector((state) => state.auth);
 
   const onChangeHandler = (e) => {
     setNewPassword({ ...newPassword, [e.target.name]: e.target.value });
@@ -34,18 +36,31 @@ const ResetPasswordPage = () => {
     } else setDisabledBtn(false);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    resetPassword(dispatch, token, newPassword);
 
-    if (!success) {
+    const reset = {
+      token: token,
+      password: newPassword.password,
+    };
+
+    try {
+      const res = await resetPassword(reset).unwrap();
+      dispatch(authAction.loginSuccess(res.user));
+      toast.success("איפוס סיסמה בוצעה בהצלחה");
+    } catch (error) {
+      toast.error("סיסמה לא תקינה");
+      console.log(error);
+    }
+
+    if (!isError) {
       return navigate("/login");
     }
   };
 
   return (
     <Fragment>
-      {loading && <LoadingSpinner />}
+      {isLoading && <LoadingSpinner />}
       <Container>
         <Wrapper>
           <Title>איפוס סיסמה</Title>

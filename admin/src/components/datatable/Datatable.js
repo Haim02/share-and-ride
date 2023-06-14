@@ -7,9 +7,8 @@ import { useDispatch } from "react-redux";
 import "./datatable.scss";
 
 const Datatable = (props) => {
-  const [data, setData] = useState();
+  const [data, setData] = useState(props.dataList);
   const dispatch = useDispatch();
-
   const handleDelete = (id) => {
     setData(data.filter((item) => item._id !== id));
     if (props.path === "products") {

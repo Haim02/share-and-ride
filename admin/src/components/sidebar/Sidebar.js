@@ -1,28 +1,32 @@
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import CreditCardIcon from "@mui/icons-material/CreditCard";
 import StoreIcon from "@mui/icons-material/Store";
-import InsertChartIcon from "@mui/icons-material/InsertChart";
-import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
-import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { logout } from "../../redux/apiCalls/auth";
-import { useDispatch } from "react-redux";
+import { useLogoutMutation } from "../../redux/apiCalls/auth";
+import { authAction } from "../../redux/slice/auth";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./sidebar.scss";
 
 const Sidebar = () => {
+  const [logout] = useLogoutMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.auth);
 
-  const handleLogout = () => {
-    logout(dispatch);
-    navigate("/");
+  const handleLogout = async () => {
+    try {
+      const res = await logout().unwrap();
+      dispatch(authAction.logoutSuccess());
+    } catch (error) {
+      console.log(error);
+      dispatch(authAction.logoutFailure(error.message));
+    }
+    if (!currentUser) {
+      navigate("/");
+    }
   };
 
   return (
@@ -42,7 +46,7 @@ const Sidebar = () => {
               <span>ראשי</span>
             </li>
           </Link>
-          <p className="title">LISTS</p>
+          <p className="title">מידע</p>
           <Link to="/users" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />
@@ -55,41 +59,12 @@ const Sidebar = () => {
               <span>מוצרים</span>
             </li>
           </Link>
-          <li>
-            <CreditCardIcon className="icon" />
-            <span>השכרות</span>
-          </li>
-          <li>
-            <LocalShippingIcon className="icon" />
-            <span>Delivery</span>
-          </li>
-          <p className="title">USEFUL</p>
-          <li>
-            <InsertChartIcon className="icon" />
-            <span>סטטוס</span>
-          </li>
+          <p className="title">הודעות</p>
           <li>
             <NotificationsNoneIcon className="icon" />
             <span>התראות</span>
           </li>
-          <p className="title">שרותים</p>
-          <li>
-            <SettingsSystemDaydreamOutlinedIcon className="icon" />
-            <span>System Health</span>
-          </li>
-          <li>
-            <PsychologyOutlinedIcon className="icon" />
-            <span>Logs</span>
-          </li>
-          <li>
-            <SettingsApplicationsIcon className="icon" />
-            <span>הגדרות</span>
-          </li>
           <p className="title">משתמש</p>
-          <li>
-            <AccountCircleOutlinedIcon className="icon" />
-            <span>פרופיל</span>
-          </li>
           <li>
             <ExitToAppIcon className="icon" />
             <span onClick={handleLogout}>התנתק</span>

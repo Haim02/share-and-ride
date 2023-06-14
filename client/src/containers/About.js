@@ -57,8 +57,8 @@ const InfoContainer = styled.div`
 
 const Title = styled.h1`
   color: #000000;
-  font-size: 1.5rem;
-  line-height: 2rem;
+  font-size: 1.7rem;
+  line-height: 1rem;
   font-weight: 800;
   text-align: right;
 
@@ -88,18 +88,9 @@ const About = () => {
         <img src={aboutScooter} alt="aboutScooter" />
       </ProductContainer>
       <InfoContainer>
-        <Title>Feel The Best Experience With Our Rental Deals</Title>
+        <Title>הרגש את החוויה הטובה ביותר עם עסקאות ההשכרה שלנו</Title>
         <InfoText>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum
-          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum
-          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.
+        ברוכים הבאים לאתר שלנו, היעד האולטימטיבי להשכרה והשכרה של אופניים וקורקינט חשמליים! הפלטפורמה שלנו מציעה פתרון נוח וידידותי לסביבה לצרכי התחבורה שלך. בין אם אתם מחפשים לחקור את העיר, לנסוע לעבודה, או ליהנות מרכיבה נינוחה, אנחנו מבטיחים לכם. עם מבחר האופניים והקורקינטים החשמליים הנרחבים שלנו, תוכלו לבחור את הכלי המושלם המתאים להעדפות ולסגנון שלכם. האתר הידידותי למשתמש שלנו מאפשר לך לדפדף במבחר הרחב שלנו, להשוות דגמים ולבצע הזמנות מקוונות בקלות. חווה את הריגוש של נסיעה חלקה ומודעת לסביבה על ידי השכרה של אופניים או קורקינט חשמליים מהאתר שלנו עוד היום
         </InfoText>
       </InfoContainer>
     </AboutUsContainer>

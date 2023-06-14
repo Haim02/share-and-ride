@@ -14,6 +14,7 @@ const Input = styled.input`
   border: 1px solid grey;
   display: block;
   width: 90%;
+  z-index: 1;
   :focus {
     outline: none;
   }

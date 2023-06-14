@@ -1,21 +1,19 @@
-import React, {
-  Fragment,
-  useState,
-  useEffect,
-} from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import styled from "styled-components";
 import RentFrom from "./../components/rentForm/RentFrom";
 import RentDetails from "./../components/rentForm/RentDetails";
 import { useLocation } from "react-router-dom";
-import { getOneProduct } from "../redux/apiCalls/products";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faV, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faUser, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "./../components/LoadingSpinner";
 import Geocode from "react-geocode";
 import Map from "../components/UI/Map";
 import Button from "../components/button/Button";
 import { faLocationPin } from "@fortawesome/free-solid-svg-icons";
+import { useGetOneProductMutation } from "../redux/apiCalls/products";
+import { productAction } from "../redux/slice/products";
+import uuid from "react-uuid";
 
 const Container = styled.div`
   padding: 40px 30px;
@@ -92,7 +90,7 @@ const Description = styled.p`
   font-weight: 300;
   text-align: right;
   margin-left: 30px;
-  @media (max-width: 800px) { 
+  @media (max-width: 800px) {
     text-align: center;
     margin-left: 0;
     padding-left: 0;
@@ -102,7 +100,7 @@ const Description = styled.p`
 const Links = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px; 
+  gap: 20px;
   justify-content: right;
   margin-bottom: 50px;
 `;
@@ -146,22 +144,29 @@ const BtnGroup = styled.div`
 `;
 
 const Product = () => {
+  const [getOneProduct, { isLoading }] = useGetOneProductMutation();
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const [selectImg, setSelectImg] = useState(0);
   const [openCart, setOpenCart] = useState(false);
   const [openCartDetails, setOpenCartDetails] = useState(false);
   const dispatch = useDispatch();
-  const { product, loading } = useSelector((state) => state.product);
+  const { product } = useSelector((state) => state.product);
   const { currentUser } = useSelector((state) => state.auth);
   const [addressLat, setAddressLat] = useState(0);
   const [addressLng, setAddressLng] = useState(0);
 
   useEffect(() => {
-    getOneProduct(dispatch, id);
-  }, [dispatch, id]);
-  
-  const address = 
+    const getProduct = async () => {
+      try {
+        const res = await getOneProduct(id).unwrap();
+        dispatch(productAction.getProductSuccess(res.product));
+      } catch (error) {}
+    };
+    getProduct();
+  }, [dispatch, id, getOneProduct]);
+
+  const address =
     `${product?.location.city} ${product?.location.street} ${product?.location.houseNumber}`.toString();
   Geocode.setApiKey(process.env.REACT_APP_PUBLIC_GOOGLE_MAPS_API_KEY);
   Geocode.setLanguage("iw");
@@ -173,14 +178,14 @@ const Product = () => {
       setAddressLng(lng);
     },
     (error) => {
-      console.error(error);
+      console.error(error.message);
     }
   );
 
   const heandelClick = () => {
-    if(!currentUser) {
-      alert('רק משתמשים רשומים יכולים לשלוח הודעות')
-      return
+    if (!currentUser) {
+      alert("רק משתמשים רשומים יכולים לשלוח הודעות");
+      return;
     }
     setOpenCart(true);
   };
@@ -204,100 +209,122 @@ const Product = () => {
     setSelectImg(i);
   };
 
-  return (
-    <Fragment>
-     {!product ? 
-        (<LoadingSpinner />
+  if (product) {
+    return (
+      <Fragment>
+        {isLoading ? (
+          <LoadingSpinner />
         ) : (
-      <Container>
-        <Left>
-          <Images>
-            {product.images.map((img, i) => {
-              return <img src={img} alt="" onClick={handleOnClick} key={i} />;
-            })}
-          </Images>
-          <MainImg>
-            <img src={product.images[selectImg]} alt="" />
-          </MainImg>
-        </Left>
-        <Right>
-          <h1>{product.details.title}</h1>
-          <Description>{product.details.description}</Description>
-          <FontAwesomeIcon icon={faLocationPin} />
-          <h5>{address}</h5>
-          <Links>
-            <Items>
-              <Item>{product.price.hourPrice}₪ : מחיר לשעה</Item>
-              <Item>{product.price.dailyPrice}₪ : מחיר ליום</Item>
-            </Items>
-            <MapContainer>
-              <Map addressLat={addressLat} addressLng={addressLng} />
-            </MapContainer>
-          </Links>
-          <Info>
-            <span>{product.details.model} : דגם</span>
-            <Hr />
-            <span>
-              {" "}
-              {product.details.electric ? (
-                <FontAwesomeIcon icon={faCheck} style={{color: 'green'}}/>
-              ) : (
-                <FontAwesomeIcon icon={faXmark} style={{color: 'red'}}/>
-              )}{" "}
-              : חשמלי
-            </span>
-            <Hr />
-            <span>
-              {" "}
-              {product.details.helmet ? (
-                <FontAwesomeIcon icon={faCheck} style={{color: 'green'}}/>
-              ) : (
-                <FontAwesomeIcon icon={faXmark} style={{color: 'red'}}/>
-              )}{" "}
-              : קסדה
-            </span>
-            <Hr />
-            <span>{product.details.speed} : מהירות</span>
-            <Hr />
-            <span>{product.details.battery} : סוללה</span>
-          </Info>
-          <Hr />
-          <Info>
-            <span>:היערות</span>
-          </Info>
-          <BtnGroup>
-            <Button
-              theme="sentMessage"
-              text="שלח הודעה לשוכר"
-              onClick={heandelClick}
-            />
-            <Button
-              theme="sentMessage"
-              text="פרטי השוכר"
-              onClick={heandelClickDetails}
-            />
-          </BtnGroup>
-        </Right>
-      </Container>
-
+          <Container>
+            <Left>
+              <Images>
+                {product.images.map((img) => {
+                  return (
+                    <img src={img} alt="" onClick={handleOnClick} key={uuid()} />
+                  );
+                })}
+              </Images>
+              <MainImg>
+                <img src={product.images[selectImg]} alt="" />
+              </MainImg>
+            </Left>
+            <Right>
+              <h1>{product.details.title}</h1>
+              <Description>{product.details.description}</Description>
+              <h5>
+                {address} <FontAwesomeIcon icon={faLocationPin} />
+              </h5>
+              <div>
+                <small
+                  style={{
+                    color: "#000000",
+                    fontSize: "13px",
+                    marginRight: "5px",
+                  }}
+                >
+                  {product.user.name}
+                </small>
+                <FontAwesomeIcon icon={faUser} style={{ color: "black" }} />
+              </div>
+              <Links>
+                <Items>
+                  <Item>{product.price.hourPrice}₪ : מחיר לשעה</Item>
+                  <Item>{product.price.dailyPrice}₪ : מחיר ליום</Item>
+                </Items>
+                <MapContainer>
+                  <Map addressLat={addressLat} addressLng={addressLng} />
+                </MapContainer>
+              </Links>
+              <Info>
+                <span>{product.details.model} : דגם</span>
+                <Hr />
+                <span>
+                  {" "}
+                  {product.details.electric ? (
+                    <FontAwesomeIcon
+                      icon={faCheck}
+                      style={{ color: "green" }}
+                    />
+                  ) : (
+                    <FontAwesomeIcon icon={faXmark} style={{ color: "red" }} />
+                  )}{" "}
+                  : חשמלי
+                </span>
+                <Hr />
+                <span>
+                  {" "}
+                  {product.details.helmet ? (
+                    <FontAwesomeIcon
+                      icon={faCheck}
+                      style={{ color: "green" }}
+                    />
+                  ) : (
+                    <FontAwesomeIcon icon={faXmark} style={{ color: "red" }} />
+                  )}{" "}
+                  : קסדה
+                </span>
+                <Hr />
+                <span>{product.details.speed} : מהירות</span>
+                <Hr />
+                <span>{product.details.battery} : סוללה</span>
+              </Info>
+              <Hr />
+              <Info>
+                <span>:היערות</span>
+              </Info>
+              <BtnGroup>
+                <Button
+                  theme="sentMessage"
+                  text="שלח הודעה לשוכר"
+                  onClick={heandelClick}
+                />
+                <Button
+                  theme="sentMessage"
+                  text="פרטי השוכר"
+                  onClick={heandelClickDetails}
+                />
+              </BtnGroup>
+            </Right>
+          </Container>
         )}
-      {openCart && (
-        <RentFrom
-          heandelClick={heandelClick}
-          toUser={product.user}
-          closeCart={closeCart}
-          onClose={closeCart}
-        />
-      )}
-      {openCartDetails && (
-        <RentDetails
-          heandelClick={heandelClickDetails}
-          closeCart={closeCartDetails}
-          onClose={closeCartDetails}
-        />
-      )}
-    </Fragment>
-  );
+        {openCart && (
+          <RentFrom
+            heandelClick={heandelClick}
+            toUser={product.user}
+            closeCart={closeCart}
+            onClose={closeCart}
+          />
+        )}
+        {openCartDetails && (
+          <RentDetails
+            heandelClick={heandelClickDetails}
+            closeCart={closeCartDetails}
+            onClose={closeCartDetails}
+          />
+        )}
+      </Fragment>
+    );
+  }
 };
 
 export default Product;

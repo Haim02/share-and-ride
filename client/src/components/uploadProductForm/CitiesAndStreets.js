@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import Button from "../button/Button";
+import uuid from 'react-uuid';
 
 const Form = styled.div`
   margin-top: 2em;
@@ -10,6 +11,7 @@ const Container = styled.div`
   padding: 0.5em 2em;
   display: flex;
   flex-direction: row-reverse;
+  text-align: right;
 `;
 const Label = styled.label`
   margin-left: 5px;
@@ -110,8 +112,8 @@ function CitiesAndStreets(props) {
           />
           <Datalist id="cities-data">
             <Option value="טוען רשימת ערים..." />
-            {cities.map((city, key) => {
-              return <Option key={key} value={city[city_name_key]} />;
+            {cities.map((city) => {
+              return <Option key={uuid()} value={city[city_name_key]} />;
             })}
           </Datalist>
         </Container>
@@ -125,8 +127,8 @@ function CitiesAndStreets(props) {
             onChange={handleStreetChange}
           />
           <Datalist id="streets-data">
-            {streets.map((street, key) => {
-              return <Option key={key} value={street[street_name_key]} />;
+            {streets.map((street) => {
+              return <Option key={uuid()} value={street[street_name_key]} />;
             })}
           </Datalist>
         </Container>
@@ -136,6 +138,7 @@ function CitiesAndStreets(props) {
             disabled={selectedStreet.length === 0}
             type="number"
             onChange={handleHouseNumberChange}
+            style={{'textAlign': 'right'}}
           />
         </Container>
         <Btn>

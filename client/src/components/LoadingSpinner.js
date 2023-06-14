@@ -28,8 +28,6 @@ const LoadingSpinner = () => {
           radius="9"
           color="black"
           ariaLabel="loading"
-          wrapperStyle
-          wrapperClass
         />
       </Loader>
     </Container>

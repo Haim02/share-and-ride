@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import { Link, Outlet } from "react-router-dom";
-import LogoImg from "../../assets/images/logo.png";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhoneAlt } from "@fortawesome/free-solid-svg-icons";
@@ -15,6 +14,7 @@ const FooterContainer = styled.footer`
   justify-content: center;
   align-items: center;
   min-width: 100%;
+  text-align: right;
   @media (min-width: 768px) {
     padding-top: 2rem;
   }
@@ -93,17 +93,7 @@ const LinksList = styled.ul`
   list-style-type: none;
   flex-direction: column;
   outline: 0;
-`;
-
-const Image = styled.div`
-  width: auto;
-  @media (min-width: 768px) {
-    height: 20px;
-  }
-  img {
-    width: auto;
-    height: 100%;
-  }
+  text-align: right;
 `;
 
 const ListItem = styled.li`
@@ -112,7 +102,7 @@ const ListItem = styled.li`
     transition-property: all;
     color: #ffffff;
     font-size: 0.875rem;
-    line-height: 1.25rem;
+    line-height: 1rem;
     :hover {
       color: #e5e7eb;
     }
@@ -120,11 +110,12 @@ const ListItem = styled.li`
 `;
 
 const HeaderTitle = styled.h3`
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.35rem;
   color: #ffffff;
-  font-size: 1.5rem;
-  line-height: 2rem;
+  font-size: 1.2rem;
+  line-height: 1rem;
   font-weight: 700;
+  text-align: right;
 `;
 
 const HorizontalContainer = styled.div`
@@ -157,17 +148,14 @@ const Footer = () => {
       <FooterContainer>
         <InnerContainer>
           <AboutContainer>
-            <Image>
-              <img src={LogoImg} alt="" />
-            </Image>
             <AboutText>
-              Yourcar is a Car renting and selling company located in many
-              countries across the world which has high quality cars and top
-              rated service.
+              כל הזכויות שמורות לחברת שיר אנד רייד מפעילות את האתר IL, אופניים
+              להשכרה, קורקינט למכירה, אופניים חשמליים להשכרה, אין לעשות שימוש
+              בכל התכנים המופיעים באתר .
             </AboutText>
           </AboutContainer>
           <SectionContainer>
-            <HeaderTitle>Our Links</HeaderTitle>
+            <HeaderTitle>קישורים</HeaderTitle>
             <LinksList>
               <ListItem>
                 <Link to="/">בית</Link>
@@ -181,7 +169,7 @@ const Footer = () => {
             </LinksList>
           </SectionContainer>
           <SectionContainer>
-            <HeaderTitle>Other Links</HeaderTitle>
+            <HeaderTitle>קישורים</HeaderTitle>
             <LinksList>
               <ListItem>
                 <Link to="#">תקנון האתר</Link>
@@ -198,16 +186,22 @@ const Footer = () => {
             <HeaderTitle>התקשרו אלינו</HeaderTitle>
             <HorizontalContainer>
               <RedIcon>
-                <FontAwesomeIcon icon={faPhoneAlt} />
+                <FontAwesomeIcon
+                  icon={faPhoneAlt}
+                  style={{ backgroundColor: "rgb(52, 138, 244)" }}
+                />
               </RedIcon>
-              <SmallText>+91 555-234-8469</SmallText>
+              <SmallText>03-5552349</SmallText>
             </HorizontalContainer>
           </SectionContainer>
           <SectionContainer>
             <HeaderTitle>מייל</HeaderTitle>
             <HorizontalContainer>
               <RedIcon>
-                <FontAwesomeIcon icon={faEnvelope} />
+                <FontAwesomeIcon
+                  icon={faEnvelope}
+                  style={{ backgroundColor: "rgb(52, 138, 244)" }}
+                />
               </RedIcon>
               <SmallText>info@Shre@Ride.com</SmallText>
             </HorizontalContainer>

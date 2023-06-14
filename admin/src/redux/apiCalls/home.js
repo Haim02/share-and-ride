@@ -25,7 +25,6 @@ export const getTodayRentStats = async (dispatch) => {
   dispatch(homeStateAction.getTodayRentStatsStart());
   try {
     const response = await publicRequest.get("/home");
-    console.log(response.data);
     dispatch(homeStateAction.getTodayRentStatsSuccess(response.data.data));
   } catch (error) {
     dispatch(homeStateAction.getTodayRentStatsFailure());

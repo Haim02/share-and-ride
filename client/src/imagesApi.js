@@ -6,6 +6,7 @@ import {
   deleteObject,
 } from "firebase/storage";
 import app, { storage } from "./firebase";
+import { toast } from "react-toastify";
 
 export const uploadImage = (fileName, setPercent, setImagesNames) => {
   if (!fileName) {
@@ -25,7 +26,7 @@ export const uploadImage = (fileName, setPercent, setImagesNames) => {
       );
       setPercent(percent);
     },
-    (err) => console.log(err),
+    (err) => toast.error(err),
     () => {
       getDownloadURL(uploadTask.snapshot.ref).then((url) => {
         setImagesNames((pre) => [...pre, url]);
@@ -45,6 +46,6 @@ export const deletImage = (imgName, setImagesNames) => {
       });
     })
     .catch((err) => {
-      alert(err);
+      toast.error(err);
     });
 };

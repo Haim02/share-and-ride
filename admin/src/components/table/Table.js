@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import uuid from 'react-uuid';
 import ReactTimeAgo from "react-time-ago";
 
 const List = ({ products }) => {
@@ -22,7 +23,7 @@ const List = ({ products }) => {
         </TableHead>
         <TableBody>
           {products.map((row) => (
-            <TableRow key={row._id}>
+            <TableRow key={uuid()}>
               <TableCell className="tableCell">{row._id}</TableCell>
               <TableCell className="tableCell">
                 <div className="cellWrapper">
@@ -34,7 +35,7 @@ const List = ({ products }) => {
                 {row.user.name}
               </TableCell>
               <TableCell align="right" className="tableCell">
-                <ReactTimeAgo date={row.createdAt} locale="he" />
+                <ReactTimeAgo date={new Date(row.createdAt)} locale="he" />
               </TableCell>
               <TableCell align="right" className="tableCell">
                 <span className={`status ${row.status}`}>{row.status}</span>

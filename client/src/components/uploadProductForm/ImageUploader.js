@@ -3,10 +3,9 @@ import styled from "styled-components";
 import { MdCloudUpload } from "react-icons/md";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { ref } from "firebase/storage";
-import { storage } from "../../firebase";
 import { uploadImage, deletImage } from "../../imagesApi";
 import Button from "../button/Button";
+import uuid from "react-uuid";
 
 const ImagesContainer = styled.div`
   display: flex;
@@ -108,16 +107,16 @@ const ImageUploader = (props) => {
             }
             alt="file"
           />
-          <p>{percent} "% done"</p>
+          <p>{percent} "%"</p>
           {fileName && <UploadBtn onClick={handleUpload}>העלה</UploadBtn>}
         </PreImgContainer>
       )}
 
       <ImagesList>
         {imagesNames.length > 0 &&
-          imagesNames.map((img, id) => {
+          imagesNames.map((img) => {
             return (
-              <ImageItem key={id}>
+              <ImageItem key={uuid()}>
                 <img
                   src={img}
                   style={{ width: "100px", height: "100px" }}

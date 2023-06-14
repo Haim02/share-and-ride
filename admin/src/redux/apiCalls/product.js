@@ -25,7 +25,7 @@ export const deleteProduct = async (id, dispatch) => {
   dispatch(productAction.deleteProductStart());
   try {
     const response = await publicRequest.delete(`/products/${id}`);
-    dispatch(productAction.deleteProductSuccess(response));
+    dispatch(productAction.deleteProductSuccess(id));
   } catch (error) {
     dispatch(productAction.deleteProductFailure());
   }

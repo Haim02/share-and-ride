@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-  getOneUder,
+  getOneUser,
   updateUser,
   getUserLastRents,
 } from "../../../redux/apiCalls/user";
@@ -23,9 +23,9 @@ const User = () => {
   );
 
   useEffect(() => {
-    getOneUder(dispatch, userId);
+    getOneUser(dispatch, userId);
     getUserLastRents(userId, dispatch);
-  }, [dispatch, userId]);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,111 +37,108 @@ const User = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     updateUser(userId, updateUserFilds, dispatch);
-    console.log(updateUserFilds);
   };
 
-  return (
-    <div className="single">
-      {isFetching ? (
-        <div className="spinnerContainer">
-          <Spinner />
-        </div>
-      ) : (
-        <div className="singleContainer">
-          <div className="top">
-            <div className="left">
-              <div className="editButton">Edit</div>
-              <h1 className="title">מידע</h1>
-              <div className="item">
-                <img
-                  src={profileImage}
-                  alt="profileImage"
-                  className="itemImg"
-                />
-                <div className="details">
-                  <h1 className="itemTitle">{user?.name}</h1>
-                  <div className="detailItem">
-                    <span className="itemKey">:אימייל</span>
-                    <span className="itemValue">{user?.email}</span>
-                  </div>
-                  <div className="detailItem">
-                    <span className="itemKey">:טלפון</span>
-                    <span className="itemValue">{user?.phone}</span>
-                  </div>
-                  <div className="detailItem">
-                    <span className="itemKey">:נוצר לפני</span>
-                    <span className="itemValue">
-                      {<ReactTimeAgo date={user.createdAt} locale="he" />}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="right">
-              <Chart aspect={3 / 1} title="הוצאות אחרונות" />
-            </div>
+  if (user) {
+    return (
+      <div className="single">
+        {isFetching ? (
+          <div className="spinnerContainer">
+            <Spinner />
           </div>
-          <div className="userUpdate">
-            <span className="userUpdateTitle">עדכן משתמש</span>
-            <form className="userUpdateForm" onSubmit={handleSubmit}>
-              <div className="userUpdateLeft">
-                <div className="userUpdateItem">
-                  <label>שם</label>
-                  <input
-                    type="text"
-                    placeholder={user.name}
-                    className="userUpdateInput"
-                    onChange={handleChange}
-                    name="name"
-                  />
-                </div>
-                <div className="userUpdateItem">
-                  <label>אימייל</label>
-                  <input
-                    type="text"
-                    placeholder={user.email}
-                    className="userUpdateInput"
-                    onChange={handleChange}
-                    name="email"
-                  />
-                </div>
-                <div className="userUpdateItem">
-                  <label>פלאפון</label>
-                  <input
-                    type="text"
-                    placeholder={user.phone}
-                    className="userUpdateInput"
-                    onChange={handleChange}
-                    name="phone"
-                  />
-                </div>
-              </div>
-              <div className="userUpdateRight">
-                <div className="userUpdateUpload">
+        ) : (
+          <div className="singleContainer">
+            <div className="top">
+              <div className="left">
+                <div className="editButton">Edit</div>
+                <h1 className="title">מידע</h1>
+                <div className="item">
                   <img
-                    className="userUpdateImg"
-                    src={user.img}
-                    alt={user.name}
+                    src={profileImage}
+                    alt="profileImage"
+                    className="itemImg"
                   />
-                  <label htmlFor="file"></label>
-                  <input type="file" id="file" style={{ display: "none" }} />
+                  <div className="details">
+                    <h1 className="itemTitle">{user?.name}</h1>
+                    <div className="detailItem">
+                      <span className="itemKey">:אימייל</span>
+                      <span className="itemValue">{user?.email}</span>
+                    </div>
+                    <div className="detailItem">
+                      <span className="itemKey">:טלפון</span>
+                      <span className="itemValue">{user?.phone}</span>
+                    </div>
+                    <div className="detailItem">
+                      <span className="itemKey">:נוצר לפני</span>
+                      <span className="itemValue">
+                        {
+                          <ReactTimeAgo
+                            date={new Date(user.createdAt)}
+                            locale="he"
+                          />
+                        }
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <button className="userUpdateButton">עדכן</button>
               </div>
-            </form>
+              <div className="right">
+                <Chart aspect={3 / 1} title="הוצאות אחרונות" />
+              </div>
+            </div>
+            <div className="userUpdate">
+              <span className="userUpdateTitle">עדכן משתמש</span>
+              <form className="userUpdateForm" onSubmit={handleSubmit}>
+                <div className="userUpdateLeft">
+                  <div className="userUpdateItem">
+                    <label>שם</label>
+                    <input
+                      type="text"
+                      placeholder={user.name}
+                      className="userUpdateInput"
+                      onChange={handleChange}
+                      name="name"
+                    />
+                  </div>
+                  <div className="userUpdateItem">
+                    <label>אימייל</label>
+                    <input
+                      type="text"
+                      placeholder={user.email}
+                      className="userUpdateInput"
+                      onChange={handleChange}
+                      name="email"
+                    />
+                  </div>
+                  <div className="userUpdateItem">
+                    <label>פלאפון</label>
+                    <input
+                      type="text"
+                      placeholder={user.phone}
+                      className="userUpdateInput"
+                      onChange={handleChange}
+                      name="phone"
+                    />
+                  </div>
+                </div>
+                <div className="userUpdateRight">
+                  <button className="userUpdateButton">עדכן</button>
+                </div>
+              </form>
+            </div>
+            <div className="bottom">
+              <h1 className="title">השכרות אחרונות</h1>
+              {isFetchingLastRents ? (
+                <Spinner />
+              ) : (
+                <LastRentTable name="מוצר" type="user" rows={lastRents} />
+              )}
+            </div>
           </div>
-          <div className="bottom">
-            <h1 className="title">השכרות אחרונות</h1>
-            {isFetchingLastRents ? (
-              <Spinner />
-            ) : (
-              <LastRentTable name="מוצר" type="user" rows={lastRents} />
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  );
+        )}
+      </div>
+    );
+  }
 };
 
 export default User;

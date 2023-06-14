@@ -7,7 +7,6 @@ const Container = styled.div`
   background-color: #f4f4f4;
   padding: 20px;
   border-radius: 8px;
-  height: 270px;
   position: fixed;
   top: 0px;
   left: 0;
@@ -21,17 +20,17 @@ const Container = styled.div`
   @media (max-width: 800px) {
     padding: 5px;
     margin: 0;
-  bottom: 0;
-  margin-left: 20px;
-  @media (max-width: 800px) {
+    bottom: 0;
     margin-left: 20px;
-  }
-  @media (max-width: 300px) {
-    margin-left: 80px;
-  }
-  @media (max-width: 240px) {
-    margin-left: 100px;
-  }
+    @media (max-width: 800px) {
+      margin-left: 20px;
+    }
+    @media (max-width: 300px) {
+      margin-left: 80px;
+    }
+    @media (max-width: 240px) {
+      margin-left: 100px;
+    }
   }
 `;
 

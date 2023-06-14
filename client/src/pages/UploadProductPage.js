@@ -2,8 +2,10 @@ import React, { Fragment, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { uploadProduct, getUsertProduct } from "../redux/apiCalls/auth";
 import { Link } from "react-router-dom";
+import { useGetUsertProductMutation } from "../redux/apiCalls/auth";
+import { useUploadProductMutation } from "../redux/apiCalls/auth";
+import { authAction } from "../redux/slice/auth";
 import CitiesAndStreets from "../components/uploadProductForm/CitiesAndStreets";
 import TypeChice from "./../components/uploadProductForm/TypeChice";
 import Details from "./../components/uploadProductForm/Details";
@@ -11,6 +13,7 @@ import ImageUploader from "./../components/uploadProductForm/ImageUploader";
 import Price from "./../components/uploadProductForm/Price";
 import Button from "./../components/button/Button";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { toast } from "react-toastify";
 
 const Container = styled.div``;
 const Section = styled.div`
@@ -78,7 +81,9 @@ const H1 = styled.h1`
 `;
 
 const UploadProductPage = () => {
-  const { currentUser, loading, success, product } = useSelector((state) => state.auth);
+  const [getUsertProduct] = useGetUsertProductMutation();
+  const [uploadProduct, { isLoading }] = useUploadProductMutation();
+  const { currentUser, product } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [type, setType] = useState("");
@@ -95,8 +100,17 @@ const UploadProductPage = () => {
   });
 
   useEffect(() => {
-    getUsertProduct(dispatch);
-  }, [dispatch, product]);
+    const userProduct = async () => {
+      try {
+        const res = await getUsertProduct(currentUser._id).unwrap();
+        dispatch(authAction.getUsertProductSeccess(res.product[0]));
+      } catch (error) {}
+    };
+
+    if (currentUser) {
+      userProduct();
+    }
+  }, [currentUser, dispatch, getUsertProduct]);
 
   const getTypeChice = (value) => {
     setType(value);
@@ -148,12 +162,17 @@ const UploadProductPage = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    uploadProduct(dispatch, newProduct);
 
-    if (success) {
+    try {
+      const res = await uploadProduct(newProduct).unwrap();
+      dispatch(authAction.uploadProductSucess(res.product));
+      toast.success("המוצר עלה בהצלחה");
       navigate("/");
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
     }
   };
 
@@ -173,7 +192,7 @@ const UploadProductPage = () => {
           </NotAUserContainer>
         ) : (
           <Form onSubmit={handleSubmit}>
-            {loading && <LoadingSpinner />}
+            {isLoading && <LoadingSpinner />}
             <Section>
               <CountContainer>
                 <Count>המוצר אותו אני רוצה להשכיר</Count>
@@ -225,7 +244,6 @@ const UploadProductPage = () => {
                 theme="uploadFormSubmit"
                 type="submit"
                 disabled={!address}
-                // onClick={handleSubmit}
                 text="סיום"
               />
             </Btn>

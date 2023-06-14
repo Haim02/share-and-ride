@@ -1,11 +1,12 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { userLogout } from "../../redux/apiCalls/auth";
 import styled from "styled-components";
 import LogoImg from "../../assets/images/logo.png";
 import { useMediaQuery } from "react-responsive";
 import { slide as Menu } from "react-burger-menu";
+import { messagesAction } from "../../redux/slice/messages";
+import { useGetUserMessagesMutation } from "./../../redux/apiCalls/messages";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import menuStyle from "../menuStyle";
@@ -13,6 +14,10 @@ import { mobile } from "../../responsive";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import Button from "./../button/Button";
+import LoadingSpinner from "../LoadingSpinner";
+import { useLogoutMutation } from "../../redux/apiCalls/auth";
+import { authAction } from "../../redux/slice/auth";
+
 
 const NavbarContainer = styled.div`
   display: flex;
@@ -119,16 +124,41 @@ const Item = styled.div`
 `;
 
 const Navbar = () => {
+  const [getUserMessages] = useGetUserMessagesMutation();
+  const [logout, { isLoading }] = useLogoutMutation();
   const ismobile = useMediaQuery({ maxWidth: "540px" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { currentUser, messages } = useSelector((state) => state.auth);
-  const unRedingMessages = messages.filter((mgs) => mgs.isCalled === true);
+  const { messages } = useSelector((state) => state.message);
+  const { currentUser } = useSelector((state) => state.auth);
 
-  const onLogoutHandle = () => {
-    userLogout(dispatch);
-    return navigate("/");
+  let unRedingMessages;
+  if (messages) {
+    unRedingMessages = messages.filter((mgs) => mgs.status === "pending");
+  }
+  const onLogoutHandle = async () => {
+    try {
+      await logout().unwrap();
+      dispatch(authAction.logoutSuccess());
+      if (!currentUser) {
+        navigate("/");
+      }
+    } catch (error) {
+    }
   };
+
+  useEffect(() => {
+    const getMessages = async () => {
+      try {
+        const res = await getUserMessages().unwrap();
+        dispatch(messagesAction.getMessagesSuccess(res.message));
+      } catch (error) {
+      }
+    };
+    if (currentUser) {
+      // getMessages();
+    }
+  }, [dispatch, currentUser, getUserMessages]);
 
   if (ismobile) {
     return (
@@ -176,13 +206,6 @@ const Navbar = () => {
               <button type="button" onClick={onLogoutHandle}>
                 התנתק
               </button>
-              <Link
-                to="/"
-                style={{ textDecoration: "none" }}
-                onClick={onLogoutHandle}
-              >
-                התנתק
-              </Link>
             </NavItem>
           )}
         </ListContainer>
@@ -253,7 +276,7 @@ const Navbar = () => {
               >
                 <FontAwesomeIcon icon={faUser} style={{ color: "black" }} />
                 <small style={{ color: "#000000", fontSize: "13px" }}>
-                  {currentUser.name}
+                  {currentUser && currentUser.name.slice(0, 5)}
                 </small>
               </Link>
             </NavItem>
@@ -277,7 +300,7 @@ const Navbar = () => {
               </NavItem>
               <NavItem>
                 <Link
-                  to={`/profile/${currentUser._id}`}
+                  to={`/profile/${currentUser._id}/messages`}
                   style={{ textDecoration: "none" }}
                 >
                   <Item className="item">
@@ -298,6 +321,7 @@ const Navbar = () => {
         </ListContainer>
       </NavbarContainer>
       <Outlet />
+      {isLoading && <LoadingSpinner />}
     </Fragment>
   );
 };

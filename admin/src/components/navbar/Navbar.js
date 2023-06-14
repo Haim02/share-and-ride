@@ -1,12 +1,11 @@
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import FullscreenExitOutlinedIcon from "@mui/icons-material/FullscreenExitOutlined";
-import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
-import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
-import ListOutlinedIcon from "@mui/icons-material/ListOutlined";
 import profileImage from "../../assets/images/profileImage.jpg";
 import "./navbar.scss";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
+  const { currentUser } = useSelector((state) => state.auth);
+
   return (
     <div className="navbar">
       <div className="wrapper">
@@ -16,21 +15,8 @@ const Navbar = () => {
         </div>
         <div className="items">
           <div className="item">
-            <FullscreenExitOutlinedIcon className="icon" />
-          </div>
-          <div className="item">
-            <NotificationsNoneOutlinedIcon className="icon" />
-            <div className="counter"></div>
-          </div>
-          <div className="item">
-            <ChatBubbleOutlineOutlinedIcon className="icon" />
-            <div className="counter"></div>
-          </div>
-          <div className="item">
-            <ListOutlinedIcon className="icon" />
-          </div>
-          <div className="item">
             <img src={profileImage} alt="" className="avatar" />
+            {currentUser.name.slice(0, 5)}
           </div>
         </div>
       </div>

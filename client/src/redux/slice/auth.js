@@ -1,20 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  registerUser,
-  userLogin,
-  userLogout,
-  updateUser,
-  geUsertProduct,
-  updateUserProduct,
-  deleteUserProducts,
-} from "../apiCalls/auth";
+import storage from "redux-persist/lib/storage";
+import { purgeStoredState } from "redux-persist";
+import { persistor } from "./../store";
 
 const initialState = {
   loading: false,
   currentUser: null,
   product: null,
   messages: [],
-  userToken: null,
+  token: null,
   error: false,
   success: false,
 };
@@ -30,7 +24,8 @@ const authSlice = createSlice({
     },
     registerSuccess(state, action) {
       state.loading = false;
-      state.currentUser = action.payload;
+      state.currentUser = action.payload.user;
+      state.token = action.payload.token;
       state.success = true; // registration successful
     },
     registerFailure(state, action) {
@@ -45,8 +40,8 @@ const authSlice = createSlice({
     },
     loginSuccess(state, action) {
       state.loading = false;
-      state.currentUser = action.payload;
-      // state.userToken = action.payload.token;
+      state.currentUser = action.payload.user;
+      state.token = action.payload.token;
       state.success = true; // login successful
     },
     loginFailure(state, action) {
@@ -61,7 +56,22 @@ const authSlice = createSlice({
     },
     logoutSuccess(state) {
       state.loading = false;
+      state.token = null;
       state.currentUser = null;
+      state.product = null;
+      state.messages = null;
+      // persistor.pause()
+      // persistor.flush().then(() => {
+      //   return persistor.purge(persistor.getState('null'))
+      // })
+      storage.removeItem("persist:root");
+      // console.log('persistor.getState()' ,persistor.getState())
+      // persistor.getState()
+      localStorage.removeItem("persist:root");
+      // localStorage.removeItem('persist:root.userProfile')
+      // localStorage.removeItem('userProfile')
+      localStorage.clear();
+      // persistor.purge()
       state.success = true; // Logout successful
     },
     logoutFailure(state, action) {
@@ -98,7 +108,6 @@ const authSlice = createSlice({
     updateUserFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
-      // state.error = action.payload
     },
 
     // Get user's product
@@ -109,7 +118,7 @@ const authSlice = createSlice({
     getUsertProductSeccess(state, action) {
       state.loading = false;
       state.product = action.payload;
-      state.success = true; // Logout successful
+      state.success = true;
     },
     getUsertProductFailure(state, action) {
       state.loading = false;
@@ -152,8 +161,8 @@ const authSlice = createSlice({
     },
     deleteUserProductsSuccess(state) {
       state.loading = false;
-      state.products = null;
-      state.success = true; // Logout successful
+      state.product = null;
+      state.success = true;
     },
     deleteUserProductsFailure(state, action) {
       state.loading = false;
@@ -163,5 +172,4 @@ const authSlice = createSlice({
 });
 
 export const authAction = authSlice.actions;
-export const authExtraReducers = authSlice.caseReducers;
 export default authSlice;

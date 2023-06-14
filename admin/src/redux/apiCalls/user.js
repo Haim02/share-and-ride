@@ -11,8 +11,8 @@ export const getUsers = async (dispatch) => {
   }
 };
 
-export const getOneUder = async (dispatch, id) => {
-  dispatch(userAction.getUsersStart());
+export const getOneUser = async (dispatch, id) => {
+  dispatch(userAction.getUserStart());
   try {
     const response = await publicRequest.get(`/users/${id}`);
     dispatch(userAction.getUserSuccess(response.data.user));
@@ -25,7 +25,7 @@ export const deleteUser = async (id, dispatch) => {
   dispatch(userAction.deleteUserStart());
   try {
     const response = await publicRequest.delete(`/users/${id}`);
-    dispatch(userAction.deleteUserSuccess(response.data.user));
+    dispatch(userAction.deleteUserSuccess(id));
   } catch (error) {
     dispatch(userAction.deleteUserFailure());
   }

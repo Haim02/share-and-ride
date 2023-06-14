@@ -43,12 +43,12 @@ const Home = () => {
             <Widget type="order" count={totalProducts} />
           </div>
           <div className="charts">
-            <Featured value={todayRentStats} />
+            {todayRentStats && <Featured value={todayRentStats} /> }
             <Chart title="6 חודשים האחרונים" aspect={2 / 1} />
           </div>
           <div className="listContainer">
             <div className="listTitle">מוצרים אחרונים שעלו</div>
-            <Table products={lastProducts} />
+            {lastProducts && <Table products={lastProducts} />}
           </div>
         </div>
       )}

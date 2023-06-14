@@ -8,6 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import bikeImage  from '../../assets/images/bikeImage.png'
 import profileImage  from '../../assets/images/profileImage.jpg'
+import uuid from 'react-uuid';
 import ReactTimeAgo from 'react-time-ago'
 import './lastRentTable.scss';
 
@@ -29,9 +30,9 @@ const LastRentTable = (props) => {
         </TableRow>
         </TableHead>
         <TableBody>
-          {props.rows.map((row) => (
+          {props.rows.map((row, i) => (
             <TableRow
-              key={row?.productId?.details?.title || row?.fromUser.name}
+              key={uuid()}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               {props.type === 'user' ? (
@@ -46,7 +47,7 @@ const LastRentTable = (props) => {
               </TableCell>
               )
               }
-              <TableCell align="right">{<ReactTimeAgo date={row.createdAt} locale="he"/>}</TableCell>
+              <TableCell align="right">{<ReactTimeAgo date={new Date(row.createdAt)} locale="he"/>}</TableCell>
               {status}
             </TableRow>
           ))}

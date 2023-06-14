@@ -1,30 +1,42 @@
-const mongoose = require('mongoose');
-// const dotenv = require('dotenv');
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 
-// dotenv.config({ path: './config.env' });
+dotenv.config({ path: "./config.env" });
 
-const MONGO_URL = process.env.DATABASE_URL.replace('<password>', process.env.MONGO_PASSWORD);
+const MONGO_URL = process.env.DATABASE_URL.replace(
+  "<password>",
+  process.env.MONGO_PASSWORD
+);
 
-mongoose.connection.once('open', () => {
-    console.log('MongoDB connection reday!')
+const mongoCreateConnection = mongoose.createConnection(MONGO_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
-mongoose.connection.on('error', (err) => {
-    console.error(err)
+mongoose.set("strictQuery", false);
+
+mongoose.connection.once("open", () => {
+  console.log("MongoDB connection reday!");
 });
 
-const mongoConnect = async() => {
-    await mongoose.connect(MONGO_URL, {
-        useNewUrlParser: true,
-    })
-    mongoose.set('strictQuery', false)
+mongoose.connection.on("error", (err) => {
+  console.error(err);
+});
+
+const mongoConnect = async () => {
+  await mongoose.connect(MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  mongoose.set("strictQuery", false);
 };
 
-const mongoDisconnect = async() => {
-    await mongoose.disconnect()
+const mongoDisconnect = async () => {
+  await mongoose.disconnect();
 };
 
 module.exports = {
-   mongoConnect,
-   mongoDisconnect
+  mongoConnect,
+  mongoDisconnect,
+  mongoCreateConnection,
 };
