@@ -1,0 +1,104 @@
+
+.container {
+    width: 100%;
+    height: 100%;
+    height: 550px;
+    background: linear-gradient(
+        rgba(155, 155, 255, 0.3),
+        rgba(155, 355, 355, 0.3)
+      ),
+      url('../../assets//images/backGroundImage.png')
+        center; 
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .wrapper {
+        width: 40%;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.846);
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+
+  @media only screen and (max-width: 500px) {
+    width: 80%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+    margin-bottom: 100px;
+  }
+//   .loader{
+//     background-color: rgba(193, 188, 188, 0.498);
+//     width: 100px;
+//     height: 110px;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     border-radius: 4px;
+//     position: relative;
+//         top: 0;
+//         right: 0;
+//         bottom: 0;
+//         left: 0;
+
+//  }
+
+  h2 {
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  .form {
+    display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
+  @media only screen and (max-width: 442px) {
+    height: 343px !important;
+  }
+}
+.inputGroub {
+  display: flex;
+  
+  input {
+    margin: 20px 10px;
+    width: 40%;
+    border: none;
+    padding: 15px 20px;
+    color: black;
+    width: 100%;
+    text-align: right;
+  }
+  
+}
+button {
+    padding: 10px;
+    margin-top: 70px;
+    background-color: #0071c2;
+    color: white;
+    border: none;
+    width: 100%;
+    font-weight: 500;
+    cursor: pointer;
+    @media (min-width: 250px) {
+        margin-top: 0;
+        width: 70%;
+    }
+    &::placeholder {
+            font-size: 12px;
+            text-align: right;
+          }
+  }
+    }
+}
+.spinnerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
