@@ -1,6 +1,6 @@
 import { userAction } from "../slice/user";
 import axios from "axios";
-const URL = "http://localhost:3001/api/admin/users";
+const URL = "http://localhost:3000/api/admin/users";
 
 export const publicRequest = axios.create({
   baseURL: URL,

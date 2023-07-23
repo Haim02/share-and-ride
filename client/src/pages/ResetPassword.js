@@ -2,7 +2,7 @@ import React, { useState, Fragment } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Container, Wrapper, Title, Form } from "./Register";
-import { useForgotPasswordMutation } from "../redux/apiCalls/auth";
+import { useResetPasswordMutation } from "../redux/apiCalls/auth";
 import FormInputs from "../components/formInput/FormInput";
 import Button from "../components/button/Button";
 import { toast } from "react-toastify";
@@ -10,28 +10,22 @@ import LoadingSpinner from "./../components/UI/LoadingSpinner";
 import { authAction } from "./../redux/slices/auth";
 
 const ResetPasswordPage = () => {
-  const [resetPassword, { isLoading, isError }] = useForgotPasswordMutation();
+  const [resetPassword, { isLoading, isError }] = useResetPasswordMutation();
   const [disabledBtn, setDisabledBtn] = useState(true);
   const [newPassword, setNewPassword] = useState({
     password: "",
     passwordConfirm: "",
   });
+  
   const location = useLocation();
   let token = location.pathname.split("/");
-  token = token[token - 1];
+  token = token[token.length - 1];
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onChangeHandler = (e) => {
     setNewPassword({ ...newPassword, [e.target.name]: e.target.value });
-    if (newPassword.password === "" || newPassword.passwordConfirm === "") {
-      setDisabledBtn(true);
-    } else if (
-      newPassword.password.length < 8 ||
-      newPassword.passwordConfirm.length < 8
-    ) {
-      setDisabledBtn(true);
-    } else if (newPassword.password !== newPassword.passwordConfirm) {
+    if(newPassword.password.length < 7) {
       setDisabledBtn(true);
     } else setDisabledBtn(false);
   };
@@ -39,9 +33,14 @@ const ResetPasswordPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (newPassword.passwordConfirm !== newPassword.password) {
+      toast.error("סיסמאות לא תואמות");
+      return;
+    }
+
     const reset = {
       token: token,
-      password: newPassword.password,
+      password: newPassword,
     };
 
     try {
@@ -56,7 +55,7 @@ const ResetPasswordPage = () => {
       return navigate("/login");
     }
   };
-
+ 
   return (
     <Fragment>
       {isLoading && <LoadingSpinner />}

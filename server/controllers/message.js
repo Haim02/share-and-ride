@@ -29,6 +29,7 @@ exports.createMessage = async (req, res) => {
 exports.getMessages = async (req, res) => {
   try {
     const message = await Message.find({ toUser: req.user._id })
+      .sort("-createdAt")
       .populate("productId")
       .populate("fromUser");
 
@@ -43,7 +44,7 @@ exports.getMessages = async (req, res) => {
 };
 exports.getMyRequests = async (req, res) => {
   try {
-    const requests = await Message.find({ fromUser: req.user._id }).populate(
+    const requests = await Message.find({ fromUser: req.user._id }).sort("-createdAt").populate(
       "productId"
     );
     res.status(200).json({

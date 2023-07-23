@@ -6,6 +6,7 @@ import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { uploadImage, deletImage } from "../../imagesApi";
 import Button from "../button/Button";
 import uuid from "react-uuid";
+import { toast } from "react-toastify";
 
 const ImagesContainer = styled.div`
   display: flex;
@@ -67,7 +68,7 @@ const ImageUploader = (props) => {
 
   const handleUpload = () => {
     if (imagesNames.length === 3) {
-      alert("ניתן לעלות עד 3 תמונות");
+      toast.error('ניתן לעלות עד 3 תמונות"')
       setFileName(null);
       return;
     }

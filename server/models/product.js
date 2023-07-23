@@ -46,6 +46,9 @@ const productSchema = mongoose.Schema(
       hourPrice: {
         type: Number,
       },
+      payment: {
+        type: String,
+      },
     },
     location: {
       city: {

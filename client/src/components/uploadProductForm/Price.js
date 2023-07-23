@@ -14,6 +14,7 @@ const InputsGroup = styled.div`
 `;
 
 const CheckboxContainer = styled.div``;
+
 const Checkbox = styled.input`
   border: 10;
   margin-right: 30px;
@@ -44,14 +45,14 @@ const Price = (props) => {
   const onCheckHandler = (e) => {
     setIsChecked(e.target.checked);
     if (isChecked === true) {
-      setPrice({ hourPrice: 0, dailyPrice: 0 });
+      setPrice({ hourPrice: 0, dailyPrice: 0, payment: price?.payment });
     }
   };
 
   const handleClick = () => {
     if (!price) {
       setError(true);
-      setPrice({ hourPrice: 0, dailyPrice: 0 });
+      setPrice({ hourPrice: 0, dailyPrice: 0, payment: price?.payment });
       return;
     }
     props.pasValue(price);
@@ -82,6 +83,13 @@ const Price = (props) => {
         <Checkbox type="checkbox" onChange={onCheckHandler} />
       </CheckboxContainer>
       {error && <Small>יש לבחור אופציה אחת</Small>}
+      <FormInputs
+          label="צורת התשלום"
+          type="text"
+          placeholder="ביט/מזומן/העברה בנקאית"
+          name="payment"
+          onChange={onChangeHandler}
+        />
       <Btn>
         <Button
           theme="uploadForm"

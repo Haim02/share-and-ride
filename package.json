@@ -1,0 +1,29 @@
+{
+  "name": "sherandride-2.0",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install-server": "npm install --prefix server",
+    "install-client": "npm install --prefix client",
+    "install-admin": "npm install --prefix admin",
+    "install": "npm run install-server && npm run install-client",
+    "server": "npm run watch --prefix server",
+    "client": "npm start --prefix client",
+    "admin": "npm start --prefix admin",
+    "build": "npm run build --prefix client",
+    "watch": "npm run server & npm run client",
+    "test": "npm run test --prefix server && npm run test --prefix client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Haim02/share-and-ride.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Haim02/share-and-ride/issues"
+  },
+  "homepage": "https://github.com/Haim02/share-and-ride#readme"
+}

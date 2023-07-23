@@ -1,19 +1,18 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useRegisterMutation } from "../redux/apiCalls/auth";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { toast } from "react-toastify";
-// import GoogleButton from "./../../components/UI/GoogleButton";
-import backGroundImage from '../assets/images/backGroundImage.png'
+import GoogleButton from "../components/UI/GoogleButton";
+import backGroundImage from "../assets/images/backGroundImage.png";
 import "react-toastify/dist/ReactToastify.css";
-import LoadingSpinner from './../components/UI/LoadingSpinner';
-import Button from './../components/button/Button';
+import LoadingSpinner from "./../components/UI/LoadingSpinner";
+import Button from "./../components/button/Button";
 import { authAction } from "../redux/slices/auth";
-import FormInputs from './../components/formInput/FormInput';
-
+import FormInputs from "./../components/formInput/FormInput";
 
 export const Container = styled.div`
   padding: 20px 10px;
@@ -100,9 +99,9 @@ const validationSchema = yup.object({
   name: yup.string().required("נדרש למלא שם משתמש"),
   email: yup
     .string()
-    .email("כתובת אימיל לא תקינה")
+    .email("כתובת אימייל לא תקינה")
     .trim()
-    .required("נדרשם למלא אימיל"),
+    .required("נדרשם למלא אימייל"),
   phone: yup
     .string()
     .trim()
@@ -123,7 +122,6 @@ const validationSchema = yup.object({
 const Register = () => {
   const [isCheckbox, setIsCheckbox] = useState(false);
   const [isCheckboxBlur, setIsCheckboxBlur] = useState(false);
-  // const [googleSignin, { isError }] = useGoogleSigninMutation();
   const [register, { isLoading }] = useRegisterMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -136,18 +134,9 @@ const Register = () => {
     setIsCheckboxBlur(true);
   };
 
-  // const handleGoogleChecked = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const res = await googleSignin().unwrap();
-  //     dispatch(authAction.loginSuccess(res.user));
-  //   } catch (error) {
-  //     toast.error(error.data.message);
-  //   }
-  //   if (!isError) {
-  //     return navigate("/");
-  //   }
-  // };
+  const google = () => {
+    window.open("http://localhost:3000/api/auth/google", "_self");
+  };
 
   const onSubmit = async (values) => {
     if (!isCheckbox) {
@@ -183,12 +172,10 @@ const Register = () => {
       {isLoading && <LoadingSpinner />}
       <Wrapper>
         <Title>צור חשבון</Title>
-        {/* <GoogleSign>
-          <Link to="http://localhost:3001/api/auth/google/callback">
-            <GoogleButton text="הירשם עם גוגל" onClick={handleGoogleChecked} />
-          </Link>
+        <GoogleSign onClick={google}>
+          <GoogleButton text="התחבר עם גוגל" />
         </GoogleSign>
-        <Title>או</Title> */}
+        <Title>או</Title>
         <Form onSubmit={formik.handleSubmit}>
           <FormInputs
             value={formik.values.name}

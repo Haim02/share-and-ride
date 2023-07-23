@@ -62,7 +62,7 @@ const Login = () => {
               onChange={onChangeHandler}
             />
           </div>
-          {isError && <small>סיסמה או אימיל לא נכונים</small>}
+          {isError && <small>סיסמה או אימייל לא נכונים</small>}
           <button disabled={disabledBtn}>התחבר</button>
         </form>
       </div>

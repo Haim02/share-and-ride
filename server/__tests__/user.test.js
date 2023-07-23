@@ -16,7 +16,7 @@ describe("User API", () => {
       const response = await request(app)
         .post("/api/user/auth/signup")
         .send({
-          name: "test user",
+          name: "test",
           email: "test@gmail.com",
           phone: '0531330320',
           password: "12345678",
@@ -31,8 +31,8 @@ describe("User API", () => {
       const response = await request(app)
         .post("/api/user/auth/signup")
         .send({
-          name: "test2 user",
-          email: "testgmail.com",
+          name: "test2",
+          email: "test2gmail.com",
           phone: '0531330320',
           password: "12345678",
           passwordConfirm: "123678",

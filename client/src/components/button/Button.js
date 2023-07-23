@@ -98,7 +98,7 @@ const Logout = styled(BaseButton)`
 
 const NavUploadProduct = styled(BaseButton)`
   width: 100%;
-  padding: 15px 18px;
+  padding: 13px 16px;
   font-size: 13px;
   border-radius: 10px;
 `;

@@ -1,13 +1,10 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import LogoImg from "../../assets/images/logo.png";
 import { useMediaQuery } from "react-responsive";
 import { slide as Menu } from "react-burger-menu";
-import { useGetUserMessagesMutation } from "./../../redux/apiCalls/messages";
-import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
-import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import { mobile } from "../UI/responsive";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
@@ -16,9 +13,8 @@ import { useLogoutMutation } from "../../redux/apiCalls/auth";
 import { authAction } from "../../redux/slices/auth";
 import { messagesAction } from "../../redux/slices/messages";
 import { productAction } from "../../redux/slices/products";
-import LoadingSpinner from './../UI/LoadingSpinner';
-import menuStyle from './../UI/menuStyle';
-
+import LoadingSpinner from "./../UI/LoadingSpinner";
+import menuStyle from "./../UI/menuStyle";
 
 const NavbarContainer = styled.div`
   display: flex;
@@ -85,24 +81,8 @@ const ListContainer = styled.ul`
   ${mobile({ flex: 2, justifyContent: "center" })}
 `;
 
-const Counter = styled.div`
-  width: 15px;
-  height: 15px;
-  background-color: red;
-  border-radius: 50%;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  font-weight: bold;
-  position: absolute;
-  top: -5px;
-  right: -5px;
-`;
-
 const NavItem = styled.li`
-  margin-right: 0.25rem;
+  margin-right: 0.2rem;
   transition-property: background-color, border-color, color, fill, stroke,
     opacity, box-shadow, transform;
   transition-duration: 300ms;
@@ -110,6 +90,7 @@ const NavItem = styled.li`
   color: #000000;
   font-size: 0.875rem;
   line-height: 1.25rem;
+  font-family: Arial, Helvetica, sans-serif;
   font-weight: 5300;
   cursor: pointer;
   :hover {
@@ -122,26 +103,28 @@ const NavItem = styled.li`
   }
 `;
 
-const Item = styled.div`
+const MobileNav = styled.div`
+  height: 60px;
+  background-color: rgb(52, 138, 244);
   display: flex;
+  justify-content: center;
   align-items: center;
-  margin-right: 20px;
-  position: relative;
+`;
+
+const MobileNavText = styled.h3`
+  font-family: sans-serif;
+  font-weight: 15px;
+  font-size: 22px;
+  text-decoration: none;
 `;
 
 const Navbar = () => {
-  const [getUserMessages] = useGetUserMessagesMutation();
   const [logout, { isLoading }] = useLogoutMutation();
-  const ismobile = useMediaQuery({ maxWidth: "540px" });
+  const isMobile = useMediaQuery({ maxWidth: "540px" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const { messages } = useSelector((state) => state.message);
   const { currentUser } = useSelector((state) => state.auth);
 
-  // let unRedingMessages;
-  // if (messages) {
-  //   unRedingMessages = messages.filter((mgs) => mgs.status === "pending");
-  // }
   const onLogoutHandle = async () => {
     try {
       await logout().unwrap();
@@ -152,73 +135,68 @@ const Navbar = () => {
       if (!currentUser) {
         navigate("/");
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
-  // useEffect(() => {
-  //   const getMessages = async () => {
-  //     try {
-  //       const res = await getUserMessages().unwrap();
-  //       dispatch(messagesAction.getMessagesSuccess(res.message));
-  //     } catch (error) {
-  //     }
-  //   };
-  //   if (currentUser) {
-  //     getMessages();
-  //   }
-  // }, [dispatch, currentUser, getUserMessages]);
-
-  if (ismobile) {
+  if (isMobile) {
     return (
-      <MenuContainer right styles={menuStyle}>
-        <ListContainer>
-          <NavItem menu>
-            <Link to="/" style={{ textDecoration: "none" }}>
-              בית
+      <Fragment>
+        <MobileNav>
+          <MobileNavText>
+            <Link to="/" style={{ textDecoration: "none", color: "black" }}>
+              Shre&Ride
             </Link>
-          </NavItem>
-          <NavItem>
-            <Link to="/products" style={{ textDecoration: "none" }}>
-              לעמוד ההשכרות
-            </Link>
-          </NavItem>
-          <NavItem>
-            <Link to="/uploadProduct" style={{ textDecoration: "none" }}>
-              פרסם מוצר
-            </Link>
-          </NavItem>
-          <NavItem menu>
-            <Link to="/contact" style={{ textDecoration: "none" }}>
-              צור קשר
-            </Link>
-          </NavItem>
-          {!currentUser && (
+          </MobileNavText>
+        </MobileNav>
+        <MenuContainer right styles={menuStyle}>
+          <ListContainer>
             <NavItem menu>
-              <Link to="/login" style={{ textDecoration: "none" }}>
-                התחבר
+              <Link to="/" style={{ textDecoration: "none" }}>
+                בית
               </Link>
             </NavItem>
-          )}
-          {currentUser && (
-            <NavItem menu>
-              <Link
-                to={`/profile/${currentUser._id}`}
-                style={{ textDecoration: "none" }}
-              >
-                חשבון
+            <NavItem>
+              <Link to="/products" style={{ textDecoration: "none" }}>
+                לעמוד ההשכרות
               </Link>
             </NavItem>
-          )}
-          {currentUser && (
-            <NavItem menu>
-              <button type="button" onClick={onLogoutHandle}>
-                התנתק
-              </button>
+            <NavItem>
+              <Link to="/uploadProduct" style={{ textDecoration: "none" }}>
+                פרסם מוצר
+              </Link>
             </NavItem>
-          )}
-        </ListContainer>
-      </MenuContainer>
+            <NavItem menu>
+              <Link to="/contact" style={{ textDecoration: "none" }}>
+                צור קשר
+              </Link>
+            </NavItem>
+            {!currentUser && (
+              <NavItem menu>
+                <Link to="/login" style={{ textDecoration: "none" }}>
+                  התחבר
+                </Link>
+              </NavItem>
+            )}
+            {currentUser && (
+              <NavItem menu>
+                <Link
+                  to={`/profile/${currentUser._id}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  חשבון
+                </Link>
+              </NavItem>
+            )}
+            {currentUser && (
+              <NavItem menu>
+                <button type="button" onClick={onLogoutHandle}>
+                  התנתק
+                </button>
+              </NavItem>
+            )}
+          </ListContainer>
+        </MenuContainer>
+      </Fragment>
     );
   }
 

@@ -1,7 +1,7 @@
 import { productAction } from "../slice/product";
 import axios from 'axios';
 // import { publicRequest } from "../../requestMethods";
-const URL = "http://localhost:3001/api/admin/products";
+const URL = "/api/admin/products";
 
 export const publicRequest = axios.create({
   baseURL: URL,

@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import styled from "styled-components";
-import { useLocation, useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import RidingToll from "../components/productCart/ProductCart";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Sorting from "../components/filters/Sorting";

@@ -1,7 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import storage from "redux-persist/lib/storage";
-// import { purgeStoredState } from "redux-persist";
-// import { persistor } from "./../store";
 
 const initialState = {
   loading: false,
@@ -17,7 +14,6 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    // register user
     registerStart(state) {
       state.loading = true;
       state.error = null;
@@ -26,14 +22,13 @@ const authSlice = createSlice({
       state.loading = false;
       state.currentUser = action.payload.user;
       state.token = action.payload.token;
-      state.success = true; // registration successful
+      state.success = true; 
     },
     registerFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
     },
 
-    // login user
     loginStart(state) {
       state.loading = true;
       state.error = false;
@@ -42,14 +37,13 @@ const authSlice = createSlice({
       state.loading = false;
       state.currentUser = action.payload.user;
       state.token = action.payload.token;
-      state.success = true; // login successful
+      state.success = true; 
     },
     loginFailure(state, action) {
       state.loading = false;
       state.error = true;
     },
 
-    // logout user
     logoutStart(state) {
       state.loading = true;
       state.error = null;
@@ -69,7 +63,6 @@ const authSlice = createSlice({
       state.error = action.payload;
     },
 
-    // upload product
     uploadProductStart(state) {
       state.loading = true;
       state.error = null;
@@ -77,15 +70,13 @@ const authSlice = createSlice({
     uploadProductSucess(state, action) {
       state.loading = false;
       state.product = action.payload;
-      state.success = true; // upload successful
+      state.success = true; 
     },
     uploadProductFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
-      // state.error = action.payload
     },
 
-    // Update user
     updateUserStart(state) {
       state.loading = true;
       state.error = null;
@@ -93,14 +84,13 @@ const authSlice = createSlice({
     updateUserSucess(state, action) {
       state.loading = false;
       state.currentUser = action.payload;
-      state.success = true; // Logout successful
+      state.success = true; 
     },
     updateUserFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
     },
 
-    // Get user's product
     getUsertProductStart(state) {
       state.loading = true;
       state.error = null;
@@ -115,7 +105,6 @@ const authSlice = createSlice({
       state.error = action.payload;
     },
 
-    // Update user products
     updateUserProductStart(state) {
       state.loading = true;
       state.error = null;
@@ -130,7 +119,6 @@ const authSlice = createSlice({
       state.error = action.payload;
     },
 
-    // Update user password
     updateUserPasswordStart(state) {
       state.loading = true;
       state.error = null;
@@ -144,7 +132,6 @@ const authSlice = createSlice({
       state.error = true;
     },
 
-    // Delete user products
     deleteUserProductsStart(state) {
       state.loading = true;
       state.error = null;

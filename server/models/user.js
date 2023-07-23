@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
-const passportLocalMongoose = require("passport-local-mongoose");
 const salt = 10;
 
 const userSchema = new mongoose.Schema(
@@ -71,6 +70,6 @@ userSchema.methods.createPasswordResetToken = function () {
   return resetToken;
 };
 
-userSchema.plugin(passportLocalMongoose);
+// userSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model("User", userSchema);

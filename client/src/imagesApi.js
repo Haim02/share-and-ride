@@ -18,7 +18,7 @@ export const uploadImage = async (fileName, setPercent, setImagesNames) => {
   const storageRef = ref(storage, imgName);
   const uploadTask = uploadBytesResumable(storageRef, fileName);
 
-  uploadTask.on(
+   uploadTask.on(
     "state_changed",
     (snapshot) => {
       const percent = Math.round(
@@ -30,6 +30,8 @@ export const uploadImage = async (fileName, setPercent, setImagesNames) => {
     () => {
        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
          setImagesNames((pre) => [...pre, url]);
+      })
+      .catch((err) => {
       });
     }
   );
@@ -37,7 +39,7 @@ export const uploadImage = async (fileName, setPercent, setImagesNames) => {
 
 export const deletImage = (imgName, setImagesNames) => {
   let imgRef = ref(storage, imgName);
-  deleteObject(imgRef)
+   deleteObject(imgRef)
     .then(() => {
       setImagesNames((pre) => {
         return pre.filter((img) => {

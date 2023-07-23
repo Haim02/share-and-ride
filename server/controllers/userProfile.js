@@ -86,17 +86,24 @@ exports.getProduct = async (req, res, next) => {
 
 exports.updateProduct = async (req, res, next) => {
   const productId = req.params.id;
+  console.log("body", req.body);
   try {
-    const updateProduct = await Product.findByIdAndUpdate(productId, {
-      details: req.body?.details,
-      price: req.body?.price,
-      location: req.body?.location,
-      images: req.body?.images,
-    });
+    const updateProduct = await Product.findByIdAndUpdate(
+      productId,
+      {
+        details: req.body?.details,
+        price: req.body?.price,
+        location: req.body?.location,
+        images: req.body?.images,
+      },
+      { returnDocument: "after" }
+    );
     if (!updateProduct) {
       throw new Error("No document found with that ID");
-    } 
-  
+    }
+
+    console.log("updateProduct", updateProduct);
+
     res.status(200).json({
       status: "success",
       product: updateProduct,

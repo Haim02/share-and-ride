@@ -11,7 +11,6 @@ const messagesSlice = createSlice({
   name: "messages",
   initialState: initialState,
   reducers: {
-    //Get messages
     getMessagesStart(state) {
       state.isFetching = true;
       state.error = false;
@@ -25,7 +24,6 @@ const messagesSlice = createSlice({
       state.error = true;
     },
 
-    //Get messages
     getRequestsStart(state) {
       state.isFetching = true;
       state.error = false;
@@ -39,21 +37,19 @@ const messagesSlice = createSlice({
       state.error = true;
     },
 
-    //Create message
     createMessagesStart(state) {
       state.isFetching = true;
       state.error = false;
     },
     createMessagesSuccess(state, action) {
       state.isFetching = false;
-      state.messages.push(action.payload)
     },
+    
     createMessagesFailure(state) {
       state.isFetching = false;
       state.error = true;
     },
 
-    //Update message
     updateMessagesStart(state) {
       state.isFetching = true;
       state.error = false;

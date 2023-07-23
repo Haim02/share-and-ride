@@ -16,6 +16,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  margin: 100px 0;
 
   @media (min-width: 368px) {
     height: 30vh;
@@ -26,6 +27,7 @@ const Container = styled.div`
 const Title = styled.h1`
   font-size: 70px;
   margin-bottom: 20px;
+  margin-top: 30px;
 
   @media (min-width: 368px) {
     text-align: center;
@@ -42,11 +44,11 @@ const Desc = styled.div`
 
 const InputContainer = styled.div`
   width: 50%;
-  height: 40px;
   background-color: white;
   display: flex;
   justify-content: space-between;
   border: 1px solid light;
+  margin-bottom: 60px;
   ${mobile({ width: "80%" })}
 `;
 
@@ -70,7 +72,7 @@ const Newsletter = () => {
       <Title>הישאר מעודכן</Title>
       <Desc>קבל עדכונים בזמן על מוצרים חדשים</Desc>
       <InputContainer>
-        <Input placeholder="Your email" />
+        <Input placeholder="הכנס כתובת מייל" />
         <Button>
           <Send />
         </Button>

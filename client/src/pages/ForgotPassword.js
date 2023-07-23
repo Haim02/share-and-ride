@@ -20,7 +20,7 @@ const ForgotPasswordPage = () => {
       await forgotPassword({ email: email }).unwrap();
       toast.success("נשלח קישור לאיפוס הסיסמה לכתובת מייל שהוזנה");
     } catch (error) {
-      toast.error("אימיל לא תקין");
+      toast.error("אימייל לא תקין");
     }
   };
 
@@ -43,7 +43,7 @@ const ForgotPasswordPage = () => {
             <Button
               theme="auth"
               type="submit"
-              text="שלח אימיל"
+              text="שלח אימייל"
               disabled={email === ""}
             />
           </Form>

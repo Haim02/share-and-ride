@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Container,
@@ -11,7 +11,7 @@ import {
   GoogleSign,
 } from "./Register";
 import FormInputs from "./../components/formInput/FormInput";
-// import { useGoogleSigninMutation } from "../../redux/apiCalls/auth";
+import GoogleButton from "../components/UI/GoogleButton";
 import { useLoginMutation } from "../redux/apiCalls/auth";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
@@ -20,9 +20,7 @@ import Button from "./../components/button/Button";
 import { authAction } from "./../redux/slices/auth";
 
 const Login = () => {
-  //   const [searchParams] = useSearchParams();
   const [login, { isLoading, isError }] = useLoginMutation();
-  //   const [googleSignin] = useGoogleSigninMutation();
   const [disabledBtn, setDisabledBtn] = useState(true);
   const [loginValues, setLoginValues] = useState({
     email: "",
@@ -43,19 +41,6 @@ const Login = () => {
     }
   };
 
-  //   const handleGoogleChecked = async (e) => {
-  //     e.preventDefault();
-  //     try {
-  //       const res = await googleSignin().unwrap();
-  //       dispatch(authAction.loginSuccess(res.user));
-  //     } catch (error) {
-  //       toast.error(error.data.message);
-  //     }
-  //     if (!isError && currentUser) {
-  //       return navigate("/");
-  //     }
-  //   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -70,20 +55,19 @@ const Login = () => {
     }
   };
 
+  const google = () => {
+    window.open("http://localhost:3000/api/auth/google", "_self");
+  };
+
   return (
     <Fragment>
       {isLoading && <LoadingSpinner />}
       <Container>
         <Wrapper>
-          {/* <GoogleSign>
-            <Link
-              to="http://localhost:3001/api/auth/google/google/callback"
-              onClick={handleGoogleChecked}
-            >
-              <GoogleButton text="התחבר עם גוגל" />
-            </Link>
+          <GoogleSign onClick={google}>
+            <GoogleButton text="התחבר עם גוגל" />
           </GoogleSign>
-          <Title>או</Title> */}
+          <Title>או</Title>
           <Form onSubmit={handleSubmit}>
             <FormInputs
               label="אמייל"
@@ -110,7 +94,7 @@ const Login = () => {
           </Form>
           {isError && (
             <div style={{ display: "flex", justifyContent: "center" }}>
-              <Small>סיסמה או אימיל לא נכונים</Small>{" "}
+              <Small>סיסמה או אימייל לא נכונים</Small>{" "}
             </div>
           )}
           <Links>
@@ -123,7 +107,7 @@ const Login = () => {
               לחץ כאן
             </Link>
             כניסת מנהל
-            <Link to="http://localhost:3002" style={{ color: "blue" }}>
+            <Link to="http://localhost:3000/admin" style={{ color: "blue" }}>
               לחץ כאן
             </Link>
           </Links>

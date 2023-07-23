@@ -85,8 +85,8 @@ const RentFrom = (props) => {
     }/${startDate.getFullYear()}`.toString();
     let start = `${startTime.getHours()}:${startTime.getMinutes()}`.toString();
     let end = `${endTime.getHours()}:${endTime.getMinutes()}`.toString();
-
-    const message = {
+    
+      const message = {
       date,
       start,
       end,
@@ -94,13 +94,13 @@ const RentFrom = (props) => {
       toUser: props.toUser,
       productId,
     };
-
+    
     if (product) {
       if (productId === product._id) {
         return toast.error(" משתמש לא יכול לשלוח בקשה למוצר ששייך לו");
       }
     }
-
+     
     if (start || end) {
       let dayNew = new Date().getDate();
       let hourNew = new Date(Date.now()).getHours();
@@ -108,15 +108,17 @@ const RentFrom = (props) => {
 
       if (
         parseInt(date.slice(0, 2)) < dayNew ||
-        parseInt(start.slice(0, 2)) < hourNew ||
+        (parseInt(date.slice(0, 2)) <= dayNew  && parseInt(start.slice(0, 2)) < hourNew) ||
         parseInt(start.slice(2)) < miniteNew
-      )
+      ){
         return toast.error("טופס לא חוקי");
+      }
     }
-
+      
     try {
       const res = await createMessage(message).unwrap();
-      dispatch(messagesAction.createMessagesSuccess(res));
+      console.log('res', res)
+      dispatch(messagesAction.createMessagesSuccess(res.message));
       toast.success("הודעה נשלחה בהצלחה");
     } catch (error) {
       toast.error(error.message);

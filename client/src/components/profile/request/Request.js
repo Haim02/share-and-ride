@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled, { ThemeProvider } from "styled-components";
-import { useDispatch } from "react-redux";
 import {
   faCaretUp,
   faCaretDown,
@@ -19,7 +18,7 @@ const Container = styled.div`
     width: 350px;
     margin-left: 20px;
   }
-`; 
+`;
 
 Container.defaultProps = {
   theme: {
@@ -58,9 +57,6 @@ const Title = styled.h3`
   font-weight: 20px;
   text-align: right;
   margin-left: 20px;
-  /* @media (min-width: 542px) {
-  font-size: 12.5px;
-  } */
 `;
 
 const ImgContainer = styled.div`
@@ -109,7 +105,6 @@ const SmallIcon = styled.span`
 const Span = styled.span`
   margin-left: 15px;
   @media (min-width: 390px) {
-   
   }
 `;
 
@@ -118,9 +113,6 @@ const SpanItem = styled.div`
   flex-direction: row-reverse;
   justify-content: space-between;
   width: 60%;
-  /* @media (min-width: 390px) {
-    width: 90%;
-  } */
 `;
 
 const Body = styled.div`
@@ -137,7 +129,6 @@ const Body = styled.div`
 
 const Request = ({ request }) => {
   const [isStartCalendarOpen, setIsStartCalendarOpen] = useState(false);
-  const dispatch = useDispatch();
 
   const theme = {
     main:

@@ -54,7 +54,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
       query: (obj) => ({
         url: `/profile/userProduct/${obj.id}`,
         method: "PATCH",
-        body: obj.images,
+        body: obj.data,
       }),
     }),
     updateUserPassword: builder.mutation({
@@ -86,7 +86,8 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
     googleSignin: builder.mutation({
       query: () => ({
-        url: "/auth/google/google/callback",
+        url: "/auth/google/login/success",
+        credentials: "include",
         method: "GET",
       }),
     }),

@@ -13,6 +13,9 @@ const ImagesContainer = styled.ul`
   justify-content: space-evenly;
   list-style: none;
   margin-top: 10px;
+  @media (max-width: 640px) {
+    flex-direction: column;
+  }
 `;
 
 const Li = styled.li``;
@@ -34,7 +37,11 @@ const ImgContainer = styled.div`
   }
 
   @media (max-width: 658px) {
-    height: 8em;
+    width: 200px;
+    margin-right: 52px;
+    img {
+      width: 100%;
+    }
   }
 `;
 
@@ -75,12 +82,12 @@ const TypeChice = (props) => {
   return (
     <Container>
       <ImagesContainer onClick={handleType}>
-        <Li name="scooter" value="sss">
+        <Li name="scooter" value="scooter">
           <ImgContainer active={isScooterIsClick} onClick={toggleScooterClick}>
             <img src={aboutScooter} alt="scooter" name="scooter" />
           </ImgContainer>
         </Li>
-        <Li value="bicycle">
+        <Li name="bicycle" value="bicycle">
           <ImgContainer active={isBikeIsClick} onClick={toggleBikeClick}>
             <img src={bikeElectric} alt="bicycle" name="bicycle" />
           </ImgContainer>

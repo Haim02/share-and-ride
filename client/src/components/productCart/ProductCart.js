@@ -10,7 +10,6 @@ const RidingTollContainer = styled.div`
   width: 16.5em;
   min-width: 12em;
   min-height: 18em;
-  /* max-height: 15em; */
   box-shadow: 0 1.3px 12px -3px rgba(0, 0, 0, 0.4);
   display: flex;
   padding: 0.55rem;
@@ -124,7 +123,9 @@ const ProductCart = (
         />
       </RidingTollThumbnail>
       <Seperator />
-      <RidingTollName>{props.product.title}pppppp</RidingTollName>
+      <RidingTollName>
+        {props.product.details.title.slice(0, 30)}
+      </RidingTollName>
       <PricesContainer>
         <DailyPrice>
           ₪{props.product.price.dailyPrice}

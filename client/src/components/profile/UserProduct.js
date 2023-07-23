@@ -5,7 +5,11 @@ import styled from "styled-components";
 import FormInputs from "../formInput/FormInput";
 import Local from "../uploadProductForm/CitiesAndStreets";
 import SideNavProfile from "./SideNavProfile";
-import { useUpdateUserProductMutation, useDeleteUserProductMutation, useGetUsertProductMutation } from "../../redux/apiCalls/auth";
+import {
+  useUpdateUserProductMutation,
+  useDeleteUserProductMutation,
+  useGetUsertProductMutation,
+} from "../../redux/apiCalls/auth";
 import { ref } from "firebase/storage";
 import { uploadImage, deletImage } from "../../imagesApi";
 import { storage } from "../../firebase";
@@ -123,7 +127,6 @@ const Wraper = styled.div`
 const ProductBottom = styled.div`
   display: flex;
   padding: 20px;
-  margin: 20px;
   -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   @media (max-width: 640px) {
@@ -152,6 +155,7 @@ const Select = styled.select`
     margin-left: 0;
   }
 `;
+
 const Option = styled.option`
   border-radius: 0;
 `;
@@ -260,6 +264,7 @@ const UserProduct = () => {
   const [details, setDetails] = useState(product?.details);
   const [location, setLocation] = useState(product?.location);
   const [price, setPrice] = useState(product?.price);
+  const imagesLength = product?.images.length;
 
   useEffect(() => {
     const getProduct = async () => {
@@ -292,7 +297,7 @@ const UserProduct = () => {
 
     try {
       const res = await updateUserProduct(body).unwrap();
-      dispatch(authAction.updateUserProductSuccess(res.data.product));
+      dispatch(authAction.updateUserProductSuccess(res.product));
       toast.success("המוצר התעדכן בהצלחה");
     } catch (error) {
       toast.error(error.message);
@@ -311,7 +316,7 @@ const UserProduct = () => {
 
     try {
       const res = await updateUserProduct(body).unwrap();
-      dispatch(authAction.updateUserProductSuccess(res.data.product));
+      dispatch(authAction.updateUserProductSuccess(res.product));
       toast.success("המוצר התעדכן בהצלחה");
     } catch (error) {
       toast.error(error.message);
@@ -338,36 +343,45 @@ const UserProduct = () => {
 
     try {
       const res = await updateUserProduct(body).unwrap();
-      dispatch(authAction.updateUserProductSuccess(res.data.product));
+      dispatch(authAction.updateUserProductSuccess(res.product));
       toast.success("המוצר התעדכן בהצלחה");
     } catch (error) {
       toast.error(error.message);
     }
   };
 
+  useEffect(() => {
+    const addImages = async () => {
+      const body = {
+        id: product._id,
+        data: {
+          images: imagesNames,
+        },
+      };
+
+      try {
+        const res = await updateUserProduct(body).unwrap();
+        dispatch(authAction.updateUserProductSuccess(res.product));
+        toast.success("המוצר התעדכן בהצלחה");
+      } catch (error) {
+        toast.error(error.message);
+      }
+      setFileName(null);
+    };
+
+    if (imagesNames.length > imagesLength) {
+      addImages();
+    }
+  }, [imagesNames]);
+
   const handleUpload = async () => {
-    if (product?.images === 3) {
+    if (product?.images.length === 3) {
       toast.error("ניתן לעלות עד 3 תמונות");
       setFileName(null);
       return;
     }
 
-    await uploadImage(fileName, setPercent, setImagesNames);
-    const body = {
-      id: product._id,
-      images: {
-        images: imagesNames,
-      },
-    };
-
-    try {
-      const res = await updateUserProduct(body).unwrap();
-      dispatch(authAction.updateUserProductSuccess(res.product));
-      toast.success("המוצר התעדכן בהצלחה");
-    } catch (error) {
-      toast.error(error.message);
-    }
-    setFileName(null);
+    uploadImage(fileName, setPercent, setImagesNames);
   };
 
   const handleSubmitImg = async (e) => {
@@ -382,7 +396,7 @@ const UserProduct = () => {
 
     try {
       const res = await updateUserProduct(body).unwrap();
-      dispatch(authAction.updateUserProductSuccess(res.data.product));
+      dispatch(authAction.updateUserProductSuccess(res.product));
       toast.success("המוצר התעדכן בהצלחה");
     } catch (error) {
       toast.error(error.message);
@@ -402,17 +416,15 @@ const UserProduct = () => {
     if (product?.images.length > 0) {
       let imgRef = ref(storage, imgName);
       deletImage(imgRef, imgName, setImagesNames);
-      const images = [imagesNames];
 
       const updateImages = product?.images.filter((img) => {
-        return img !== imgName
+        return img !== imgName;
       });
 
       const body = {
         id: product._id,
-        images: {images:updateImages},
+        data: { images: updateImages },
       };
-
       try {
         const res = await updateUserProduct(body).unwrap();
         dispatch(authAction.updateUserProductSuccess(res.product));
@@ -499,35 +511,38 @@ const UserProduct = () => {
                         </FormContainer>
                       );
                     })}
-                    {/* {fileName && (
-                      <UploadBtn onClick={handleUpload}>העלה</UploadBtn>
-                    )} */}
                     {fileName && (
-        <PreImgContainer>
-          <PreImg
-            src={
-              typeof value === "string"
-                ? fileName
-                : URL.createObjectURL(fileName)
-            }
-            alt="file"
-          />
-          <p>{percent} "%"</p>
-          {fileName && <UploadBtn onClick={handleUpload}>העלה</UploadBtn>}
-        </PreImgContainer>
-      )}
-                    <ImagesContainer
-                      type="button"
-                      onClick={() => inputRef.current.click()}
-                    >
-                      <input
-                        type="file"
-                        ref={inputRef}
-                        onChange={(e) => setFileName(e.currentTarget.files[0])}
-                        hidden
-                      />
-                      <MdCloudUpload color="#147cf" size={60} />
-                    </ImagesContainer>
+                      <PreImgContainer>
+                        <PreImg
+                          src={
+                            typeof value === "string"
+                              ? fileName
+                              : URL.createObjectURL(fileName)
+                          }
+                          alt="file"
+                        />
+                        <p>{percent} "%"</p>
+                        {fileName && (
+                          <UploadBtn onClick={handleUpload}>העלה</UploadBtn>
+                        )}
+                      </PreImgContainer>
+                    )}
+                    {product?.images.length < 3 && (
+                      <ImagesContainer
+                        type="button"
+                        onClick={() => inputRef.current.click()}
+                      >
+                        <input
+                          type="file"
+                          ref={inputRef}
+                          onChange={(e) =>
+                            setFileName(e.currentTarget.files[0])
+                          }
+                          hidden
+                        />
+                        <MdCloudUpload color="#147cf" size={60} />
+                      </ImagesContainer>
+                    )}
                   </ProductBottom>
 
                   <FormContainer
@@ -540,7 +555,6 @@ const UserProduct = () => {
                         <DetailsContainer>
                           <InputsGroup>
                             <FormInputs
-                              // value={product.details.title}
                               label="כותרת"
                               type="text"
                               placeholder={product.details.title}
@@ -548,7 +562,6 @@ const UserProduct = () => {
                               onChange={handleSetDetails}
                             />
                             <FormInputs
-                              // value={product.details.model}
                               label="יצרן"
                               type="text"
                               placeholder={product.details.model}
@@ -556,7 +569,6 @@ const UserProduct = () => {
                               onChange={handleSetDetails}
                             />
                             <FormInputs
-                              // value={product.details.speed}
                               label="מהירות"
                               type="number"
                               placeholder={product.details.speed}
@@ -564,7 +576,6 @@ const UserProduct = () => {
                               onChange={handleSetDetails}
                             />
                             <FormInputs
-                              // value={product.details.battery}
                               label="סוללה"
                               type="number"
                               placeholder={product.details.battery}
@@ -622,6 +633,13 @@ const UserProduct = () => {
                             name="dailyPrice"
                             onChange={onChangeHandler}
                           />
+                          <FormInputs
+                            label="צורת התשלום"
+                            type="text"
+                            placeholder={product.price?.payment}
+                            name="payment"
+                            onChange={onChangeHandler}
+                          />
                         </InputsGroup>
                         <SubmitButton type="submit">עדכן</SubmitButton>
                       </Section>
@@ -633,7 +651,7 @@ const UserProduct = () => {
                       <CountContainer>
                         <Count>עדכן מיקום</Count>
                       </CountContainer>
-                      <Local pasValue={handleSetLocation} />
+                      <Local pasValue={handleSetLocation} show={false} />
                       <SubmitButton type="submit">עדכן</SubmitButton>
                     </Section>
                   </FormContainer>

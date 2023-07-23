@@ -24,15 +24,17 @@ const OptionGroup = styled.div`
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  text-align: right;
+  flex-direction: column;
   margin-bottom: 20px;
   ${({ active }) =>
     active &&
     `
     flex-direction: column;
   `}
-  @media (min-width: 568px) {
+  @media (max-width: 658px) {
     flex-direction: row;
-    justify-content: space-between;
+    margin-top: 10px;
   }
 `;
 const Select = styled.select`
@@ -42,14 +44,18 @@ const Select = styled.select`
   text-align: right;
   margin-left: 53px;
   border: 1px solid black;
-  @media (min-width: 568px) {
-    width: 64%;
+  min-width: 40%;
+  width: 90%;
+  @media (max-width: 668px) {
     margin-top: 20px;
     margin-left: 0;
   }
 `;
 const Option = styled.option`
   border-radius: 0;
+  @media (max-width: 658px) {
+    width: 80px;
+  }
 `;
 
 const Description = styled.textarea`
@@ -65,8 +71,8 @@ const Btn = styled.div`
 const validationSchema = yup.object({
   title: yup.string().required("נדרש למלא שם"),
   model: yup.string().required("נדרש למלא שם היצרן"),
-  speed: yup.number().required("נדרש למלא מהירות"),
-  battery: yup.number().required("נדרש למלא וואט"),
+  speed: yup.number(),
+  battery: yup.number(),
   helmet: yup.boolean().default(false),
   electric: yup.boolean().default(false),
   description: yup.string(),
@@ -142,6 +148,7 @@ const Details = (props) => {
           }
         />
         <OptionGroup>
+          <h5 style={{ textAlign: "right" }}>:קסדה</h5>
           <Select
             name="helmet"
             value={formik.values.helmet}
@@ -152,7 +159,7 @@ const Details = (props) => {
             </Option>
             <Option value={true}>יש</Option>
           </Select>
-          <h5>:קסדה</h5>
+          <h5>:חשמלי</h5>
           <Select
             name="electric"
             value={formik.values.electric}
@@ -163,7 +170,6 @@ const Details = (props) => {
             </Option>
             <Option value={true}>כן</Option>
           </Select>
-          <h5>:חשמלי</h5>
         </OptionGroup>
         <Description
           rows="5"

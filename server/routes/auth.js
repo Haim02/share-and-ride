@@ -36,5 +36,5 @@ router.post("/checkToken", authController.isTokenExpierd);
 
 router.post("/forgotPassword", authController.forgotPassword);
 router.patch("/resetPassword/:token", authController.resetPassword);
-  
+
 module.exports = router;

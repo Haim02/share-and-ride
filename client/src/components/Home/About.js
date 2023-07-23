@@ -8,7 +8,7 @@ const AboutUsContainer = styled.div`
   padding-bottom: 1rem;
   padding-right: 1.75rem;
   padding-left: 1.75rem;
-  background-color: #ffffff;
+  background-color: whitesmoke;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;

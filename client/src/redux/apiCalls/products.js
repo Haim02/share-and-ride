@@ -1,8 +1,6 @@
-// import { publicRequest } from "../../requestMethods";
 import { apiSlice } from "./apiSlice";
 import axios from "axios";
 import { productAction } from './../slices/products';
-const URL = "http://localhost:3001/api/";
 
 export const productsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -27,7 +25,7 @@ export const getAllProducts = async (
   dispatch(productAction.getProductsStart());
   try {
     const response = await axios.get(
-      `http://localhost:3001/api/products/products?sort=price.${sorting}`,
+      `/api/products/products?sort=price.${sorting}`,
       {
         params: {
           page: page,

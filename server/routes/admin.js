@@ -17,7 +17,7 @@ router.post(
 
 router.get("/logout", adminController.adminLogout);
 
-// router.use(adminController.isAdmin);
+router.use(adminController.isAdmin);
 
 router.get("/home/getUserLength", adminController.getUserLength);
 router.get("/home/getProductLength", adminController.getProductLength);

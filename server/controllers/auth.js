@@ -19,10 +19,11 @@ const createSentToken = (user, statusCode, res, req) => {
   const token = signToken(user._id);
   const cookieOptions = {
     expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 4 * 60 * 60 * 1000
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 6 * 60 * 60 * 1000
     ),
-    httpOnly: false,
-    // sameSite: "none",
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
   };
 
   if (process.env.NODE_ENV === "production") {
@@ -40,13 +41,13 @@ const createSentToken = (user, statusCode, res, req) => {
   });
 };
 
-const createSentTokenGoogleLogin = (user, statusCode, res) => {
+const createSentTokenGoogleLogin = (user, res) => {
   const token = signToken(user._id);
   const cookieOptions = {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 4 * 60 * 60 * 1000
     ),
-    httpOnly: false,
+    // httpOnly: true,
     sameSite: "none",
   };
 
@@ -56,6 +57,44 @@ const createSentTokenGoogleLogin = (user, statusCode, res) => {
 
   res.cookie("jwt", token, cookieOptions);
   return token;
+};
+
+const getUserFromCookie = async (req, res) => {
+  let token;
+  try {
+    if (req.cookies.jwt) {
+      token = req.cookies.jwt;
+    }
+
+    if (!token) {
+      throw new Error("No token was found");
+    }
+
+    const decoded = await promisify(jwt.verify)(
+      token,
+      process.env.JWT_SECRET
+    ).catch((err) => {
+      res.status(400).json({
+        message: err,
+      });
+    });
+
+    const currentUser = await User.findById(decoded.id);
+    if (!currentUser) {
+      throw new Error("You are not logged in! Please log in to get access.");
+    }
+
+    res.status(200).json({
+      status: "success",
+      user: currentUser,
+      token,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      message: error.message,
+    });
+  }
 };
 
 exports.protect = async (req, res, next) => {
@@ -69,7 +108,7 @@ exports.protect = async (req, res, next) => {
     } else if (req.cookies.jwt) {
       token = req.cookies.jwt;
     } else if (req.session.cookie) {
-      token = req.session.cookie.token;
+      token = req.session.cookie.jwt;
     }
 
     if (!token) {
@@ -102,28 +141,30 @@ exports.protect = async (req, res, next) => {
 };
 
 exports.isTokenExpierd = async (req, res, next) => {
-  if(!req.body.token){
+  if (!req.body.token) {
     return;
   }
 
-  
   try {
-    if(!req.cookies.jwt){
-       throw new Error("NoToken");
+    if (!req.cookies.jwt) {
+      throw new Error("NoToken");
     }
-    
-    const decoded = await promisify(jwt.verify)(req.body.token, process.env.JWT_SECRET)
+
+    const decoded = await promisify(jwt.verify)(
+      req.body.token,
+      process.env.JWT_SECRET
+    );
     res.status(200).json({
-      message: 'token stiil valid'
-     })
+      message: "token stiil valid",
+    });
   } catch (error) {
     res.clearCookie("jwt");
     res.status(400).json({
       error,
-      message: error.message
-     }) 
-  } 
-}
+      message: error.message,
+    });
+  }
+};
 exports.signup = async (req, res) => {
   const { name, email, password, passwordConfirm, phone } = req.body;
   const errors = validationResult(req);
@@ -134,8 +175,7 @@ exports.signup = async (req, res) => {
     }
 
     const checkEmail = await User.findOne({ email });
-    const checkName = await User.findOne({ name: name });
-
+    const checkName = await User.findOne({ name });
     if (checkEmail) {
       throw new Error("E-Mail exists already, please pick a different one.");
     } else if (checkName) {
@@ -242,17 +282,17 @@ exports.logout = async (req, res, next) => {
 exports.forgotPassword = async (req, res, next) => {
   let user;
   try {
-      user = await User.findOne({ email: req.body.email });
-      
-      if (!user) {
-          return new Error("There is no user with this email address.", 404);
-        }
-        
-        if (user.googleId) {
-            return new Error("This user is rigester with google account.", 404);
-        }
-        
-        const resetToken = user.createPasswordResetToken();
+    user = await User.findOne({ email: req.body.email });
+
+    if (!user) {
+      throw new Error("There is no user with this email address.");
+    }
+
+    if (user.googleId) {
+      return new Error("This user is rigester with google account.", 404);
+    }
+
+    const resetToken = user.createPasswordResetToken();
     await user.save({ validateBeforeSave: false });
 
     const resetURL = `${req.protocol}://${req.get(
@@ -335,3 +375,4 @@ exports.updatePassword = async (req, res, next) => {
 
 exports.createSentToken = createSentToken;
 exports.createSentTokenGoogleLogin = createSentTokenGoogleLogin;
+exports.getUserFromCookie = getUserFromCookie;

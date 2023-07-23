@@ -17,7 +17,7 @@ const Label = styled.label`
   margin-left: 5px;
 `;
 const Input = styled.input`
-  width: 30%;
+  width: 50%;
   height: 30px;
   text-align: right;
   margin-right: 5px;
@@ -137,10 +137,10 @@ function CitiesAndStreets(props) {
             disabled={selectedStreet.length === 0}
             type="number"
             onChange={handleHouseNumberChange}
-            style={{'textAlign': 'right'}}
+            style={{'textAlign': 'right',  width: '50%'}}
           />
         </Container>
-        <Btn>
+        <Btn >
           <Button
             theme="uploadForm"
             type="button"

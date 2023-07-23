@@ -49,13 +49,15 @@ exports.getAllProducts = async (req, res) => {
       message: error,
     });
   }
-}; 
- 
+};
+
 exports.getOneProduct = async (req, res) => {
   const productId = req.params.id;
 
   try {
-    const product = await Product.findById(productId).populate("user");
+    const product = await Product.findById(productId)
+      .sort("-created_at")
+      .populate("user");
 
     res.status(200).json({
       product,

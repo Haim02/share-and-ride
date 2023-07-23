@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 const Container = styled.div`
-  /* background-color: #f4f4f4; */
   padding: 70px;
   border-radius: 8px;
   position: fixed;
@@ -23,16 +22,15 @@ const Container = styled.div`
     bottom: 0;
     margin-left: 20px;
   }
-    @media (max-width: 800px) {
-      margin-left: 20px;
-    }
-    @media (max-width: 300px) {
-      margin-left: 80px;
-    }
-    @media (max-width: 240px) {
-      margin-left: 100px;
-    }
-  
+  @media (max-width: 800px) {
+    margin-left: 20px;
+  }
+  @media (max-width: 300px) {
+    margin-left: 80px;
+  }
+  @media (max-width: 240px) {
+    margin-left: 100px;
+  }
 `;
 
 const Line = styled.div`

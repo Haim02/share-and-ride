@@ -29,6 +29,9 @@ const Section = styled.div`
     `
     display: none;
   `}
+  @media (max-width: 540px) {
+    width: 80%;
+  }
 `;
 
 const CountContainer = styled.div`
@@ -76,6 +79,10 @@ const NotAUserContainer = styled.div`
   align-items: center;
   width: 100vw;
   height: 40vw;
+  @media (max-width: 540px) {
+    margin: 50px 15px;
+    margin-top: 50px;
+  }
 `;
 
 const H1 = styled.h1`
@@ -196,7 +203,7 @@ const UploadProductPage = () => {
             {isLoading && <LoadingSpinner />}
             <Section>
               <CountContainer>
-                <Count>המוצר אותו אני רוצה להשכיר</Count>
+                <Count>סוג המוצר</Count>
               </CountContainer>
               <Block active={false}>
                 <TypeChice pasValue={getTypeChice} />

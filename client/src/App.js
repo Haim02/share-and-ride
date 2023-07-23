@@ -11,6 +11,7 @@ import Register from "./pages/Register";
 import {
   useCheckTokenMutation,
   useLogoutMutation,
+  useGoogleSigninMutation,
 } from "./redux/apiCalls/auth";
 import ForgotPasswordPage from "./pages/ForgotPassword";
 import ResetPasswordPage from "./pages/ResetPassword";
@@ -29,19 +30,35 @@ import { authAction } from "./redux/slices/auth";
 import { messagesAction } from "./redux/slices/messages";
 import { productAction } from "./redux/slices/products";
 import LoadingSpinner from "./components/UI/LoadingSpinner";
+import { toast } from "react-toastify";
+import Cookies from "universal-cookie";
 TimeAgo.addLocale(he);
-TimeAgo.addDefaultLocale(he);
 
 function App() {
-  const [logout, { isLoading }] = useLogoutMutation();
+  const [logout] = useLogoutMutation();
+  const [googleSignin, { isLoading }] = useGoogleSigninMutation();
   const [checkToken] = useCheckTokenMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.auth);
+ 
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const res = await googleSignin().unwrap();
+        dispatch(authAction.loginSuccess(res));
+      } catch (error) {}
+    };
+
+    const cookie = new Cookies();
+    const jwt = cookie.get("jwt");
+    if (!currentUser && jwt) {
+      getUser();
+    }
+  }, []);
 
   useEffect(() => {
     const userToken = { token };
-
     const checkUserToken = async () => {
       try {
         const res = await checkToken(userToken).unwrap();
@@ -54,9 +71,8 @@ function App() {
           dispatch(authAction.logoutSuccess());
           dispatch(messagesAction.clearState());
           dispatch(productAction.clearState());
-          if (!currentUser) {
-            navigate("/");
-          }
+          toast.error("נדרשת כניסה מחדש");
+          navigate("/");
         }
       }
     };
@@ -64,7 +80,7 @@ function App() {
       checkUserToken();
     }
     checkUserToken();
-  }, [checkToken, token, currentUser, dispatch, logout, navigate]);
+  }, []);
 
   return (
     <Fragment>
@@ -72,7 +88,7 @@ function App() {
       {isLoading && <LoadingSpinner />}
       <ToastContainer />
       <Routes>
-        <Route path="/" index element={<Home />} />
+        <Route index element={<Home />} />
         <Route
           path="/login"
           element={currentUser ? <Navigate replace to="/" /> : <Login />}
@@ -93,7 +109,7 @@ function App() {
             currentUser ? <Navigate replace to="/" /> : <ResetPasswordPage />
           }
         />
-        <Route path="/products" element={<Products />} />
+        <Route path="products" element={<Products />} />
         <Route path="/products/:id" element={<Product />} />
         <Route path="/uploadProduct" element={<UploadProductPage />} />
         {currentUser && (
@@ -105,12 +121,6 @@ function App() {
             <Route path="messages" element={<MessagesList />} />
           </Route>
         )}
-        {/* <ErrorBoundary
-        fallback={<PageNotFound />}
-        onError={() => console.log('error happend!')}
-        >
-        <Route path="/product/:id" element={<Product />} />
-        </ErrorBoundary> */}
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <Footer />

@@ -37,6 +37,11 @@ const UpdatePassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(currentUser.googleId !== null){
+      toast.error("אין אפשרות לעדכן סיסמה");
+      return;
+    }
+
     if (
       newPassword === "" ||
       currentPassword === "" ||

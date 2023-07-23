@@ -11,9 +11,10 @@ import Map from "../components/UI/Map";
 import { faLocationPin } from "@fortawesome/free-solid-svg-icons";
 import { useGetOneProductMutation } from "../redux/apiCalls/products";
 import uuid from "react-uuid";
-import Button from './../components/button/Button';
-import { productAction } from './../redux/slices/products';
-import LoadingSpinner from './../components/UI/LoadingSpinner';
+import Button from "./../components/button/Button";
+import { productAction } from "./../redux/slices/products";
+import LoadingSpinner from "./../components/UI/LoadingSpinner";
+import { toast } from "react-toastify";
 
 const Container = styled.div`
   padding: 40px 30px;
@@ -48,8 +49,8 @@ const Left = styled.div`
 
 const Images = styled.div`
   img {
-    width: 100%;
-    height: 180px;
+    width: 70%;
+    height: 130px;
     object-fit: cover;
     cursor: pointer;
     margin-bottom: 10px;
@@ -63,8 +64,8 @@ const Images = styled.div`
 `;
 const MainImg = styled.div`
   img {
-    width: 120%;
-    max-height: 520px;
+    width: 130%;
+    max-height: 540px;
     object-fit: cover;
   }
   @media (max-width: 800px) {
@@ -123,6 +124,9 @@ const Items = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
+  @media (max-width: 540px) {
+    margin: 0 5px;
+  }
 `;
 
 const Item = styled.div`
@@ -181,10 +185,11 @@ const Product = () => {
       } catch (error) {}
     };
     getProduct();
-  }, [dispatch, id, getOneProduct]);
+  }, [dispatch, id, getOneProduct, addressLat]);
 
   const address =
-    `${product?.location.city} ${product?.location.street} ${product?.location.houseNumber}`.toString();
+    `${product?.location.city} ${product?.location.street} ${product?.location.houseNumber} ישראל`.toString();
+
   Geocode.setApiKey(process.env.REACT_APP_PUBLIC_GOOGLE_MAPS_API_KEY);
   Geocode.setLanguage("iw");
 
@@ -194,14 +199,12 @@ const Product = () => {
       setAddressLat(lat);
       setAddressLng(lng);
     },
-    (error) => {
-      console.error(error.message);
-    }
+    (error) => {}
   );
 
   const heandelClick = () => {
     if (!currentUser) {
-      alert("רק משתמשים רשומים יכולים לשלוח הודעות");
+      toast.error("רק משתמשים רשומים יכולים לשלוח הודעות");
       return;
     }
     setOpenCart(true);
@@ -237,7 +240,12 @@ const Product = () => {
               <Images>
                 {product.images.map((img) => {
                   return (
-                    <img src={img} alt="" onClick={handleOnClick} key={uuid()} />
+                    <img
+                      src={img}
+                      alt=""
+                      onClick={handleOnClick}
+                      key={uuid()}
+                    />
                   );
                 })}
               </Images>
@@ -304,6 +312,8 @@ const Product = () => {
                 <span>{product.details.speed} : מהירות</span>
                 <Hr />
                 <span>{product.details.battery} : סוללה</span>
+                <Hr />
+                <span>  צורת התשלום  : {product.price?.payment} </span>
               </Info>
               <Hr />
               <Info>

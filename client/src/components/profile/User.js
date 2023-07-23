@@ -224,7 +224,7 @@ const User = () => {
                 />
               </UserUpdateItem>
               <UserUpdateItem>
-                <label>אימיל</label>
+                <label>אימייל</label>
                 <UserUpdateInput
                   type="text"
                   placeholder={currentUser.email}
