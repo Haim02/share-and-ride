@@ -29,6 +29,7 @@ const Input = styled.input`
   height: 35px;
   margin-left: auto;
   border: none;
+  text-align: right;
 `;
 const Datalist = styled.datalist`
   width: 50px;
@@ -95,7 +96,7 @@ const Filtering = (props) => {
       setFilterCity(e.target.value);
     }
   };
-
+ 
   return (
     <FilterContainer>
       <Form onSubmit={handleClick}>

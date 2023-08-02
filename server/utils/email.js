@@ -10,7 +10,6 @@ const sendEmail = async (message, email, subject, text) => {
         },
       })
       );
-       
     const res = await transport.sendMail({
       from: "shreandride@gmail.com",
       to: email || message?.toUser?.email,
@@ -18,7 +17,7 @@ const sendEmail = async (message, email, subject, text) => {
       text: text || "",
       html:
         text ||
-        '<div><h1>יש לך בקשה חדשה באתר</h1> <a src="#">לחץ כאן כדי להיכנס לאתר</a></div>',
+        '<div><h1>יש לך בקשה חדשה באתר</h1> <br> <a href="https://www.shareandride.site">לחץ <u>כאן<u> כדי להיכנס לאתר</a></div>',
     });
   } catch (error) {
     

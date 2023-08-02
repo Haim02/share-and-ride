@@ -13,6 +13,12 @@ const TopSectionContainer = styled.div`
   margin-bottom: 60px;
   padding: 30px;
   justify-content: space-between;
+  @media (max-width: 750px) {
+    margin-top: 1em;
+    margin-bottom: 30px;
+    padding: 15px;
+
+  }
 `;
 const LeftContainer = styled.div`
   flex: 1;
@@ -38,14 +44,20 @@ const Slogan = styled.h1`
   margin-bottom: 1rem;
   color: #000000;
   font-size: 2.5rem;
-  line-height: 5rem;
+  line-height: 4rem;
   font-weight: 700;
+  @media (max-width: 750px) {
+    font-size: 2.8rem;
+    line-height: 3rem;
+  }
 `;
 const Description = styled.p`
   color: #1f2937;
-  font-size: 0.75rem;
   font-size: 1.125rem;
   line-height: 1.75rem;
+  @media (max-width: 750px) {
+    font-size: 1.5rem;
+  }
 `;
 const BlobContainer = styled.div`
   width: 20em;
@@ -130,7 +142,7 @@ const TopSection = () => {
           תפסיק לעמוד בפקקים והתחל לשכור
         </Slogan>
         <Description style={{ direction: "rtl" }}>
-          פלטפורמה חברתית המאפשרת להשכיר אופניים/קורקינט לאנשים מכל הארץ יש לך
+          פלטפורמה חברתית המאפשרת להשכיר אופניים/קורקינט לאנשים מכל הארץ, יש לך
           אופניים ואתה לא משתמש בהם? תתחיל להרוויח מהם כסף בלי לצאת מהבית
         </Description>
         <ButtonsContainer>

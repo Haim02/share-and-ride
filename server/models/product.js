@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const productSchema = mongoose.Schema(
+const productSchema = new mongoose.Schema(
   {
     type: {
       type: String,
@@ -63,6 +63,9 @@ const productSchema = mongoose.Schema(
         type: Number,
       },
     },
+    city: {
+      type: String,
+    },
     images: [String],
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -72,5 +75,10 @@ const productSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
+
+productSchema.pre('save', function(next) {
+  this.city = this.location.city
+  next();
+});
 
 module.exports = mongoose.model("Product", productSchema);

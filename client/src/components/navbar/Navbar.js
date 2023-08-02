@@ -134,7 +134,7 @@ const Navbar = () => {
       navigate("/");
       if (!currentUser) {
         navigate("/");
-      }
+      } 
     } catch (error) {}
   };
 
@@ -144,7 +144,7 @@ const Navbar = () => {
         <MobileNav>
           <MobileNavText>
             <Link to="/" style={{ textDecoration: "none", color: "black" }}>
-              Shre&Ride
+              Share&Ride
             </Link>
           </MobileNavText>
         </MobileNav>

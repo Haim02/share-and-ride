@@ -31,9 +31,7 @@ export const getAllProducts = async (
           page: page,
           limit: limit,
           type: filtering.type,
-          location: {
             city: filtering.city,
-          },
         },
       }
     );

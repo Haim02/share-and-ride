@@ -35,7 +35,9 @@ router.get(
   }),
   (req, res) => {
     const token = createSentTokenGoogleLogin(req.user, res);
-    res.redirect("http://localhost:3001/");
+    // res.redirect("http://localhost:3000/");
+    res.redirect("https://www.shareandride.site");
+    // res.redirect("/");
   }
 );
 

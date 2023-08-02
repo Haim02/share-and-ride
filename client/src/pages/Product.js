@@ -322,12 +322,12 @@ const Product = () => {
               <BtnGroup>
                 <Button
                   theme="sentMessage"
-                  text="שלח הודעה לשוכר"
+                  text="שלח הודעה למשכיר"
                   onClick={heandelClick}
                 />
                 <Button
                   theme="sentMessage"
-                  text="פרטי השוכר"
+                  text="פרטי המשכיר"
                   onClick={heandelClickDetails}
                 />
               </BtnGroup>

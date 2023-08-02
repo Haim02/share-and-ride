@@ -32,8 +32,8 @@ const StepsContainer = styled.div`
   margin-top: 1.75rem;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  @media (min-width: 1024px) {
-    margin-top: 4rem;
+  @media (max-width: 750px) {
+    flex-direction: column-reverse;
   }
 `;
 
@@ -90,7 +90,7 @@ const StepIcon = styled.span`
 const RentSteps = () => {
   return (
     <Container>
-      <Title>התחל להשכיר בכמה צעדים פשוטים</Title>
+      <Title>התחל לשכור בכמה צעדים פשוטים</Title>
       <StepsContainer>
         <StepContainer>
           <Step>
@@ -98,9 +98,8 @@ const RentSteps = () => {
               <FontAwesomeIcon icon={faCarSide} />
             </StepIcon>
           </Step>
-          <StepTitle>שליחת בקשה</StepTitle>
           <StepDescription>
-            בסיום התהליך הודעה נשלחת לבעל הכלי והוא מחליט אם לאשר אותה
+            בסיום התהליך הודעה נשלחת לבעל הכלי 
           </StepDescription>
         </StepContainer>
         <StepContainer>
@@ -109,9 +108,8 @@ const RentSteps = () => {
               <FontAwesomeIcon icon={faMapMarkedAlt} />
             </StepIcon>
           </Step>
-          <StepTitle>מיקום</StepTitle>
           <StepDescription>
-            בחר את האזור שהכי מתאים לך להשכיר בו
+            בחר אזור שבו תרצה לשכור 
           </StepDescription>
         </StepContainer>
         <StepContainer>
@@ -120,9 +118,8 @@ const RentSteps = () => {
               <FontAwesomeIcon icon={faCalendarAlt} />
             </StepIcon>
           </Step>
-          <StepTitle>מועד</StepTitle>
           <StepDescription>
-            בחר תאריך בו תרצה להשכרי ואת שעת ההתחלה ואת שעת הסיום של ההשכרה
+            בחר תאריך וזמן בו תרצה לשכור
           </StepDescription>
         </StepContainer>
       </StepsContainer>

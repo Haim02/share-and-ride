@@ -109,7 +109,7 @@ const RentFrom = (props) => {
       if (
         parseInt(date.slice(0, 2)) < dayNew ||
         (parseInt(date.slice(0, 2)) <= dayNew  && parseInt(start.slice(0, 2)) < hourNew) ||
-        parseInt(start.slice(2)) < miniteNew
+        (parseInt(date.slice(0, 2)) <= dayNew && parseInt(start.slice(2)) < miniteNew)
       ){
         return toast.error("טופס לא חוקי");
       }
@@ -117,7 +117,6 @@ const RentFrom = (props) => {
       
     try {
       const res = await createMessage(message).unwrap();
-      console.log('res', res)
       dispatch(messagesAction.createMessagesSuccess(res.message));
       toast.success("הודעה נשלחה בהצלחה");
     } catch (error) {
@@ -129,7 +128,7 @@ const RentFrom = (props) => {
     <Modal onClose={props.onClose}>
       <StyledForm onSubmit={handleSubmit}>
         <InputContainer>
-          <StyledLabel>בחר\י תאריך בו תרצה להשכיר</StyledLabel>
+          <StyledLabel>בחר\י תאריך בו תרצה לשכור</StyledLabel>
           <DatePicker
             setStartDate
             dateFormat="dd/MM/yyyy"
@@ -141,7 +140,7 @@ const RentFrom = (props) => {
         <InputContainer></InputContainer>
         <InputContainer>
           <StyledLabel>
-            בחר\י את שעת ההתחלה ואת השעת הסיום בו תרצה להשכיר
+            בחר\י את שעת ההתחלה ואת השעת הסיום בו תרצה לשכור
           </StyledLabel>
           <Time>
             <TimeRange
@@ -163,7 +162,7 @@ const RentFrom = (props) => {
           <StyledLabel>:הערות מיוחדות</StyledLabel>
           <textarea
             onChange={(e) => setNotice(e.target.value)}
-            style={{ width: "50%", height: "65px" }}
+            style={{ width: "50%", height: "65px", textAlign: 'right' }}
           ></textarea>
         </InputContainer>
         {isLoading && <LoadingSpinner />}

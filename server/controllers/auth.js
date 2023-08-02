@@ -22,7 +22,6 @@ const createSentToken = (user, statusCode, res, req) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 6 * 60 * 60 * 1000
     ),
     httpOnly: true,
-    secure: true,
     sameSite: "none",
   };
 
@@ -47,8 +46,10 @@ const createSentTokenGoogleLogin = (user, res) => {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 4 * 60 * 60 * 1000
     ),
-    // httpOnly: true,
+    httpOnly: true,
     sameSite: "none",
+    domain: "www.shareandride.site",
+    path: '/'
   };
 
   if (process.env.NODE_ENV === "production") {
@@ -286,10 +287,10 @@ exports.forgotPassword = async (req, res, next) => {
 
     if (!user) {
       throw new Error("There is no user with this email address.");
-    }
+    } 
 
     if (user.googleId) {
-      return new Error("This user is rigester with google account.", 404);
+      throw new Error("This user is rigester with google account.", 404);
     }
 
     const resetToken = user.createPasswordResetToken();
@@ -354,9 +355,9 @@ exports.resetPassword = async (req, res, next) => {
 exports.updatePassword = async (req, res, next) => {
   const { newPassword, currentPassword, passwordConfirm } = req.body;
   try {
-    const user = await User.findById(req.user.id).select("+password");
+    const user = await User.findById(req.params.id).select("+password");
     if (!(await user.comparePassword(currentPassword))) {
-      return new Error("Your current password is wrong.");
+      throw new Error("Your current password is wrong.");
     }
 
     user.password = req.body.newPassword;

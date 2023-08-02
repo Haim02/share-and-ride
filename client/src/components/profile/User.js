@@ -20,6 +20,10 @@ import { toast } from "react-toastify";
 const Container = styled.div`
   flex: 4;
   padding: 20px;
+  justify-content: center;
+  @media (max-width: 900px) {
+     margin-left: 15px;
+  }
 `;
 
 const UserContainer = styled.div`
@@ -37,9 +41,6 @@ const UserShow = styled.div`
   -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   @media (max-width: 900px) {
-    flex: 0;
-    width: 95%;
-    min-width: 20%;
   }
 `;
 
@@ -52,7 +53,6 @@ const UserUpdate = styled.div`
   @media (max-width: 900px) {
     display: flex;
     flex-direction: column;
-    width: 95%;
   }
 `;
 

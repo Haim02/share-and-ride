@@ -56,7 +56,7 @@ const Login = () => {
   };
 
   const google = () => {
-    window.open("http://localhost:3000/api/auth/google", "_self");
+    window.open("https://www.shareandride.site/api/auth/google", "_self");
   };
 
   return (
@@ -107,7 +107,7 @@ const Login = () => {
               לחץ כאן
             </Link>
             כניסת מנהל
-            <Link to="http://localhost:3000/admin" style={{ color: "blue" }}>
+            <Link to="https://shareandrideadmin.netlify.app/" style={{ color: "blue" }}>
               לחץ כאן
             </Link>
           </Links>

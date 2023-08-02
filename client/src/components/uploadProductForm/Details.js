@@ -16,7 +16,7 @@ const InputsGroup = styled.div`
   justify-content: space-between;
   justify-content: space-evenly;
   justify-content: space-around;
-  padding: 0 47px;
+  padding: 0 40px;
 `;
 
 const OptionGroup = styled.div`
@@ -42,7 +42,7 @@ const Select = styled.select`
   padding: 9px 8px;
   margin-bottom: 15px;
   text-align: right;
-  margin-left: 53px;
+  margin-left: 40px;
   border: 1px solid black;
   min-width: 40%;
   width: 90%;
@@ -61,6 +61,10 @@ const Option = styled.option`
 const Description = styled.textarea`
   border: 1px solid black;
   text-align: right;
+  margin-left: 70px;
+  @media (max-width: 668px) {
+    margin-left: 0;
+  }
 `;
 
 const Btn = styled.div`
@@ -70,7 +74,7 @@ const Btn = styled.div`
 `;
 const validationSchema = yup.object({
   title: yup.string().required("נדרש למלא שם"),
-  model: yup.string().required("נדרש למלא שם היצרן"),
+  model: yup.string(),
   speed: yup.number(),
   battery: yup.number(),
   helmet: yup.boolean().default(false),
@@ -178,7 +182,8 @@ const Details = (props) => {
           onChange={formik.handleChange}
           value={formik.values.description}
           placeholder="תיאור של המוצר..."
-        ></Description>
+        >
+        </Description>
       </InputsGroup>
       <h6>שדות שמסומנים בכוכבית הם חובה*</h6>
       <Btn>

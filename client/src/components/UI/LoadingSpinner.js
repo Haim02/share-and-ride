@@ -8,14 +8,18 @@ const Container = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #f8f8f8ad;
 `;
 
 const Loader = styled.div`
-  left: 50%;
-  top: 30%;
+  top: 20%;
   z-index: 1000;
   position: absolute;
+  justify-content: center;
+  align-items: center;
 `;
 
 const LoadingSpinner = () => {

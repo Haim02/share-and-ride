@@ -6,6 +6,9 @@ import User from "../components/profile/User";
 export const Container = styled.div`
   display: flex;
   margin: 20px 0;
+  @media (max-width: 750px) {
+    margin: 0 0;
+  }
 `;
 
 export const SideBar = styled.div`

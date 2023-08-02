@@ -12,6 +12,7 @@ import reportWebVitals from './reportWebVitals';
 if (process.env.NODE_ENV === 'production') {
   disableReactDevTools()
 }
+disableReactDevTools()
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -26,4 +27,4 @@ root.render(
   </React.StrictMode>
 );
 
-reportWebVitals();
+// reportWebVitals();

@@ -203,13 +203,13 @@ const Footer = () => {
                   style={{ backgroundColor: "rgb(52, 138, 244)" }}
                 />
               </RedIcon>
-              <SmallText>info@Shre@Ride.com</SmallText>
+              <SmallText>info@Share&Ride.com</SmallText>
             </HorizontalContainer>
           </SectionContainer>
         </InnerContainer>
         <BottomContainer>
           <CopyrightText>
-            Copyright &copy; {new Date().getFullYear()} Shre&Ride. All rights
+            Copyright &copy; {new Date().getFullYear()} Share&Ride. All rights
             reserved.
           </CopyrightText>
         </BottomContainer>

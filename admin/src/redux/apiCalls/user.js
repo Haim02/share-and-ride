@@ -1,6 +1,6 @@
 import { userAction } from "../slice/user";
 import axios from "axios";
-const URL = "http://localhost:3000/api/admin/users";
+const URL = "https://www.shareandride.site/api/admin/users";
 
 export const publicRequest = axios.create({
   baseURL: URL,
@@ -29,7 +29,7 @@ export const getOneUser = async (dispatch, id) => {
 export const deleteUser = async (id, dispatch) => {
   dispatch(userAction.deleteUserStart());
   try {
-    const response = await publicRequest.delete(`/${id}`);
+    await publicRequest.delete(`/${id}`);
     dispatch(userAction.deleteUserSuccess(id));
   } catch (error) {
     dispatch(userAction.deleteUserFailure());

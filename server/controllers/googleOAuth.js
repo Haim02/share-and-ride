@@ -12,7 +12,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "/api/auth/google/callback",
+      callbackURL: "https://www.shareandride.site/api/auth/google/callback",
       passReqToCallback: true,
       scope: ["profile", "email"],
     },

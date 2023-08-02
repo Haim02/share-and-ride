@@ -135,7 +135,7 @@ const Register = () => {
   };
 
   const google = () => {
-    window.open("http://localhost:3000/api/auth/google", "_self");
+    window.open("https://www.shareandride.site/api/auth/google", "_self");
   };
 
   const onSubmit = async (values) => {

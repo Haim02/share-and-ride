@@ -10,7 +10,6 @@ const { validationResult } = require("express-validator");
 exports.adminLogin = async (req, res, next) => {
   const { email, password } = req.body;
   const errors = validationResult(req);
-
   try {
     if (!errors.isEmpty()) {
       throw new Error(errors.array()[0].msg);

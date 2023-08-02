@@ -29,17 +29,16 @@ exports.getAllProducts = async (req, res) => {
   let filter = {};
 
   try {
-    if (req.params.type) {
-      filter = { product: req.params.type };
+    if (req.query.type) {
+      filter = { product: req.query.type };
     }
 
-    const features = new APIFeatures(Product.find({}, { __v: 0 }), req.query)
+    const features = new APIFeatures(Product.find(), req.query)
       .filter()
       .sort()
       .limitFields()
       .paginate();
     const products = await features.query;
-
     res.status(200).json({
       status: "success",
       products,

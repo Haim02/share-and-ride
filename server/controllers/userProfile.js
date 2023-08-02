@@ -11,6 +11,7 @@ const filterObj = (obj, ...allowedFields) => {
 
 exports.updateUserProfile = async (req, res, next) => {
   const userId = req.params.id;
+  console.log('req', req.body)
   try {
     if (req.body.password || req.body.passwordConfirm) {
       throw new Error(
@@ -18,7 +19,7 @@ exports.updateUserProfile = async (req, res, next) => {
       );
     }
 
-    const filteredBody = filterObj(req.body, "name", "email", "phomeNumber");
+    const filteredBody = filterObj(req.body, "name", "email", "phone");
     if (req.file) filteredBody.photo = req.file.filename;
 
     const updatedUser = await User.findByIdAndUpdate(userId, filteredBody, {
@@ -86,7 +87,7 @@ exports.getProduct = async (req, res, next) => {
 
 exports.updateProduct = async (req, res, next) => {
   const productId = req.params.id;
-  console.log("body", req.body);
+
   try {
     const updateProduct = await Product.findByIdAndUpdate(
       productId,
@@ -94,6 +95,7 @@ exports.updateProduct = async (req, res, next) => {
         details: req.body?.details,
         price: req.body?.price,
         location: req.body?.location,
+        city: req.body?.location?.city,
         images: req.body?.images,
       },
       { returnDocument: "after" }
@@ -102,7 +104,6 @@ exports.updateProduct = async (req, res, next) => {
       throw new Error("No document found with that ID");
     }
 
-    console.log("updateProduct", updateProduct);
 
     res.status(200).json({
       status: "success",

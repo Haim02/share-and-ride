@@ -33,7 +33,7 @@ const limiter = rateLimit({
   message: "Too many requests from this IP, please try again in an hour!",
 });
 app.use("/api", limiter);
-
+ 
 app.use(express.json({ extended: false }));
 app.use(express.static(path.join(__dirname, "build")));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -56,7 +56,7 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-app.set("trust proxy", 2);
+// app.set("trust proxy", 2);
 
 app.use(passport.initialize());
 

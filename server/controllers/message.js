@@ -21,7 +21,7 @@ exports.createMessage = async (req, res) => {
     await sendEmail(message);
   } catch (error) {
     res.status(400).json({
-      message: error,
+      message: error.message,
     });
   }
 };
@@ -44,9 +44,9 @@ exports.getMessages = async (req, res) => {
 };
 exports.getMyRequests = async (req, res) => {
   try {
-    const requests = await Message.find({ fromUser: req.user._id }).sort("-createdAt").populate(
-      "productId"
-    );
+    const requests = await Message.find({ fromUser: req.user._id })
+      .sort("-createdAt")
+      .populate("productId");
     res.status(200).json({
       requests,
     });
@@ -66,11 +66,12 @@ exports.updateMessages = async (req, res) => {
       return;
     }
 
-    const message = await Message.findByIdAndUpdate(messageId, req.body);
+    let message = await Message.findByIdAndUpdate(messageId, req.body);
     res.status(200).json({
       message,
     });
 
+    message = await message.populate("fromUser");
     await sendEmail(message, message.fromUser.email);
   } catch (error) {
     res.status(400).json({

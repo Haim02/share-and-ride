@@ -14,8 +14,8 @@ import SideNavProfile from "./SideNavProfile";
 import { useUpdateUserPasswordMutation } from "../../redux/apiCalls/auth";
 import FormInputs from "../formInput/FormInput";
 import { toast } from "react-toastify";
-import { authAction } from './../../redux/slices/auth';
-import LoadingSpinner from './../UI/LoadingSpinner';
+import { authAction } from "./../../redux/slices/auth";
+import LoadingSpinner from "./../UI/LoadingSpinner";
 
 const UpdatePassword = () => {
   const [updateUserPassword, { isLoading }] = useUpdateUserPasswordMutation();
@@ -37,7 +37,7 @@ const UpdatePassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(currentUser.googleId !== null){
+    if (currentUser.googleId !== null) {
       toast.error("אין אפשרות לעדכן סיסמה");
       return;
     }
@@ -48,15 +48,26 @@ const UpdatePassword = () => {
       newPassword.length < 8 ||
       passwordConfirm !== newPassword
     ) {
+      toast.error("סיסמאות לא תקינות");
       return;
     }
-    try {
-      await updateUserPassword(
+
+    const body = {
+      id: currentUser._id,
+      data: {
         newPassword,
         currentPassword,
         passwordConfirm,
-        currentUser._id
-      );
+      },
+    };
+
+    try {
+      const res = await updateUserPassword(body);
+      console.log("res", res);
+      if (res.error) {
+        return toast.error("סיסמאות לא תקינות");
+      }
+
       dispatch(authAction.updateUserPasswordSuccess());
       toast.success("הסיסמה עודכנה בהצלחה");
     } catch (error) {

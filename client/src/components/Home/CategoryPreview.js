@@ -91,7 +91,7 @@ const CategoryPreview = () => {
             <Img src={category.imageUrl} />
             <Body>
               <H2>{category.title}</H2>
-              <P>השכר עכשיו</P>
+              <P>שכור עכשיו</P>
             </Body>
           </CategoryItem>
         </Link>

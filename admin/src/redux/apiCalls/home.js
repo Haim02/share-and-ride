@@ -1,6 +1,6 @@
 import { homeStateAction } from "../slice/home";
 import axios  from 'axios';
-const URL = "http://localhost:3000/api/admin/home";
+const URL = "https://www.shareandride.site/api/admin/home";
 
 export const publicRequest = axios.create({
   baseURL: URL,

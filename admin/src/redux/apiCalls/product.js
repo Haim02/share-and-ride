@@ -1,7 +1,6 @@
 import { productAction } from "../slice/product";
 import axios from 'axios';
-// import { publicRequest } from "../../requestMethods";
-const URL = "/api/admin/products";
+const URL = "https://www.shareandride.site/api/admin/products";
 
 export const publicRequest = axios.create({
   baseURL: URL,
@@ -30,7 +29,7 @@ export const getOneProduct = async (id, dispatch) => {
 export const deleteProduct = async (id, dispatch) => {
   dispatch(productAction.deleteProductStart());
   try {
-    const response = await publicRequest.delete(`/${id}`);
+    await publicRequest.delete(`/${id}`);
     dispatch(productAction.deleteProductSuccess(id));
   } catch (error) {
     dispatch(productAction.deleteProductFailure());

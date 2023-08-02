@@ -47,7 +47,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
       query: (obj) => ({
         url: `/profile/user/${obj.id}`,
         method: "PATCH",
-        price: obj.data,
+        body: obj.data,
       }),
     }),
     updateUserProduct: builder.mutation({
