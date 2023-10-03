@@ -1,5 +1,5 @@
-.featured {
-    flex: 2;
+.featuredTotal {
+    flex: 3;
     -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
     box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
     padding: 10px;
@@ -28,12 +28,12 @@
       justify-content: center;
       gap: 15px;
   
-      .featuredChart {
-        width: 100px;
-        height: 100px;
+      .featuredChartTotal {
+        width: 140px;
+        height: 140px;
       }
   
-      .title {
+      .titleTotal {
         font-weight: 500;
         color: gray;
       }
@@ -49,8 +49,9 @@
         text-align: center;
       }
   
-      .summary {
+      .summaryTotal {
         width: 100%;
+        margin-top: 10px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -59,7 +60,7 @@
           text-align: center;
   
           .itemTitle {
-            font-size: 16px;
+            font-size: 17px;
             color: gray;
           }
   
@@ -67,8 +68,8 @@
             display: flex;
             align-items: center;
             margin-top: 10px;
-            margin-left: 8px;
-            font-size: 15px;
+            margin-left: 15px;
+            font-size: 16px;
   
             &.positive {
               color: green;

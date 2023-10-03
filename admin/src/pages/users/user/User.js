@@ -84,7 +84,7 @@ const User = () => {
                 </div>
               </div>
               <div className="right">
-                <Chart aspect={3 / 1} title="הוצאות אחרונות" />
+                {/* <Chart aspect={3 / 1} title="הוצאות אחרונות" /> */}
               </div>
             </div>
             <div className="userUpdate">

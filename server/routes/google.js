@@ -10,16 +10,13 @@ dotenv.config({ path: "./config.env" });
 
 router.get("/google/login/success", (req, res) => {
   getUserFromCookie(req, res);
-});
-
+}); 
+ 
 router.get("/google/login/failed", (req, res) => {
-  res.status(401).json({
-    success: false,
-    message: "failure",
-  });
+   res.redirect("https://www.shareandride.site/login");
 });
 
-router.get(
+router.get( 
   "/google",
   passport.authenticate("google", {
     scope: ["profile", "email"],
@@ -30,14 +27,12 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "/google/login/failed",
+    failureRedirect: "https://www.shareandride.site/login",
     session: false,
   }),
   (req, res) => {
-    const token = createSentTokenGoogleLogin(req.user, res);
-    // res.redirect("http://localhost:3000/");
-    res.redirect("https://www.shareandride.site");
-    // res.redirect("/");
+    createSentTokenGoogleLogin(req.user, res);
+    res.redirect('https://www.shareandride.site/')
   }
 );
 

@@ -32,10 +32,10 @@ const ForgotPasswordPage = () => {
           <Title>אפס סיסמה</Title>
           <Form onSubmit={handleSubmit}>
             <FormInputs
-              label="אמייל"
+              label="אימייל"
               value={email}
-              type="text"
-              placeholder="הכנס אמייל"
+              type="email"
+              placeholder="הכנס אימייל"
               name="email"
               onChange={onChangeHandler}
             />

@@ -6,24 +6,22 @@ import "./featured.scss";
 const Featured = ({ value }) => {
   let target = 50;
   let percent = (value.todayRentStats.length / 100) * target;
+
   return (
     <div className="featured">
       <div className="top">
-        <h1 className="title">סה"כ ההזמנות</h1>
+        <h1 className="title">סה"כ ההשכרות היום</h1>
       </div>
       <div className="bottom">
         <div className="featuredChart">
           <CircularProgressbar
-            value={value?.todayRentStats.length}
+            value={value?.todayRentStats.length || 0}
             text={`${percent}%`}
             strokeWidth={5}
           />
         </div>
-        <p className="title">כל ההזמנות שבוצעו היום</p>
+        <p className="title">כל ההשכרות שבוצעו היום</p>
         <p className="amount">{value.todayRentStats.length}</p>
-        <p className="desc">
-          Previous transactions processing. Last payments may not be included.
-        </p>
         <div className="summary">
           <div className="item">
             <div className="itemTitle">יעד</div>

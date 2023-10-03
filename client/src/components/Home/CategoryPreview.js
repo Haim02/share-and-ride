@@ -20,7 +20,7 @@ const Container = styled.div`
 const CategoryItem = styled.div`
   flex: 1;
   margin-top: 2px;
-  margin-right: 5px;
+  /* margin-right: 5px; */
   height: 85vh;
   width: 100%;
   position: relative;
@@ -31,6 +31,9 @@ const CategoryItem = styled.div`
   overflow: hidden;
   :hover {
     cursor: pointer;
+  }
+  @media (max-width: 640px) {
+    height: 80%;
   }
 `;
 const Img = styled.img`

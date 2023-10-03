@@ -11,6 +11,7 @@ import Map from "../components/UI/Map";
 import { faLocationPin } from "@fortawesome/free-solid-svg-icons";
 import { useGetOneProductMutation } from "../redux/apiCalls/products";
 import uuid from "react-uuid";
+import bikeCover from '../assets/images/bikeCover.jpg'
 import Button from "./../components/button/Button";
 import { productAction } from "./../redux/slices/products";
 import LoadingSpinner from "./../components/UI/LoadingSpinner";
@@ -39,7 +40,7 @@ const Left = styled.div`
   flex: 1;
   display: flex;
   flex-direction: row;
-  gap: 15px;
+  gap: 14px;
   margin-top: 40px;
   @media (max-width: 800px) {
     display: flex;
@@ -64,8 +65,8 @@ const Images = styled.div`
 `;
 const MainImg = styled.div`
   img {
-    width: 130%;
-    max-height: 540px;
+    width: 100%;
+    max-height: 520px;
     object-fit: cover;
   }
   @media (max-width: 800px) {
@@ -80,7 +81,8 @@ const Right = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  width: 99%;
   text-align: right;
   align-items: flex-end;
   @media (max-width: 800px) {
@@ -96,6 +98,7 @@ const Right = styled.div`
 const Description = styled.p`
   padding-left: 220px;
   font-size: 16px;
+  width: 99%;
   font-weight: 300;
   text-align: right;
   margin-left: 30px;
@@ -250,11 +253,11 @@ const Product = () => {
                 })}
               </Images>
               <MainImg>
-                <img src={product.images[selectImg]} alt="" />
+                <img src={product?.images[selectImg] || bikeCover} alt="product" />
               </MainImg>
             </Left>
             <Right>
-              <h1>{product.details.title}</h1>
+              <h2>{product.details.title}</h2>
               <Description>{product.details.description}</Description>
               <h5>
                 {address} <FontAwesomeIcon icon={faLocationPin} />
@@ -267,7 +270,7 @@ const Product = () => {
                     marginRight: "5px",
                   }}
                 >
-                  {product.user.name}
+                  {product?.user?.name}
                 </small>
                 <FontAwesomeIcon icon={faUser} style={{ color: "black" }} />
               </div>

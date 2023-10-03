@@ -175,7 +175,7 @@ const Footer = () => {
                 <Link to="#">תקנון האתר</Link>
               </ListItem>
               <ListItem>
-                <Link to="#">מדיניות פרטיות</Link>
+                <Link to="/PrivacyPolicy">מדיניות פרטיות</Link>
               </ListItem>
               <ListItem>
                 <Link to="#">תמיכה</Link>

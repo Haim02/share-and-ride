@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   CalendarToday,
   MailOutline,
@@ -9,26 +10,26 @@ import profilePicture from "../../assets/images/blank-profile-picture.webp";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { useUpdateUserMutation } from "../../redux/apiCalls/auth";
+import { useUpdateUserMutation, useDeleteUserMutation, useLogoutMutation } from "../../redux/apiCalls/auth";
 import { authAction } from "../../redux/slices/auth";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import Button from "../button/Button";
 import ReactTimeAgo from "react-time-ago";
 import { toast } from "react-toastify";
+import { messagesAction } from './../../redux/slices/messages';
+import { productAction } from './../../redux/slices/products';
 
 const Container = styled.div`
   flex: 4;
   padding: 20px;
   justify-content: center;
-  @media (max-width: 900px) {
-     margin-left: 15px;
-  }
 `;
 
 const UserContainer = styled.div`
   display: flex;
   margin-top: 20px;
+  margin-bottom: 10px;
   @media (max-width: 900px) {
     flex-direction: column;
     justify-content: space-between;
@@ -141,7 +142,10 @@ const UserUpdateLeft = styled.div``;
 
 const User = () => {
   const [updateUser, { isLoading }] = useUpdateUserMutation();
+  const [deleteUser] = useDeleteUserMutation();
+  const [logout] = useLogoutMutation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.auth);
   const [updateUserFilds, setUpdateUserFilds] = useState({});
 
@@ -165,6 +169,22 @@ const User = () => {
     } catch (error) {
       toast.error(error.message);
     }
+  };
+
+  const handledeleteUser = async () => {
+    try {
+      await deleteUser(currentUser._id).unwrap();
+      await logout().unwrap();
+      dispatch(authAction.logoutSuccess());
+      dispatch(messagesAction.clearState());
+      dispatch(productAction.clearState());
+      navigate("/");
+      if (!currentUser) {
+        navigate("/");
+      } 
+    } catch (error) {
+      toast.error(error.message);
+    } 
   };
 
   return (
@@ -231,6 +251,7 @@ const User = () => {
                   className="userUpdateInput"
                   onChange={handleChange}
                   name="email"
+                  disabled={currentUser.googleId}
                 />
               </UserUpdateItem>
               <UserUpdateItem>
@@ -248,6 +269,12 @@ const User = () => {
           </UserUpdateForm>
         </UserUpdate>
       </UserContainer>
+      <Button
+                    theme="deleteProduct"
+                    text="מחק פרופיל"
+                    type="button"
+                    onClick={handledeleteUser}
+                  />
     </Container>
   );
 };

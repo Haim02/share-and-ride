@@ -13,13 +13,16 @@ import {
   faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import Spinner from "../../../components/spinner/Spinner";
+import LastRentTable from "./../../../components/lastRentTable/LastRentTable";
 import uuid from "react-uuid";
 import ReactTimeAgo from "react-time-ago";
 
 const Product = () => {
   const location = useLocation();
   const productId = location.pathname.split("/")[2];
-  const { product, isFetching } = useSelector((state) => state.product);
+  const { product, isFetching, isFetchingLastRents, lastRents } = useSelector(
+    (state) => state.product
+  );
   const [type, setType] = useState(product?.type);
   const [price, setPrice] = useState(product?.price);
   const [details, setDetails] = useState(product?.details);
@@ -143,13 +146,13 @@ const Product = () => {
                   </div>
                   <div className="productInfoItem">
                     <span className="productInfoValue">
-                      {product.details.speed}
+                      ק"מ {product.details.speed}
                     </span>
                     <span className="productInfoKey">: מהירות</span>
                   </div>
                   <div className="productInfoItem">
                     <span className="productInfoValue">
-                      {product.details.battery}
+                      וולט {product.details.battery}
                     </span>
                     <span className="productInfoKey">: סוללה</span>
                   </div>
@@ -158,11 +161,17 @@ const Product = () => {
                     <span className="productInfoKey">: כתובת</span>
                   </div>
                   <div className="productInfoItem">
+                    <span className="productInfoValue">
+                      {product.user.name}
+                    </span>
+                    <span className="productInfoKey">: משתמש</span>
+                  </div>
+                  <div className="productInfoItem">
                     <ReactTimeAgo
                       date={new Date(product.createdAt)}
                       locale="he"
                     />
-                    <span className="productInfoKey"> : נוצר ב</span>
+                    <span className="productInfoKey"> : נוצר</span>
                   </div>
                 </div>
               </div>
@@ -255,6 +264,14 @@ const Product = () => {
                   <button className="productButton">עדכן</button>
                 </div>
               </form>
+            </div>
+            <div className="bottom">
+              <h1 className="title">השכרות אחרונות</h1>
+              {isFetchingLastRents ? (
+                <Spinner />
+              ) : (
+                <LastRentTable name="משתמש" type="product" rows={lastRents} />
+              )}
             </div>
           </Fragment>
         )}

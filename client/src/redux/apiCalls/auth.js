@@ -91,6 +91,12 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    deleteUser: builder.mutation({
+      query: (id) => ({
+        url: `/profile/user/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -108,4 +114,5 @@ export const {
   useResetPasswordMutation,
   useCheckTokenMutation,
   useGoogleSigninMutation,
+  useDeleteUserMutation,
 } = userApiSlice;

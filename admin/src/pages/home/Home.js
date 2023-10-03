@@ -8,7 +8,7 @@ import {
 } from "../../redux/apiCalls/home";
 import Widget from "../../components/widget/Widget";
 import Featured from "../../components/featured/Featured";
-import Chart from "../../components/chart/Chart";
+import FeaturedTotal from "../../components/featuredTotal/FeaturedTotal";
 import Table from "../../components/table/Table";
 import Spinner from "./../../components/spinner/Spinner";
 import "./home.scss";
@@ -44,7 +44,7 @@ const Home = () => {
           </div>
           <div className="charts">
             {todayRentStats && <Featured value={todayRentStats} /> }
-            <Chart title="6 חודשים האחרונים" aspect={2 / 1} />
+            {todayRentStats && <FeaturedTotal value={todayRentStats} /> }
           </div>
           <div className="listContainer">
             <div className="listTitle">מוצרים אחרונים שעלו</div>

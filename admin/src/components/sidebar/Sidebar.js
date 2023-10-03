@@ -67,11 +67,6 @@ const Sidebar = () => {
               <span>מוצרים</span>
             </li>
           </Link>
-          <p className="title">הודעות</p>
-          <li>
-            <NotificationsNoneIcon className="icon" />
-            <span>התראות</span>
-          </li>
           <p className="title">משתמש</p>
           <li>
             <ExitToAppIcon className="icon" />

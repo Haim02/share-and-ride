@@ -6,23 +6,29 @@ import User from "../components/profile/User";
 export const Container = styled.div`
   display: flex;
   margin: 20px 0;
-  @media (max-width: 750px) {
-    margin: 0 0;
+  /* align-items: center; */
+  justify-content: center;
+  @media (max-width: 850px) {
+    padding: 10px;
   }
 `;
 
 export const SideBar = styled.div`
   flex: 1;
+  @media (max-width: 900px) {
+    flex: 0;
+  }
 `;
 
 export const Content = styled.div`
   flex: 3;
   margin-bottom: auto;
-  margin-top: 40px;
-  margin-right: 60px;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
+  @media (max-width: 900px) {
+    flex: 0;
+  }
 `;
 
 const ProfilePage = () => {

@@ -155,6 +155,7 @@ exports.updateUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
+    const userIsProduct = await Product.deleteOne({user:req.params.id});
 
     res.status(200).json({
       status: "success",
@@ -186,7 +187,7 @@ exports.getOneProduct = async (req, res) => {
   const productId = req.params.id;
 
   try {
-    const product = await Product.findById(productId);
+    const product = await Product.findById(productId).populate('user');
 
     res.status(200).json({
       status: "success",
@@ -268,7 +269,7 @@ exports.getLastRentstUser = async (req, res) => {
   try {
     const lastRents = await Message.find({ fromUser: req.params.id })
       .populate("productId")
-      .limit(limit);
+
     res.status(200).json({
       status: "seccess",
       lastRents,
@@ -285,7 +286,6 @@ exports.getLastRentstProduct = async (req, res) => {
   try {
     const lastRents = await Message.find({ productId: req.params.id })
       .populate("fromUser")
-      .limit(limit);
 
     res.status(200).json({
       status: "seccess",
@@ -368,13 +368,15 @@ exports.getRentStats = async (req, res, next) => {
       },
     });
 
+    const allRentStats = await Message.find();
+
     res.status(200).json({
       status: "success",
       data: {
         todayRentStats,
         todayRejectRentStats,
         todayApproveRentStats,
-        totalApproveRentStats,
+        allRentStats
       },
     });
   } catch (error) {

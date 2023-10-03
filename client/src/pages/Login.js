@@ -70,10 +70,10 @@ const Login = () => {
           <Title>או</Title>
           <Form onSubmit={handleSubmit}>
             <FormInputs
-              label="אמייל"
+              label="אימייל"
               value={loginValues.email}
               type="text"
-              placeholder="הכנס אמייל"
+              placeholder="הכנס אימייל"
               name="email"
               onChange={onChangeHandler}
             />

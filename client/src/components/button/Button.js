@@ -53,6 +53,10 @@ const Sort = styled(BaseButton)`
     `
     background-color: gray;
   `}
+   @media (max-width: 640px) {
+    text-align: center;
+    width: 25%;
+  }
 `;
 
 const ProductCart = styled(BaseButton)`

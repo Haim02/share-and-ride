@@ -46,10 +46,10 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
           <div className="inputGroub">
             <input
-              label="אמייל"
+              label="אימייל"
               value={loginValues.email}
               type="email"
-              placeholder="הכנס אמייל"
+              placeholder="הכנס אימייל"
               name="email"
               onChange={onChangeHandler}
             />

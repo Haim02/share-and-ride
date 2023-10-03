@@ -11,6 +11,7 @@ import {
 import { useUpdateMessageMutation } from "../../../redux/apiCalls/messages";
 import { messagesAction } from "../../../redux/slices/messages";
 import Button from "../../button/Button";
+import bikeCover from '../../../assets/images/bikeCover.jpg'
 import { useDispatch } from "react-redux";
 import ReactTimeAgo from "react-time-ago";
 
@@ -21,9 +22,7 @@ const Container = styled.div`
   margin: 20px 0;
   border: 3px solid ${(props) => props.theme.main};
   @media (max-width: 390px) {
-    width: 350px;
     margin-right: 0px;
-    margin-left: 20px;
   }
 `;
 
@@ -41,7 +40,7 @@ const Header = styled.div`
   background: #fff;
   padding: 20px;
   color: #2e3038;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
   cursor: pointer;
   position: relative;
@@ -50,25 +49,21 @@ const Header = styled.div`
   background: #5393dc;
   @media (max-width: 750px) {
     width: 100%;
-    font-size: 16px;
+    font-size: 15px;
   }
   @media (max-width: 620px) {
-    font-size: 14px;
+    font-size: 13px;
   }
   @media (max-width: 390px) {
-    font-size: 12px;
-    padding: 6px;
+    font-size: 10px;
+    padding: 5px;
   }
 `;
 
 const Title = styled.h3`
   font-weight: 20px;
   text-align: right;
-  margin-left: 40px;
-  @media (max-width: 460px) {
-    /* font-size: 12px; */
-    /* margin-left: 0; */
-  }
+  margin-left: 20px;
 `;
 
 const ImgContainer = styled.div`
@@ -226,7 +221,7 @@ const Message = ({ message }, props) => {
               }}
             >
               <Span> סטטוס : {getStatus}</Span>
-              <h6> {message.fromUser.name} : שולח</h6>
+              <h6> {message?.fromUser?.name} : שולח</h6>
             </div>
             <ReactTimeAgo date={new Date(message.createdAt)} locale="he" />
             <SmallIcon onClick={toggleStartCalendarOpen}>
@@ -237,7 +232,7 @@ const Message = ({ message }, props) => {
           </Header>
           <Body active={!isStartCalendarOpen}>
             <ImgContainer>
-              <ProductImg src={message?.productId?.images[0]} />
+              <ProductImg src={message?.productId?.images[0] || bikeCover} />
             </ImgContainer>
             <Detailes>
               <SpanItem>

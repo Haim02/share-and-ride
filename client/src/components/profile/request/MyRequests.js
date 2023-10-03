@@ -12,6 +12,11 @@ import { messagesAction } from './../../../redux/slices/messages';
 const Wraper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  @media (max-width: 620px) {
+    width: 380px;
+  }
 `;
 
 const Title = styled.div`
@@ -24,9 +29,10 @@ const Title = styled.div`
   text-transform: uppercase;
   border-radius: 2px;
   font-weight: 700;
-  @media (max-width: 390px) {
-    margin-left: 20px;
-  }
+`;
+
+const H1 = styled.h1`
+ text-align: center;
 `;
 
 const MyRequests = () => {
@@ -57,7 +63,7 @@ const MyRequests = () => {
             {requests && <Wraper>
               <Title>הבקשות שלי</Title>
               {requests.length === 0 || null ? (
-                <h1>אין בקשות</h1>
+                <H1>אין בקשות</H1>
               ) : (
                 requests.map((request) => {
                   return <Request request={request} key={uuid()} />;

@@ -77,11 +77,13 @@ const NotAUserContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: right;
   width: 100vw;
   height: 40vw;
   @media (max-width: 540px) {
-    margin: 50px 15px;
-    margin-top: 50px;
+    margin: 55px 10px;
+    margin-top: 55px;
+    width: 90%;
   }
 `;
 
@@ -189,7 +191,7 @@ const UploadProductPage = () => {
       <Container>
         {!currentUser ? (
           <NotAUserContainer>
-            <H1>!רק משתמשים רשומים יכולים לפרסם מוצר</H1>
+            <H1>רק משתמשים רשומים יכולים לפרסם מוצר</H1>
             <Link to="/login">
               <Button theme="uploadFormSubmit" text="לחץ כאן להתחברות" />
             </Link>

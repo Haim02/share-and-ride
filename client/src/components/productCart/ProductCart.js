@@ -1,9 +1,10 @@
 import React from "react";
-import { faImage, faLocationPin } from "@fortawesome/free-solid-svg-icons";
+import { faLocationPin } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import Button from "../button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import bikeCover from '../../assets/images/bikeCover.jpg'
 import ReactTimeAgo from "react-time-ago";
 
 const RidingTollContainer = styled.div`
@@ -118,8 +119,8 @@ const ProductCart = (
     <RidingTollContainer>
       <RidingTollThumbnail>
         <img
-          src={props.product.images[0] || <FontAwesomeIcon icon={faImage} />}
-          alt=""
+          src={props?.product?.images[0] || bikeCover }
+          alt="product"
         />
       </RidingTollThumbnail>
       <Seperator />

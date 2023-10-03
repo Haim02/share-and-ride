@@ -24,20 +24,28 @@ import { toast } from "react-toastify";
 
 export const Container = styled.div`
   display: flex;
-  margin: 20px 0;
+  justify-content: center;
+  @media (max-width: 850px) {
+    padding: 10px;
+  }
 `;
 
 export const SideBar = styled.div`
   flex: 1;
+  @media (max-width: 900px) {
+    flex: 0;
+  }
 `;
 
 export const Content = styled.div`
   flex: 3;
-  margin: 10px 0;
+  margin: 5px 0;
   margin-right: 60px;
   display: flex;
-  align-items: center;
   justify-content: center;
+  @media (max-width: 900px) {
+    margin-right: 0;
+  }
 `;
 
 const ImagesContainer = styled.div`

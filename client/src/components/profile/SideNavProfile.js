@@ -14,9 +14,11 @@ import { slide as Menu } from "react-burger-menu";
 import { MdPermIdentity } from "react-icons/md";
 
 const Container = styled.div`
-  height: 100vh;
+  height: 80vh;
+  margin-bottom: auto;
   background-color: rgb(251, 251, 255);
   position: sticky;
+  top: 0;
 `;
 
 const SidebarWrapper = styled.div`
@@ -100,7 +102,7 @@ const NavItem = styled.li`
 const SideNavProfile = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
-  const ismobile = useMediaQuery({ maxWidth: "540px" });
+  const ismobile = useMediaQuery({ maxWidth: "630px" });
   const params = useParams();
 
   if (ismobile) {

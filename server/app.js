@@ -56,12 +56,12 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-// app.set("trust proxy", 2);
+app.set("trust proxy", 2);
 
 app.use(passport.initialize());
 
-app.use(compression());
-
+app.use(compression()); 
+ 
 app.use("/api/auth", authRouter);
 app.use("/api/auth", googleRouter);
 app.use("/api/products", productRouter);

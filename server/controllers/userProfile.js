@@ -11,7 +11,6 @@ const filterObj = (obj, ...allowedFields) => {
 
 exports.updateUserProfile = async (req, res, next) => {
   const userId = req.params.id;
-  console.log('req', req.body)
   try {
     if (req.body.password || req.body.passwordConfirm) {
       throw new Error(
@@ -127,6 +126,31 @@ exports.deletProduct = async (req, res, next) => {
     res.status(200).json({
       status: "success",
       data: {
+        data: product,
+      },
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+
+exports.deletUser = async (req, res, next) => {
+  const userId = req.params.id;
+
+  try {
+    const user = await User.findByIdAndDelete(userId);
+    const product = await Product.deleteOne({user: userId});
+
+    if (!user) {
+      throw new Error("No document found with that ID");
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        data: user,
         data: product,
       },
     });

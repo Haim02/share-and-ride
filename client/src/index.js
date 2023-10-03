@@ -8,6 +8,7 @@ import './index.css';
 import App from './App';
 import { disableReactDevTools } from '@fvilers/disable-react-devtools';
 import reportWebVitals from './reportWebVitals';
+import ErrorBoundary from './components/UI/ErrorBoundary';
 
 if (process.env.NODE_ENV === 'production') {
   disableReactDevTools()
@@ -20,7 +21,9 @@ root.render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
     <BrowserRouter>
+    <ErrorBoundary fallback="שגיעה">
     <App />
+    </ErrorBoundary>
     </BrowserRouter>
     </PersistGate>
     </Provider>

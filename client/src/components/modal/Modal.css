@@ -37,6 +37,12 @@
       width: 83%;
     }
   }
+  @media (max-width: 640px) {
+    .modal {
+      left: 20px;
+      height: 50%;
+    }
+  }
   
   @keyframes slide-down {
     from {

@@ -61,6 +61,7 @@ const RentFrom = (props) => {
   const [notice, setNotice] = useState("");
   const dispatch = useDispatch();
   const { product, currentUser } = useSelector((state) => state.auth);
+  
   const returnFunction = (e) => {
     setStartTime(new Date(e?.startTime));
     setEndTime(new Date(e?.endTime));
@@ -83,9 +84,9 @@ const RentFrom = (props) => {
     let date = `${startDate.getDate()}/${
       startDate.getMonth() + 1
     }/${startDate.getFullYear()}`.toString();
-    let start = `${startTime.getHours()}:${startTime.getMinutes()}`.toString();
-    let end = `${endTime.getHours()}:${endTime.getMinutes()}`.toString();
-    
+    let start = `${startTime.getHours().toString().replace(/^(\d)$/, '0$1')}:${startTime.getMinutes().toString().replace(/^(\d)$/, '0$1')}`.toString();
+    let end = `${endTime.getHours().toString().replace(/^(\d)$/, '0$1')}:${endTime.getMinutes().toString().replace(/^(\d)$/, '0$1')}`.toString();
+
       const message = {
       date,
       start,

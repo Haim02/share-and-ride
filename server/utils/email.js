@@ -8,7 +8,7 @@ const sendEmail = async (message, email, subject, text) => {
         auth: {
           api_key: process.env.SEND_GRID_API,
         },
-      })
+      }) 
       );
     const res = await transport.sendMail({
       from: "shreandride@gmail.com",

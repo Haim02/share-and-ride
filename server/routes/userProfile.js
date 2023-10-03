@@ -11,7 +11,9 @@ router
   .route("/user/:id")
   .get(userProfileController.getMe, userProfileController.getUser)
 
-  .patch(userProfileController.updateUserProfile);
+  .patch(userProfileController.updateUserProfile)
+
+  .delete(userProfileController.deletUser);
 
 router.patch("/updatePassword/:id", authController.updatePassword);
 

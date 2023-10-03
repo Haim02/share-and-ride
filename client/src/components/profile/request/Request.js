@@ -8,6 +8,7 @@ import {
   faClockFour,
   faNoteSticky,
 } from "@fortawesome/free-solid-svg-icons";
+import bikeCover from '../../../assets/images/bikeCover.jpg'
 import ReactTimeAgo from "react-time-ago";
 
 const Container = styled.div`
@@ -15,8 +16,8 @@ const Container = styled.div`
   margin: 20px 0;
   border: 3px solid ${(props) => props.theme.main};
   @media (max-width: 390px) {
-    width: 350px;
-    margin-left: 20px;
+    /* width: 350px; */
+    /* margin-left: 20px; */
   }
 `;
 
@@ -108,6 +109,12 @@ const Span = styled.span`
   }
 `;
 
+const Notice = styled.small`
+ text-align: right;
+ font-size: 14px;
+ width: 100px;
+`;
+
 const SpanItem = styled.div`
   display: flex;
   flex-direction: row-reverse;
@@ -165,7 +172,7 @@ const Request = ({ request }) => {
         </Header>
         <Body active={!isStartCalendarOpen}>
           <ImgContainer>
-            <ProductImg src={request?.productId?.images[0]} />
+            <ProductImg src={request?.productId?.images[0] || bikeCover} />
           </ImgContainer>
           <Detailes>
             <SpanItem>
@@ -189,7 +196,7 @@ const Request = ({ request }) => {
                 {" "}
                 :הערות <FontAwesomeIcon icon={faNoteSticky} />
               </Span>
-              <Span>{request.notice}</Span>
+              <Notice>{request.notice}</Notice>
             </SpanItem>
           </Detailes>
         </Body>

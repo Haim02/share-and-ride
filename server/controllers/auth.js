@@ -22,6 +22,7 @@ const createSentToken = (user, statusCode, res, req) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 6 * 60 * 60 * 1000
     ),
     httpOnly: true,
+    secure: true,
     sameSite: "none",
   };
 
@@ -42,14 +43,17 @@ const createSentToken = (user, statusCode, res, req) => {
 
 const createSentTokenGoogleLogin = (user, res) => {
   const token = signToken(user._id);
+  
   const cookieOptions = {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 4 * 60 * 60 * 1000
     ),
-    httpOnly: true,
+
+    // httpOnly: true,
+    secure: true,
     sameSite: "none",
     domain: "www.shareandride.site",
-    path: '/'
+    path: "/",
   };
 
   if (process.env.NODE_ENV === "production") {
@@ -284,10 +288,9 @@ exports.forgotPassword = async (req, res, next) => {
   let user;
   try {
     user = await User.findOne({ email: req.body.email });
-
     if (!user) {
       throw new Error("There is no user with this email address.");
-    } 
+    }
 
     if (user.googleId) {
       throw new Error("This user is rigester with google account.", 404);
@@ -296,9 +299,7 @@ exports.forgotPassword = async (req, res, next) => {
     const resetToken = user.createPasswordResetToken();
     await user.save({ validateBeforeSave: false });
 
-    const resetURL = `${req.protocol}://${req.get(
-      "host"
-    )}/api/user/resetPassword/${resetToken}`;
+    const resetURL = `https://www.shareandride.site/api/user/resetPassword/${resetToken}`;
 
     const message = ` לא שכחתה סיסמה? התעלם מהמייל הזה , ${resetURL} - שכחתה סיסמה? כנס לקישור הבא והכנס סיסמה חדשה`;
 
@@ -311,9 +312,9 @@ exports.forgotPassword = async (req, res, next) => {
       message: "Token sent to email",
     });
   } catch (error) {
-    user.passwordResetToken = undefined;
-    user.passwordResetExpire = undefined;
-    await user.save({ validateBeforeSave: false });
+    // user.passwordResetToken = undefined;
+    // user.passwordResetExpire = undefined;
+    // await user.save({ validateBeforeSave: false });
     res.status(500).json({
       status: "fail",
       message: error.message,

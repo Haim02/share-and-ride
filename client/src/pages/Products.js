@@ -42,6 +42,9 @@ const ProductsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   padding: 10px;
+  @media (max-width: 640px) {
+    flex-direction: column;
+  }
 `;
 
 const Pagination = styled.section`

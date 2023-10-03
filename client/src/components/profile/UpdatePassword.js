@@ -63,7 +63,6 @@ const UpdatePassword = () => {
 
     try {
       const res = await updateUserPassword(body);
-      console.log("res", res);
       if (res.error) {
         return toast.error("סיסמאות לא תקינות");
       }

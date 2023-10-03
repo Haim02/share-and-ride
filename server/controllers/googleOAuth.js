@@ -15,10 +15,11 @@ passport.use(
       callbackURL: "https://www.shareandride.site/api/auth/google/callback",
       passReqToCallback: true,
       scope: ["profile", "email"],
-    },
+    }, 
     async (request, accessToken, refreshToken, profile, done) => {
-      try {
+      try { 
         let user;
+      
         user = await User.findOne({ googleId: profile.id });
         if (user) {
           return done(null, user);
@@ -27,7 +28,6 @@ passport.use(
           googleId: profile.id,
           name: profile.displayName,
           email: profile.emails[0].value,
-          phone: profile?.phone[0]?.value || null,
         });
         user = await newUser.save({ validateBeforeSave: false });
         return done(null, user);

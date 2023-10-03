@@ -1,5 +1,5 @@
 import { productAction } from "../slice/product";
-import axios from 'axios';
+import axios from "axios";
 const URL = "https://www.shareandride.site/api/admin/products";
 
 export const publicRequest = axios.create({

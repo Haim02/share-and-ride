@@ -30,7 +30,7 @@ export const Container = styled.div`
 export const Wrapper = styled.div`
   width: 50%;
   padding: 20px;
-  margin: 40px 0;
+  margin: 80px 0;
   background-color: rgba(255, 255, 255, 0.846);
   justify-content: center;
   align-items: center;
@@ -189,9 +189,9 @@ const Register = () => {
           />
           <FormInputs
             value={formik.values.email}
-            label="אמייל"
-            type="text"
-            placeholder="הכנס אמייל"
+            label="אימייל"
+            type="email"
+            placeholder="הכנס אימייל"
             name="email"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -244,7 +244,7 @@ const Register = () => {
               style={{ color: "red" }}
             ></Chackbox>
             על ידי יצירת חשבון, אני מסכים לעיבוד הנתונים האישיים שלי בהתאם ל
-            <b>מדיניות הפרטיות</b>
+           <Link to='/PrivacyPolicy'> <b>מדיניות הפרטיות</b></Link>
           </Agreement>
           {isCheckboxBlur && !isCheckbox && <Small>'יש לסמן כדי להמשיך'</Small>}
           <Button theme="auth" type="submit" text="צור חשבון" />

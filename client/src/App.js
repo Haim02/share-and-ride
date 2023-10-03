@@ -32,6 +32,7 @@ import { productAction } from "./redux/slices/products";
 import LoadingSpinner from "./components/UI/LoadingSpinner";
 import { toast } from "react-toastify";
 import Cookies from "universal-cookie";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 TimeAgo.addLocale(he);
 
 function App() {
@@ -41,7 +42,7 @@ function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.auth);
- 
+
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -103,6 +104,7 @@ function App() {
             currentUser ? <Navigate replace to="/" /> : <ForgotPasswordPage />
           }
         />
+        <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
         <Route
           path="/api/user/resetPassword/:token"
           element={

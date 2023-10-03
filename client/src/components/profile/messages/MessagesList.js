@@ -12,6 +12,12 @@ import uuid from "react-uuid";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  @media (max-width: 620px) {
+    width: 380px;
+  }
+  @media (max-width: 850px) {
+    padding: 12px;
+  }
 `;
 
 const Title = styled.div`
@@ -24,9 +30,13 @@ const Title = styled.div`
   text-transform: uppercase;
   border-radius: 2px;
   font-weight: 700;
-  @media (max-width: 390px) {
+  /* @media (max-width: 390px) {
     margin-left: 20px;
-  }
+  } */
+`;
+
+const H1 = styled.h1`
+ text-align: center;
 `;
 
 const MessagesList = () => {
@@ -55,7 +65,7 @@ const MessagesList = () => {
        {messages && <Wrapper>
           <Title>רשימת בקשות</Title>
           {messages.length === 0 || null ? (
-            <h1>אין הודעות</h1>
+            <H1>אין הודעות</H1>
           ) : (
             messages.map((message) => {
               return <Message message={message} key={uuid()} />;

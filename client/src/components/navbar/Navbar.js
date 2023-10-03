@@ -120,7 +120,7 @@ const MobileNavText = styled.h3`
 
 const Navbar = () => {
   const [logout, { isLoading }] = useLogoutMutation();
-  const isMobile = useMediaQuery({ maxWidth: "540px" });
+  const isMobile = useMediaQuery({ maxWidth: "630px" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.auth);
@@ -163,11 +163,6 @@ const Navbar = () => {
             <NavItem>
               <Link to="/uploadProduct" style={{ textDecoration: "none" }}>
                 פרסם מוצר
-              </Link>
-            </NavItem>
-            <NavItem menu>
-              <Link to="/contact" style={{ textDecoration: "none" }}>
-                צור קשר
               </Link>
             </NavItem>
             {!currentUser && (
