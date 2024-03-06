@@ -1,6 +1,7 @@
 # MERN Bicycle and Scooter Rental Platform with Email Sending and External APIs (Google Maps) - Dockerized and Deployed on AWS
 
 Welcome to the GitHub repository for our MERN-based Bicycle and Scooter Rental Platform project. This project aims to provide users with a platform to rent bicycles and scooters, integrated with Google Maps for location services, and the ability to send emails for notifications. The entire application is containerized using Docker and deployed on AWS cloud services.
+https://www.shareandride.site/
 
 ## Table of Contents
 
@@ -107,4 +108,3 @@ The project is containerized using Docker for easy deployment. To deploy on AWS 
 
 
 
-We welcome contributions from the community! If you find any issues or want to add new features, feel free to submit pull requests.
