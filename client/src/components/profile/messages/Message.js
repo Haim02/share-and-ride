@@ -221,7 +221,7 @@ const Message = ({ message }, props) => {
               }}
             >
               <Span> סטטוס : {getStatus}</Span>
-              <h6> {message?.fromUser?.name} : שולח</h6>
+              <h6> שולח : {message?.fromUser?.name} </h6>
             </div>
             <ReactTimeAgo date={new Date(message.createdAt)} locale="he" />
             <SmallIcon onClick={toggleStartCalendarOpen}>

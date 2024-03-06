@@ -320,7 +320,7 @@ const Product = () => {
               </Info>
               <Hr />
               <Info>
-                <span>:היערות</span>
+                <span>:הערות</span>
               </Info>
               <BtnGroup>
                 <Button

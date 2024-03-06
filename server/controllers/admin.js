@@ -19,11 +19,12 @@ exports.adminLogin = async (req, res, next) => {
       throw new Error("no email or password");
     }
     const user = await User.findOne({ email }).select("+password");
-
+    
+    
     if (!user || !(await user.comparePassword(password))) {
       throw new Error("email or password not currect");
     }
-
+    
     if (user.role !== "admin") {
       throw new Error("not an admin");
     }

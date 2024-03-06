@@ -6,6 +6,7 @@ const FeaturedTotal = ({ value }) => {
   let rejectRentStats = 0;
   let approveRentStats = 0;
   let pendingRentStats = 0;
+
   for (let index = 0; index < value.allRentStats.length; index++) {
     if (value.allRentStats[index].status === "reject") {
       rejectRentStats++;

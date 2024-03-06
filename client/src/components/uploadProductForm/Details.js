@@ -143,7 +143,7 @@ const Details = (props) => {
           value={formik.values.battery}
           label="סוללה"
           type="number"
-          placeholder="וואט"
+          placeholder="וולט"
           name="battery"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}

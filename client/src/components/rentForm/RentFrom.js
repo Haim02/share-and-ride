@@ -61,7 +61,7 @@ const RentFrom = (props) => {
   const [notice, setNotice] = useState("");
   const dispatch = useDispatch();
   const { product, currentUser } = useSelector((state) => state.auth);
-  
+
   const returnFunction = (e) => {
     setStartTime(new Date(e?.startTime));
     setEndTime(new Date(e?.endTime));
@@ -84,10 +84,22 @@ const RentFrom = (props) => {
     let date = `${startDate.getDate()}/${
       startDate.getMonth() + 1
     }/${startDate.getFullYear()}`.toString();
-    let start = `${startTime.getHours().toString().replace(/^(\d)$/, '0$1')}:${startTime.getMinutes().toString().replace(/^(\d)$/, '0$1')}`.toString();
-    let end = `${endTime.getHours().toString().replace(/^(\d)$/, '0$1')}:${endTime.getMinutes().toString().replace(/^(\d)$/, '0$1')}`.toString();
+    let start = `${startTime
+      .getHours()
+      .toString()
+      .replace(/^(\d)$/, "0$1")}:${startTime
+      .getMinutes()
+      .toString()
+      .replace(/^(\d)$/, "0$1")}`.toString();
+    let end = `${endTime
+      .getHours()
+      .toString()
+      .replace(/^(\d)$/, "0$1")}:${endTime
+      .getMinutes()
+      .toString()
+      .replace(/^(\d)$/, "0$1")}`.toString();
 
-      const message = {
+    const message = {
       date,
       start,
       end,
@@ -95,27 +107,32 @@ const RentFrom = (props) => {
       toUser: props.toUser,
       productId,
     };
-    
+
     if (product) {
       if (productId === product._id) {
         return toast.error(" משתמש לא יכול לשלוח בקשה למוצר ששייך לו");
       }
     }
-     
+
     if (start || end) {
+      let yearNew = new Date().getFullYear().toString();
+      let userYear = date.slice(4, date.length);
       let dayNew = new Date().getDate();
       let hourNew = new Date(Date.now()).getHours();
       let miniteNew = new Date(Date.now()).getMinutes();
 
       if (
+        userYear < yearNew ||
         parseInt(date.slice(0, 2)) < dayNew ||
-        (parseInt(date.slice(0, 2)) <= dayNew  && parseInt(start.slice(0, 2)) < hourNew) ||
-        (parseInt(date.slice(0, 2)) <= dayNew && parseInt(start.slice(2)) < miniteNew)
-      ){
-        return toast.error("טופס לא חוקי");
+        (parseInt(date.slice(0, 2)) <= dayNew &&
+          parseInt(start.slice(0, 2)) < hourNew) ||
+        (parseInt(date.slice(0, 2)) <= dayNew &&
+          parseInt(start.slice(3)) < miniteNew)
+      ) {
+        return toast.error("טופס לא תקין");
       }
     }
-      
+
     try {
       const res = await createMessage(message).unwrap();
       dispatch(messagesAction.createMessagesSuccess(res.message));
@@ -141,7 +158,7 @@ const RentFrom = (props) => {
         <InputContainer></InputContainer>
         <InputContainer>
           <StyledLabel>
-            בחר\י את שעת ההתחלה ואת השעת הסיום בו תרצה לשכור
+            בחר\י את שעת ההתחלה ואת שעת הסיום בו תרצה לשכור
           </StyledLabel>
           <Time>
             <TimeRange
@@ -163,7 +180,7 @@ const RentFrom = (props) => {
           <StyledLabel>:הערות מיוחדות</StyledLabel>
           <textarea
             onChange={(e) => setNotice(e.target.value)}
-            style={{ width: "50%", height: "65px", textAlign: 'right' }}
+            style={{ width: "50%", height: "65px", textAlign: "right" }}
           ></textarea>
         </InputContainer>
         {isLoading && <LoadingSpinner />}

@@ -15,6 +15,7 @@ import "./home.scss";
 
 const Home = () => {
   const dispatch = useDispatch();
+  const arr = []
   const {
     totalUsers,
     totalProducts,
@@ -43,8 +44,8 @@ const Home = () => {
             <Widget type="order" count={totalProducts} />
           </div>
           <div className="charts">
-            {todayRentStats && <Featured value={todayRentStats} /> }
-            {todayRentStats && <FeaturedTotal value={todayRentStats} /> }
+            {todayRentStats && <Featured value={todayRentStats || arr} /> }
+            {todayRentStats && <FeaturedTotal value={todayRentStats || arr} /> }
           </div>
           <div className="listContainer">
             <div className="listTitle">מוצרים אחרונים שעלו</div>

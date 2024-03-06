@@ -13,7 +13,7 @@ const UsersList = () => {
   useEffect(() => {
     getUsers(dispatch);
   }, [dispatch]);
-
+  
   return (
     <div className="list">
       {isFetching ? (

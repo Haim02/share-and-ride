@@ -18,7 +18,6 @@ TimeAgo.addLocale(he);
 
 function App() {
   const { currentUser, isFetching } = useSelector((state) => state.auth);
-
   return (
     <>
       {!currentUser || currentUser.role !== 'admin' ? (

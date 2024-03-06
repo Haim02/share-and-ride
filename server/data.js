@@ -13,7 +13,7 @@ const deletData = async () => {
         await Message.deleteMany();
         await Product.deleteMany();
         await User.deleteMany();
-        console.log('Data successfull deleted');
+        7('Data successfull deleted');
     } catch (error) {
         console.log(error)
     }

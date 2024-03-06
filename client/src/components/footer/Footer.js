@@ -160,39 +160,15 @@ const Footer = () => {
               <ListItem>
                 <Link to="/">בית</Link>
               </ListItem>
-              <ListItem>
-                <Link to="/">מי אנחנו</Link>
-              </ListItem>
-              <ListItem>
-                <Link to="#">איך זה עובד</Link>
-              </ListItem>
             </LinksList>
           </SectionContainer>
           <SectionContainer>
             <HeaderTitle>קישורים</HeaderTitle>
             <LinksList>
               <ListItem>
-                <Link to="#">תקנון האתר</Link>
-              </ListItem>
-              <ListItem>
                 <Link to="/PrivacyPolicy">מדיניות פרטיות</Link>
               </ListItem>
-              <ListItem>
-                <Link to="#">תמיכה</Link>
-              </ListItem>
             </LinksList>
-          </SectionContainer>
-          <SectionContainer>
-            <HeaderTitle>התקשרו אלינו</HeaderTitle>
-            <HorizontalContainer>
-              <RedIcon>
-                <FontAwesomeIcon
-                  icon={faPhoneAlt}
-                  style={{ backgroundColor: "rgb(52, 138, 244)" }}
-                />
-              </RedIcon>
-              <SmallText>03-5552349</SmallText>
-            </HorizontalContainer>
           </SectionContainer>
           <SectionContainer>
             <HeaderTitle>מייל</HeaderTitle>
@@ -203,7 +179,7 @@ const Footer = () => {
                   style={{ backgroundColor: "rgb(52, 138, 244)" }}
                 />
               </RedIcon>
-              <SmallText>info@Share&Ride.com</SmallText>
+              <SmallText>shreandride@gmail.com</SmallText>
             </HorizontalContainer>
           </SectionContainer>
         </InnerContainer>
